@@ -208,4 +208,16 @@
   <data name="light_parrot_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\parrot\light_parrot_9.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="win_logo_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\win-logo\win-logo_0.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win_logo_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\win-logo\win-logo_1.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win_logo_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\win-logo\win-logo_2.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win_logo_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\win-logo\win-logo_3.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
