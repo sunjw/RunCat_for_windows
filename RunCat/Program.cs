@@ -37,6 +37,10 @@ namespace RunCat
 
     public class RunCatApplicationContext : ApplicationContext
     {
+        private static string runnerCat = "cat";
+        private static string runnerParrot = "parrot";
+        private static string runnerWinLogo = "win-logo";
+
         private PerformanceCounter cpuUsage;
         private ToolStripMenuItem runnerMenu;
         private ToolStripMenuItem themeMenu;
@@ -64,11 +68,15 @@ namespace RunCat
             {
                 new ToolStripMenuItem("Cat", null, SetRunner)
                 {
-                    Checked = runner.Equals("cat")
+                    Checked = runner.Equals(runnerCat)
                 },
                 new ToolStripMenuItem("Parrot", null, SetRunner)
                 {
-                    Checked = runner.Equals("parrot")
+                    Checked = runner.Equals(runnerParrot)
+                },
+                new ToolStripMenuItem("Win logo", null, SetRunner)
+                {
+                    Checked = runner.Equals(runnerWinLogo)
                 }
             });
 
@@ -153,7 +161,7 @@ namespace RunCat
         {
             string prefix = 0 < manualTheme.Length ? manualTheme : systemTheme;
             ResourceManager rm = Resources.ResourceManager;
-            int capacity = runner.Equals("cat") ? 5 : 10;
+            int capacity = runner.Equals(runnerCat) ? 5 : 10;
             List<Icon> list = new List<Icon>(capacity);
             for (int i = 0; i < capacity; i++)
             {
