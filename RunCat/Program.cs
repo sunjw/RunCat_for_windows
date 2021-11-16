@@ -37,9 +37,10 @@ namespace RunCat
 
     public class RunCatApplicationContext : ApplicationContext
     {
+        private static int defaultInterval = 200;
         private static string runnerCat = "cat";
         private static string runnerParrot = "parrot";
-        private static string runnerWinLogo = "win-logo";
+        private static string runnerWinLogo = "win_logo";
 
         private PerformanceCounter cpuUsage;
         private ToolStripMenuItem runnerMenu;
@@ -159,13 +160,30 @@ namespace RunCat
 
         private void SetIcons()
         {
-            string prefix = 0 < manualTheme.Length ? manualTheme : systemTheme;
+            string themePrefix = 0 < manualTheme.Length ? manualTheme : systemTheme;
             ResourceManager rm = Resources.ResourceManager;
-            int capacity = runner.Equals(runnerCat) ? 5 : 10;
-            List<Icon> list = new List<Icon>(capacity);
-            for (int i = 0; i < capacity; i++)
+            int iconsCapacity = 0;
+            if (runner.Equals(runnerCat))
             {
-                list.Add((Icon)rm.GetObject($"{prefix}_{runner}_{i}"));
+                iconsCapacity = 5;
+            }
+            if (runner.Equals(runnerParrot))
+            {
+                iconsCapacity = 10;
+            }
+            if (runner.Equals(runnerWinLogo))
+            {
+                iconsCapacity = 4;
+            }
+            List<Icon> list = new List<Icon>(iconsCapacity);
+            for (int i = 0; i < iconsCapacity; i++)
+            {
+                string resName = $"{themePrefix}_{runner}_{i}";
+                if (runner.Equals(runnerWinLogo))
+                {
+                    resName = $"{runner}_{i}";
+                }
+                list.Add((Icon)rm.GetObject(resName));
             }
             icons = list.ToArray();
         }
@@ -184,6 +202,7 @@ namespace RunCat
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             UpdateCheckedState(item, runnerMenu);
             runner = item.Text.ToLower();
+            runner = runner.Replace(" ", "_");
             SetIcons();
         }
 
@@ -262,7 +281,7 @@ namespace RunCat
 
         private void SetAnimation()
         {
-            animateTimer.Interval = 200;
+            animateTimer.Interval = defaultInterval;
             animateTimer.Tick += new EventHandler(AnimationTick);
         }
 
@@ -270,7 +289,12 @@ namespace RunCat
         {
             float s = cpuUsage.NextValue();
             notifyIcon.Text = $"{s:f1}%";
-            s = 200.0f / (float)Math.Max(1.0f, Math.Min(20.0f, s / 5.0f));
+            float baseInterval = (float)defaultInterval;
+            if (runner.Equals(runnerWinLogo))
+            {
+                baseInterval = (float) (defaultInterval * 2);
+            }
+            s = baseInterval / (float)Math.Max(1.0f, Math.Min(20.0f, s / 5.0f));
             animateTimer.Stop();
             animateTimer.Interval = (int)s;
             animateTimer.Start();
