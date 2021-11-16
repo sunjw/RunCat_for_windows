@@ -292,7 +292,7 @@ namespace RunCat
             float baseInterval = (float)defaultInterval;
             if (runner.Equals(runnerWinLogo))
             {
-                baseInterval = (float) (defaultInterval * 2);
+                baseInterval = (float) (defaultInterval * 4);
             }
             s = baseInterval / (float)Math.Max(1.0f, Math.Min(20.0f, s / 5.0f));
             animateTimer.Stop();
