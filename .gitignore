@@ -389,4 +389,10 @@ FodyWeavers.xsd
 
 .DS_Store
 
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
 */resources/win-logo/*.png
