@@ -46,9 +46,9 @@ namespace RunCat
 
     public class RunCatApplicationContext : ApplicationContext
     {
-        private static string runnerCat = "cat";
-        private static string runnerParrot = "parrot";
-        private static string runnerWinLogo = "win_logo";
+        private const string runnerCat = "cat";
+        private const string runnerParrot = "parrot";
+        private const string runnerWinLogo = "win_logo";
 
         private const int CPU_TIMER_DEFAULT_INTERVAL = 3000;
         private const int ANIMATE_TIMER_DEFAULT_INTERVAL = 200;
@@ -305,10 +305,10 @@ namespace RunCat
         {
             float s = cpuUsage.NextValue();
             notifyIcon.Text = $"CPU: {s:f1}%";
-            float baseInterval = (float)ANIMATE_TIMER_DEFAULT_INTERVAL;
+            float baseInterval = ANIMATE_TIMER_DEFAULT_INTERVAL;
             if (runner.Equals(runnerWinLogo))
             {
-                baseInterval = (float) (defaultInterval * 4);
+                baseInterval = (float) (baseInterval * 4);
             }
             s = baseInterval / (float)Math.Max(1.0f, Math.Min(20.0f, s / 5.0f));
             animateTimer.Stop();
