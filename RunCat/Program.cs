@@ -46,12 +46,13 @@ namespace RunCat
 
     public class RunCatApplicationContext : ApplicationContext
     {
-        private const string runnerCat = "cat";
-        private const string runnerParrot = "parrot";
-        private const string runnerWinLogo = "win_logo";
+        private const string RUNNER_CAT = "cat";
+        private const string RUNNER_PARROT = "parrot";
+        private const string RUNNER_WIN_LOGO = "win_logo";
 
         private const int CPU_TIMER_DEFAULT_INTERVAL = 3000;
         private const int ANIMATE_TIMER_DEFAULT_INTERVAL = 200;
+
         private PerformanceCounter cpuUsage;
         private ToolStripMenuItem runnerMenu;
         private ToolStripMenuItem themeMenu;
@@ -83,15 +84,15 @@ namespace RunCat
             {
                 new ToolStripMenuItem("Cat", null, SetRunner)
                 {
-                    Checked = runner.Equals(runnerCat)
+                    Checked = runner.Equals(RUNNER_CAT)
                 },
                 new ToolStripMenuItem("Parrot", null, SetRunner)
                 {
-                    Checked = runner.Equals(runnerParrot)
+                    Checked = runner.Equals(RUNNER_PARROT)
                 },
                 new ToolStripMenuItem("Win logo", null, SetRunner)
                 {
-                    Checked = runner.Equals(runnerWinLogo)
+                    Checked = runner.Equals(RUNNER_WIN_LOGO)
                 }
             });
 
@@ -179,15 +180,15 @@ namespace RunCat
             string themePrefix = 0 < manualTheme.Length ? manualTheme : systemTheme;
             ResourceManager rm = Resources.ResourceManager;
             int iconsCapacity = 0;
-            if (runner.Equals(runnerCat))
+            if (runner.Equals(RUNNER_CAT))
             {
                 iconsCapacity = 5;
             }
-            if (runner.Equals(runnerParrot))
+            if (runner.Equals(RUNNER_PARROT))
             {
                 iconsCapacity = 10;
             }
-            if (runner.Equals(runnerWinLogo))
+            if (runner.Equals(RUNNER_WIN_LOGO))
             {
                 iconsCapacity = 4;
             }
@@ -195,7 +196,7 @@ namespace RunCat
             for (int i = 0; i < iconsCapacity; i++)
             {
                 string resName = $"{themePrefix}_{runner}_{i}";
-                if (runner.Equals(runnerWinLogo))
+                if (runner.Equals(RUNNER_WIN_LOGO))
                 {
                     resName = $"{runner}_{i}";
                 }
@@ -306,7 +307,7 @@ namespace RunCat
             float s = cpuUsage.NextValue();
             notifyIcon.Text = $"CPU: {s:f1}%";
             float baseInterval = ANIMATE_TIMER_DEFAULT_INTERVAL;
-            if (runner.Equals(runnerWinLogo))
+            if (runner.Equals(RUNNER_WIN_LOGO))
             {
                 baseInterval = (float) (baseInterval * 4);
             }
