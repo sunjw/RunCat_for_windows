@@ -333,9 +333,8 @@ namespace RunCat
         {
             var startInfo = new ProcessStartInfo
             {
-                FileName = "powershell",
-                UseShellExecute = false,
-                Arguments = " -c Start-Process taskmgr.exe",
+                FileName = "taskmgr.exe",
+                UseShellExecute = true,
                 CreateNoWindow = true,
             };
             Process.Start(startInfo);
