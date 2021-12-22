@@ -327,7 +327,7 @@ namespace RunCat
             cpuTimer.Tick += new EventHandler(ObserveCPUTick);
             cpuTimer.Start();
         }
-        
+
         private void HandleDoubleClick(object Sender, EventArgs e)
         {
             var startInfo = new ProcessStartInfo
