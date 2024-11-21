@@ -64,8 +64,8 @@ namespace RunCat
         private string systemTheme = "";
         private string manualTheme = "";
         private Icon[] icons;
-        private Timer animateTimer = new Timer();
-        private Timer cpuTimer = new Timer();
+        private Timer animateTimer = new();
+        private Timer cpuTimer = new();
 
 
         public RunCatApplicationContext()
@@ -81,8 +81,8 @@ namespace RunCat
             cpuUsage = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             _ = cpuUsage.NextValue(); // discards first return value
 
-            runnerMenu = new ToolStripMenuItem("Runner", null, new ToolStripMenuItem[]
-            {
+            runnerMenu = new ToolStripMenuItem("Runner", null,
+            [
                 new ToolStripMenuItem("Cat", null, SetRunner)
                 {
                     Checked = runner.Equals(RUNNER_CAT)
@@ -95,10 +95,10 @@ namespace RunCat
                 {
                     Checked = runner.Equals(RUNNER_WIN_LOGO)
                 }
-            });
+            ]);
 
-            themeMenu = new ToolStripMenuItem("Theme", null, new ToolStripMenuItem[]
-            {
+            themeMenu = new ToolStripMenuItem("Theme", null,
+            [
                 new ToolStripMenuItem("Default", null, SetThemeIcons)
                 {
                     Checked = manualTheme.Equals("")
@@ -111,7 +111,7 @@ namespace RunCat
                 {
                     Checked = manualTheme.Equals("dark")
                 }
-            });
+            ]);
 
             startupMenu = new ToolStripMenuItem("Startup", null, SetStartup);
             if (IsStartupEnabled())
@@ -120,13 +120,13 @@ namespace RunCat
             }
 
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip(new Container());
-            contextMenuStrip.Items.AddRange(new ToolStripItem[]
-            {
+            contextMenuStrip.Items.AddRange(
+            [
                 runnerMenu,
                 themeMenu,
                 startupMenu,
                 new ToolStripMenuItem("Exit", null, Exit)
-            });
+            ]);
 
             notifyIcon = new NotifyIcon()
             {
@@ -154,26 +154,22 @@ namespace RunCat
         private bool IsStartupEnabled()
         {
             string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using (RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName))
-            {
-                return (rKey.GetValue(Application.ProductName) != null) ? true : false;
-            }
+            using RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName);
+            return rKey.GetValue(Application.ProductName) != null;
         }
 
         private string GetAppsUseTheme()
         {
             string keyName = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-            using (RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName))
+            using RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName);
+            object value;
+            if (rKey == null || (value = rKey.GetValue("SystemUsesLightTheme")) == null)
             {
-                object value;
-                if (rKey == null || (value = rKey.GetValue("SystemUsesLightTheme")) == null)
-                {
-                    Console.WriteLine("Oh No! Couldn't get theme light/dark");
-                    return "light";
-                }
-                int theme = (int)value;
-                return theme == 0 ? "dark" : "light";
+                Console.WriteLine("Oh No! Couldn't get theme light/dark");
+                return "light";
             }
+            int theme = (int)value;
+            return theme == 0 ? "dark" : "light";
         }
 
         private void SetIcons()
@@ -193,7 +189,7 @@ namespace RunCat
             {
                 iconsCapacity = 4;
             }
-            List<Icon> list = new List<Icon>(iconsCapacity);
+            List<Icon> list = new(iconsCapacity);
             for (int i = 0; i < iconsCapacity; i++)
             {
                 string resName = $"{themePrefix}_{runner}_{i}";
@@ -203,7 +199,7 @@ namespace RunCat
                 }
                 list.Add((Icon)rm.GetObject(resName));
             }
-            icons = list.ToArray();
+            icons = [.. list];
         }
 
         private void UpdateCheckedState(ToolStripMenuItem sender, ToolStripMenuItem menu)
@@ -240,7 +236,8 @@ namespace RunCat
                 return;
             }
             string newTheme = GetAppsUseTheme();
-            if (systemTheme.Equals(newTheme)) return;
+            if (systemTheme.Equals(newTheme))
+                return;
             systemTheme = newTheme;
             SetIcons();
         }
@@ -260,25 +257,24 @@ namespace RunCat
         }
         private void UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
-            if (e.Category == UserPreferenceCategory.General) UpdateThemeIcons();
+            if (e.Category == UserPreferenceCategory.General)
+                UpdateThemeIcons();
         }
 
         private void SetStartup(object sender, EventArgs e)
         {
             startupMenu.Checked = !startupMenu.Checked;
             string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using (RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName, true))
+            using RegistryKey rKey = Registry.CurrentUser.OpenSubKey(keyName, true);
+            if (startupMenu.Checked)
             {
-                if (startupMenu.Checked)
-                {
-                    rKey.SetValue(Application.ProductName, Process.GetCurrentProcess().MainModule.FileName);
-                }
-                else
-                {
-                    rKey.DeleteValue(Application.ProductName, false);
-                }
-                rKey.Close();
+                rKey.SetValue(Application.ProductName, Process.GetCurrentProcess().MainModule.FileName);
             }
+            else
+            {
+                rKey.DeleteValue(Application.ProductName, false);
+            }
+            rKey.Close();
         }
 
         private void Exit(object sender, EventArgs e)
