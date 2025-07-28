@@ -166,7 +166,7 @@ namespace RunCat365
             var iconName = $"{runner.GetString()}_0".ToLower();
             if (runner.HasTheme())
             {
-                iconName = $"{systemTheme.GetString()}_{iconName}_0".ToLower();
+                iconName = $"{systemTheme.GetString()}_{iconName}".ToLower();
             }
             var obj = Resources.ResourceManager.GetObject(iconName);
             return obj is Icon icon ? icon.ToBitmap() : null;
