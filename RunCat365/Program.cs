@@ -163,7 +163,11 @@ namespace RunCat365
         private static Bitmap? GetRunnerThumbnailBitmap(Runner runner)
         {
             var systemTheme = GetSystemTheme();
-            var iconName = $"{systemTheme.GetString()}_{runner.GetString()}_0".ToLower();
+            var iconName = $"{runner.GetString()}_0".ToLower();
+            if (runner.HasTheme())
+            {
+                iconName = $"{systemTheme.GetString()}_{iconName}_0".ToLower();
+            }
             var obj = Resources.ResourceManager.GetObject(iconName);
             return obj is Icon icon ? icon.ToBitmap() : null;
         }
@@ -234,14 +238,18 @@ namespace RunCat365
         private void SetIcons()
         {
             var systemTheme = GetSystemTheme();
-            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString();
+            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString() + "_";
             var runnerName = runner.GetString();
+            if (!runner.HasTheme())
+            {
+                prefix = "";
+            }
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
             var list = new List<Icon>(capacity);
             for (int i = 0; i < capacity; i++)
             {
-                var iconName = $"{prefix}_{runnerName}_{i}".ToLower();
+                var iconName = $"{prefix}{runnerName}_{i}".ToLower();
                 var icon = rm.GetObject(iconName);
                 if (icon is null) continue;
                 list.Add((Icon)icon);

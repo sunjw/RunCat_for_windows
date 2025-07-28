@@ -19,6 +19,7 @@ namespace RunCat365
         Cat,
         Parrot,
         Horse,
+        WinLogo
     }
 
     internal static class RunnerExtension
@@ -30,6 +31,7 @@ namespace RunCat365
                 Runner.Cat => "Cat",
                 Runner.Parrot => "Parrot",
                 Runner.Horse => "Horse",
+                Runner.WinLogo => "WinLogo",
                 _ => "",
             };
         }
@@ -41,7 +43,20 @@ namespace RunCat365
                 Runner.Cat => 5,
                 Runner.Parrot => 10,
                 Runner.Horse => 14,
+                Runner.WinLogo => 4,
                 _ => 0,
+            };
+        }
+
+        internal static bool HasTheme(this Runner runner)
+        {
+            return runner switch
+            {
+                Runner.Cat => true,
+                Runner.Parrot => true,
+                Runner.Horse => true,
+                Runner.WinLogo => false,
+                _ => false,
             };
         }
     }
