@@ -20,8 +20,6 @@ namespace RunCat365
     internal class ContextMenuManager
     {
         private readonly CustomToolStripMenuItem systemInfoMenu = new();
-        private readonly CustomToolStripMenuItem runnersMenu = new();
-        private readonly CustomToolStripMenuItem settingsMenu = new();
         private readonly NotifyIcon notifyIcon = new();
         private readonly List<Icon> icons = [];
         private int current = 0;
@@ -36,14 +34,15 @@ namespace RunCat365
             Action<FPSMaxLimit> setFPSMaxLimit,
             Func<bool> getStartup,
             Func<bool, bool> toggleStartup,
+            Action openRepository,
             Action onExit
         )
         {
             systemInfoMenu.Text = "-\n-\n-\n-\n-";
             systemInfoMenu.Enabled = false;
 
-            runnersMenu.SetupMenuFromEnum<Runner>(
-                "Runners",
+            var runnersMenu = new CustomToolStripMenuItem("Runners");
+            runnersMenu.SetupSubMenusFromEnum<Runner>(
                 r => r.GetString(),
                 (parent, sender, e) =>
                 {
@@ -59,9 +58,8 @@ namespace RunCat365
                 r => GetRunnerThumbnailBitmap(getSystemTheme(), r)
             );
 
-            var themeMenu = new CustomToolStripMenuItem();
-            themeMenu.SetupMenuFromEnum<Theme>(
-                "Theme",
+            var themeMenu = new CustomToolStripMenuItem("Theme");
+            themeMenu.SetupSubMenusFromEnum<Theme>(
                 t => t.GetString(),
                 (parent, sender, e) =>
                 {
@@ -77,9 +75,8 @@ namespace RunCat365
                 _ => null
             );
 
-            var fpsMaxLimitMenu = new CustomToolStripMenuItem();
-            fpsMaxLimitMenu.SetupMenuFromEnum<FPSMaxLimit>(
-                "FPS Max Limit",
+            var fpsMaxLimitMenu = new CustomToolStripMenuItem("FPS Max Limit");
+            fpsMaxLimitMenu.SetupSubMenusFromEnum<FPSMaxLimit>(
                 f => f.GetString(),
                 (parent, sender, e) =>
                 {
@@ -101,7 +98,7 @@ namespace RunCat365
             };
             startupMenu.Click += (sender, e) => HandleStartupMenuClick(sender, toggleStartup);
 
-            settingsMenu.Text = "Settings";
+            var settingsMenu = new CustomToolStripMenuItem("Settings");
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
                 fpsMaxLimitMenu,
@@ -115,6 +112,15 @@ namespace RunCat365
                 Enabled = false
             };
 
+            var repositoryMenu = new CustomToolStripMenuItem("Open Repository");
+            repositoryMenu.Click += (sender, e) => openRepository();
+
+            var informationMenu = new CustomToolStripMenuItem("Information");
+            informationMenu.DropDownItems.AddRange(
+                appVersionMenu,
+                repositoryMenu
+            );
+
             var exitMenu = new CustomToolStripMenuItem("Exit");
             exitMenu.Click += (sender, e) => onExit();
 
@@ -125,7 +131,7 @@ namespace RunCat365
                 runnersMenu,
                 new ToolStripSeparator(),
                 settingsMenu,
-                appVersionMenu,
+                informationMenu,
                 new ToolStripSeparator(),
                 exitMenu
             );

@@ -66,8 +66,7 @@ namespace RunCat365
             return IsSingleLine() ? singleLineTextFlags : multiLineTextFlags;
         }
 
-        internal void SetupMenuFromEnum<T>(
-            string title,
+        internal void SetupSubMenusFromEnum<T>(
             Func<T, string> getTitle,
             Action<CustomToolStripMenuItem, object?, EventArgs> onClick,
             Func<T, bool> isChecked,
@@ -87,7 +86,6 @@ namespace RunCat365
                 );
                 items.Add(item);
             }
-            Text = title;
             DropDownItems.AddRange([.. items]);
         }
     }
