@@ -16,11 +16,14 @@ namespace RunCat365
 {
     internal class CustomToolStripMenuItem : ToolStripMenuItem
     {
-        public CustomToolStripMenuItem(string? text) : base(text) { }
+        internal CustomToolStripMenuItem() : base() { }
 
-        public CustomToolStripMenuItem(string? text, Image? image, EventHandler? onClick) : base(text, image, onClick) { }
+        internal CustomToolStripMenuItem(string? text) : base(text) { }
 
-        public CustomToolStripMenuItem(string? text, Image? image, params ToolStripItem[]? dropDownItems) : base(text, image, dropDownItems) { }
+        private CustomToolStripMenuItem(string? text, Image? image, bool isChecked, EventHandler? onClick) : base(text, image, onClick)
+        {
+            Checked = isChecked;
+        }
 
         private readonly TextFormatFlags multiLineTextFlags =
             TextFormatFlags.LeftAndRightPadding |
@@ -61,6 +64,31 @@ namespace RunCat365
         internal TextFormatFlags Flags()
         {
             return IsSingleLine() ? singleLineTextFlags : multiLineTextFlags;
+        }
+
+        internal void SetupMenuFromEnum<T>(
+            string title,
+            Func<T, string> getTitle,
+            EventHandler onClickEvent,
+            Func<T, bool> isChecked,
+            Func<Runner, Bitmap?> getRunnerThumbnailBitmap
+        ) where T : Enum
+        {
+            var items = new List<CustomToolStripMenuItem>();
+            foreach (T value in Enum.GetValues(typeof(T)))
+            {
+                var entityName = getTitle(value);
+                var iconImage = value is Runner runner ? getRunnerThumbnailBitmap(runner) : null;
+                var item = new CustomToolStripMenuItem(
+                    entityName,
+                    iconImage,
+                    isChecked(value),
+                    onClickEvent
+                );
+                items.Add(item);
+            }
+            Text = title;
+            DropDownItems.AddRange([.. items]);
         }
     }
 }
