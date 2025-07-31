@@ -89,7 +89,7 @@ namespace RunCat365
             };
             animateTimer.Tick += new EventHandler(AnimationTick);
             animateTimer.Start();
-            
+
             fetchTimer = new FormsTimer
             {
                 Interval = FETCH_TIMER_DEFAULT_INTERVAL
