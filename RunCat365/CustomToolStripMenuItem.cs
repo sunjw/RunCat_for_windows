@@ -66,10 +66,9 @@ namespace RunCat365
             return IsSingleLine() ? singleLineTextFlags : multiLineTextFlags;
         }
 
-        internal void SetupMenuFromEnum<T>(
-            string title,
+        internal void SetupSubMenusFromEnum<T>(
             Func<T, string> getTitle,
-            EventHandler onClickEvent,
+            Action<CustomToolStripMenuItem, object?, EventArgs> onClick,
             Func<T, bool> isChecked,
             Func<Runner, Bitmap?> getRunnerThumbnailBitmap
         ) where T : Enum
@@ -83,11 +82,10 @@ namespace RunCat365
                     entityName,
                     iconImage,
                     isChecked(value),
-                    onClickEvent
+                    (sender, e) => onClick(this, sender, e)
                 );
                 items.Add(item);
             }
-            Text = title;
             DropDownItems.AddRange([.. items]);
         }
     }

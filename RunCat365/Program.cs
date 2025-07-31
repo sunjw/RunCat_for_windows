@@ -15,6 +15,7 @@
 using FormsTimer = System.Windows.Forms.Timer;
 using Microsoft.Win32;
 using RunCat365.Properties;
+using System.Diagnostics;
 
 namespace RunCat365
 {
@@ -80,6 +81,7 @@ namespace RunCat365
                 f => fpsMaxLimit = f,
                 () => GetStartup(),
                 s => ToggleStartUp(s),
+                () => OpenRepository(),
                 () => Exit()
             );
 
@@ -159,6 +161,22 @@ namespace RunCat365
             if (e.Category == UserPreferenceCategory.General)
             {
                 contextMenuManager.SetIcons(GetSystemTheme(), manualTheme, runner);
+            }
+        }
+
+        private static void OpenRepository()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "https://github.com/Kyome22/RunCat365.git",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
             }
         }
 
