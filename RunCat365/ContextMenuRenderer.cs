@@ -24,10 +24,10 @@ namespace RunCat365
                 textRectangle.Height = item.Bounds.Height;
                 TextRenderer.DrawText(
                     e.Graphics,
-                    e.Text, 
-                    e.TextFont, 
+                    e.Text,
+                    e.TextFont,
                     textRectangle,
-                    item.ForeColor, 
+                    item.ForeColor,
                     item.Flags()
                 );
             }

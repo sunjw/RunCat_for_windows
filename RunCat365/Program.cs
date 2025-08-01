@@ -15,7 +15,7 @@
 using FormsTimer = System.Windows.Forms.Timer;
 using Microsoft.Win32;
 using RunCat365.Properties;
-using System.ComponentModel;
+using System.Diagnostics;
 
 namespace RunCat365
 {
@@ -49,21 +49,13 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
-        private readonly CustomToolStripMenuItem systemInfoMenu;
-        private readonly CustomToolStripMenuItem runnerMenu;
-        private readonly CustomToolStripMenuItem themeMenu;
-        private readonly CustomToolStripMenuItem fpsMaxLimitMenu;
-        private readonly CustomToolStripMenuItem startupMenu;
-        private readonly NotifyIcon notifyIcon;
+        private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
         private readonly FormsTimer animateTimer;
-        private readonly List<Icon> icons = [];
         private Runner runner = Runner.Cat;
         private Theme manualTheme = Theme.System;
         private FPSMaxLimit fpsMaxLimit = FPSMaxLimit.FPS40;
-        private bool firstLaunch;
         private int fetchCounter = 5;
-        private int current = 0;
 
         public RunCat365ApplicationContext()
         {
@@ -71,79 +63,27 @@ namespace RunCat365
             _ = Enum.TryParse(UserSettings.Default.Runner, out runner);
             _ = Enum.TryParse(UserSettings.Default.Theme, out manualTheme);
             _ = Enum.TryParse(UserSettings.Default.FPSMaxLimit, out fpsMaxLimit);
-            firstLaunch = UserSettings.Default.FirstLaunch;
 
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
-
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
             cpuRepository = new CPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
 
-            systemInfoMenu = new CustomToolStripMenuItem("-\n-\n-\n-\n-")
-            {
-                Enabled = false
-            };
-
-            runnerMenu = CreateMenuFromEnum<Runner>(
-                "Runner",
-                r => r.GetString(),
-                SetRunner,
-                r => runner == r
+            contextMenuManager = new ContextMenuManager(
+                () => runner,
+                r => runner = r,
+                () => GetSystemTheme(),
+                () => manualTheme,
+                t => manualTheme = t,
+                () => fpsMaxLimit,
+                f => fpsMaxLimit = f,
+                () => GetStartup(),
+                s => ToggleStartUp(s),
+                () => OpenRepository(),
+                () => Exit()
             );
-
-            themeMenu = CreateMenuFromEnum<Theme>(
-                "Theme",
-                t => t.GetString(),
-                SetThemeIcons,
-                t => manualTheme == t
-            );
-
-            fpsMaxLimitMenu = CreateMenuFromEnum<FPSMaxLimit>(
-                "FPS Max Limit",
-                fps => fps.GetString(),
-                SetFPSMaxLimit,
-                fps => fpsMaxLimit == fps
-            );
-
-            startupMenu = new CustomToolStripMenuItem("Startup", null, SetStartup);
-            if (IsStartupEnabled())
-            {
-                startupMenu.Checked = true;
-            }
-
-            var appVersion = $"{Application.ProductName} v{Application.ProductVersion}";
-            var appVersionMenu = new CustomToolStripMenuItem(appVersion)
-            {
-                Enabled = false
-            };
-
-            var contextMenuStrip = new ContextMenuStrip(new Container());
-            contextMenuStrip.Items.AddRange(
-                systemInfoMenu,
-                new ToolStripSeparator(),
-                runnerMenu,
-                themeMenu,
-                fpsMaxLimitMenu,
-                startupMenu,
-                new ToolStripSeparator(),
-                appVersionMenu,
-                new ToolStripSeparator(),
-                new CustomToolStripMenuItem("Exit", null, Exit)
-            );
-            contextMenuStrip.Renderer = new ContextMenuRenderer();
-
-            SetIcons();
-
-            notifyIcon = new NotifyIcon()
-            {
-                Icon = icons[0],
-                ContextMenuStrip = contextMenuStrip,
-                Text = "-",
-                Visible = true
-            };
-            ShowBalloonTip();
 
             animateTimer = new FormsTimer
             {
@@ -158,70 +98,8 @@ namespace RunCat365
             };
             fetchTimer.Tick += new EventHandler(FetchTick);
             fetchTimer.Start();
-        }
 
-        private static Bitmap? GetRunnerThumbnailBitmap(Runner runner)
-        {
-            var systemTheme = GetSystemTheme();
-            var iconName = $"{runner.GetString()}_0".ToLower();
-            if (runner.HasTheme())
-            {
-                iconName = $"{systemTheme.GetString()}_{iconName}".ToLower();
-            }
-            var obj = Resources.ResourceManager.GetObject(iconName);
-            return obj is Icon icon ? icon.ToBitmap() : null;
-        }
-
-        private static CustomToolStripMenuItem CreateMenuFromEnum<T>(
-            string title,
-            Func<T, string> getTitle,
-            EventHandler onClickEvent,
-            Func<T, bool> isChecked
-        ) where T : Enum
-        {
-            var items = new List<CustomToolStripMenuItem>();
-            foreach (T value in Enum.GetValues(typeof(T)))
-            {
-                var entityName = getTitle(value);
-                var iconImage = value is Runner runner ? GetRunnerThumbnailBitmap(runner) : null;
-                var item = new CustomToolStripMenuItem(entityName, iconImage, onClickEvent)
-                {
-                    Checked = isChecked(value) 
-                };
-                items.Add(item);
-            }
-            return new CustomToolStripMenuItem(title, null, [.. items]);
-        }
-
-        private void ShowBalloonTip()
-        {
-            if (firstLaunch)
-            {
-                var message = "App has launched. " +
-                    "If the icon is not on the taskbar, it has been omitted, " +
-                    "so please move it manually and pin it.";
-                notifyIcon.ShowBalloonTip(5000, "RunCat 365", message, ToolTipIcon.Info);
-                UserSettings.Default.FirstLaunch = false;
-                UserSettings.Default.Save();
-            }
-        }
-
-        private void OnApplicationExit(object? sender, EventArgs e)
-        {
-            UserSettings.Default.Runner = runner.ToString();
-            UserSettings.Default.Theme = manualTheme.ToString();
-            UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
-            UserSettings.Default.Save();
-        }
-
-        private static bool IsStartupEnabled()
-        {
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
-            if (rKey is null) return false;
-            var value = (rKey.GetValue(Application.ProductName) is not null);
-            rKey.Close();
-            return value;
+            ShowBalloonTip();
         }
 
         private static Theme GetSystemTheme()
@@ -235,99 +113,28 @@ namespace RunCat365
             return (int)value == 0 ? Theme.Dark : Theme.Light;
         }
 
-        private void SetIcons()
+        private static bool GetStartup()
         {
-            var systemTheme = GetSystemTheme();
-            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString() + "_";
-            var runnerName = runner.GetString();
-            if (!runner.HasTheme())
-            {
-                prefix = "";
-            }
-            var rm = Resources.ResourceManager;
-            var capacity = runner.GetFrameNumber();
-            var list = new List<Icon>(capacity);
-            for (int i = 0; i < capacity; i++)
-            {
-                var iconName = $"{prefix}{runnerName}_{i}".ToLower();
-                var icon = rm.GetObject(iconName);
-                if (icon is null) continue;
-                list.Add((Icon)icon);
-            }
-            icons.Clear();
-            icons.AddRange(list);
+            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
+            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
+            if (rKey is null) return false;
+            var value = (rKey.GetValue(Application.ProductName) is not null);
+            rKey.Close();
+            return value;
         }
 
-        private static void UpdateCheckedState(ToolStripMenuItem sender, ToolStripMenuItem menu)
-        {
-            foreach (ToolStripMenuItem item in menu.DropDownItems)
-            {
-                item.Checked = false;
-            }
-            sender.Checked = true;
-        }
-
-        private static void HandleMenuItemSelection<T>(
-            object? sender,
-            ToolStripMenuItem parentMenu,
-            CustomTryParseDelegate<T> tryParseMethod,
-            Action<T> assignValueAction
-        )
-        {
-            if (sender is null) return;
-            var item = (ToolStripMenuItem)sender;
-            UpdateCheckedState(item, parentMenu);
-            if (tryParseMethod(item.Text, out T parsedValue))
-            {
-                assignValueAction(parsedValue);
-            }
-        }
-
-        private void SetRunner(object? sender, EventArgs e)
-        {
-            HandleMenuItemSelection(
-                sender,
-                runnerMenu,
-                (string? s, out Runner r) => Enum.TryParse(s, out r),
-                value => runner = value
-            );
-            SetIcons();
-        }
-
-        private void SetThemeIcons(object? sender, EventArgs e)
-        {
-            HandleMenuItemSelection(
-                sender,
-                themeMenu,
-                (string? s, out Theme t) => Enum.TryParse(s, out t),
-                value => manualTheme = value
-            );
-            SetIcons();
-        }
-
-        private void SetFPSMaxLimit(object? sender, EventArgs e)
-        {
-            HandleMenuItemSelection(
-                sender,
-                fpsMaxLimitMenu,
-                (string? s, out FPSMaxLimit f) => FPSMaxLimitExtension.TryParse(s, out f),
-                value => fpsMaxLimit = value
-            );
-        }
-
-        private void UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
-        {
-            if (e.Category == UserPreferenceCategory.General) SetIcons();
-        }
-
-        private void SetStartup(object? sender, EventArgs e)
+        private static bool ToggleStartUp(bool isChecked)
         {
             var productName = Application.ProductName;
-            if (productName is null) return;
+            if (productName is null) return false;
             var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
             using var rKey = Registry.CurrentUser.OpenSubKey(keyName, true);
-            if (rKey is null) return;
-            if (!startupMenu.Checked)
+            if (rKey is null) return false;
+            if (isChecked)
+            {
+                rKey.DeleteValue(productName, false);
+            }
+            else
             {
                 var fileName = Environment.ProcessPath;
                 if (fileName != null)
@@ -335,28 +142,64 @@ namespace RunCat365
                     rKey.SetValue(productName, fileName);
                 }
             }
-            else
-            {
-                rKey.DeleteValue(productName, false);
-            }
             rKey.Close();
-            startupMenu.Checked = !startupMenu.Checked;
+            return true;
         }
 
-        private void Exit(object? sender, EventArgs e)
+        private void ShowBalloonTip()
+        {
+            if (UserSettings.Default.FirstLaunch)
+            {
+                contextMenuManager.ShowBalloonTip();
+                UserSettings.Default.FirstLaunch = false;
+                UserSettings.Default.Save();
+            }
+        }
+
+        private void UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        {
+            if (e.Category == UserPreferenceCategory.General)
+            {
+                contextMenuManager.SetIcons(GetSystemTheme(), manualTheme, runner);
+            }
+        }
+
+        private static void OpenRepository()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "https://github.com/Kyome22/RunCat365.git",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
+        }
+
+        private void Exit()
         {
             cpuRepository.Close();
             animateTimer.Stop();
             fetchTimer.Stop();
-            notifyIcon.Visible = false;
+            contextMenuManager.HideNotifyIcon();
             Application.Exit();
+        }
+
+        private void OnApplicationExit(object? sender, EventArgs e)
+        {
+            UserSettings.Default.Runner = runner.ToString();
+            UserSettings.Default.Theme = manualTheme.ToString();
+            UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
+            UserSettings.Default.Save();
         }
 
         private void AnimationTick(object? sender, EventArgs e)
         {
-            if (icons.Count <= current) current = 0;
-            notifyIcon.Icon = icons[current];
-            current = (current + 1) % icons.Count;
+            contextMenuManager.AdvanceFrame();
         }
 
         private void FetchSystemInfo(
@@ -365,13 +208,13 @@ namespace RunCat365
             List<StorageInfo> storageValue
         )
         {
-            notifyIcon.Text = cpuInfo.GetDescription();
+            contextMenuManager.SetNotifyIconText(cpuInfo.GetDescription());
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
-            systemInfoMenu.Text = string.Join("\n", [.. systemInfoValues]);
+            contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
         }
 
         private int CalculateInterval(float cpuTotalValue)
@@ -398,6 +241,4 @@ namespace RunCat365
             animateTimer.Start();
         }
     }
-
-    public delegate bool CustomTryParseDelegate<T>(string? value, out T result);
 }
