@@ -20,8 +20,6 @@ namespace RunCat365
     internal class EndlessGameForm : Form
     {
         private const int JUMP_THREDHOLD = 17;
-        private readonly Label scoreLabel;
-        private readonly Label frontLabel;
         private readonly FormsTimer timer;
         private readonly Theme systemTheme;
         private GameStatus status = GameStatus.NewGame;
@@ -39,32 +37,12 @@ namespace RunCat365
 
             DoubleBuffered = true;
             ClientSize = new Size(600, 250);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Endless Game";
             Icon = Resources.AppIcon;
             BackColor = systemTheme == Theme.Light ? Color.Gainsboro : Color.Gray;
-            StartPosition = FormStartPosition.CenterScreen;
-
-            scoreLabel = new Label
-            {
-                Text = "Score: 0",
-                Font = new Font("Courier New", 15),
-                TextAlign = ContentAlignment.MiddleRight,
-                Location = new Point(20, 0),
-                Size = new Size(560, 50)
-            };
-            Controls.Add(scoreLabel);
-
-            frontLabel = new Label
-            {
-                Text = "Press space to play.",
-                Font = new Font("Courier New", 18, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Location = new Point(),
-                Size = new Size(600, 250),
-                BackColor = Color.FromArgb(77, 0, 0, 0)
-            };
-            Controls.Add(frontLabel);
-            frontLabel.BringToFront();
 
             Paint += RenderScene;
 
@@ -109,9 +87,6 @@ namespace RunCat365
             if (cat.ViolationIndices().HasCommonElements(sproutIndices))
             {
                 status = GameStatus.GameOver;
-                frontLabel.Text = "Game Over\n\nPress space to play.";
-                Controls.Add(frontLabel);
-                frontLabel.BringToFront();
                 return false;
             }
             else
@@ -127,7 +102,6 @@ namespace RunCat365
             if (firstRoad == Road.Sprout)
             {
                 score += 1;
-                scoreLabel.Text = $"Score: {score}";
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
             if (counter == 0)
@@ -196,10 +170,12 @@ namespace RunCat365
 
         private void GameTick(object? sender, EventArgs e)
         {
-            if (!Judge()) return;
-            UpdateRoads();
-            UpdateCat();
-            AutoJump();
+            if (Judge())
+            {
+                UpdateRoads();
+                UpdateCat();
+                AutoJump();
+            }
             Invalidate();
         }
 
@@ -212,7 +188,6 @@ namespace RunCat365
                     case GameStatus.NewGame:
                     case GameStatus.GameOver:
                         Initialize();
-                        Controls.Remove(frontLabel);
                         status = GameStatus.Playing;
                         break;
                     case GameStatus.Playing when !isAutoPlay:
@@ -226,13 +201,21 @@ namespace RunCat365
 
         private void RenderScene(object? sender, PaintEventArgs e)
         {
-            var g = e.Graphics;
-
-            var clipRegion = new Rectangle(0, 50, 600, 200);
-            g.SetClip(clipRegion);
-
             var rm = Resources.ResourceManager;
             var prefix = systemTheme.GetString();
+            var textColor = systemTheme == Theme.Light ? Color.Black : Color.White;
+            var g = e.Graphics;
+
+            using (Font font15 = new("Courier New", 15))
+            using (Brush brush = new SolidBrush(textColor))
+            {
+                var stringFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Far,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString($"Score: {score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
+            }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
                 item =>
@@ -240,14 +223,34 @@ namespace RunCat365
                     var fileName = $"{prefix}_road_{item.road.GetString()}".ToLower();
                     using Bitmap? image = rm.GetObject(fileName) as Bitmap;
                     if (image is null) return;
-                    g.DrawImage(image, new Rectangle(new Point(item.index * 30, 200), new Size(30, 50)));
+                    g.DrawImage(image, new Rectangle(item.index * 30, 200, 30, 50));
                 }
             );
 
             var fileName = $"{prefix}_cat_{cat.GetString()}".ToLower();
             using Bitmap? image = rm.GetObject(fileName) as Bitmap;
             if (image is null) return;
-            g.DrawImage(image, new Rectangle(new Point(120, 130), new Size(120, 100)));
+            g.DrawImage(image, new Rectangle(120, 130, 120, 100));
+
+            if (status != GameStatus.Playing)
+            {
+                using Brush fillBrush = new SolidBrush(Color.FromArgb(77, 0, 0, 0));
+                g.FillRectangle(fillBrush, new Rectangle(0, 0, 600, 250));
+
+                using Font font18 = new("Courier New", 18, FontStyle.Bold);
+                using Brush brush = new SolidBrush(textColor);
+                var message = "Press space to play.";
+                if (status == GameStatus.GameOver)
+                {
+                    message = "GAME OVER\n\n" + message;
+                }
+                var stringFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(message, font18, brush, new Rectangle(0, 0, 600, 250), stringFormat);
+            }
         }
     }
 
