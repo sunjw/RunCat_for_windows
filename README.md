@@ -25,7 +25,9 @@
 
 <img src="./docs/images/demo.gif" width="600" height="200" alt="demo" />
 <br/>
-<img src="./docs/images/overview.png" width="475" height="400" alt="overview" />
+<img src="./docs/images/overview.png" width="600" height="343" alt="overview" />
+<br/>
+<img src="./docs/images/endless_game.png" width="600" height="343" alt="endless game" />
 
 ## Installation
 
