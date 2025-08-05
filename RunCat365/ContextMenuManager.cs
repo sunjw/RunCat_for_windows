@@ -23,6 +23,7 @@ namespace RunCat365
         private readonly NotifyIcon notifyIcon = new();
         private readonly List<Icon> icons = [];
         private int current = 0;
+        private EndlessGameForm? endlessGameForm;
 
         internal ContextMenuManager(
             Func<Runner> getRunner,
@@ -105,6 +106,9 @@ namespace RunCat365
                 startupMenu
             );
 
+            var endlessGameMenu = new CustomToolStripMenuItem("Endless Game");
+            endlessGameMenu.Click += (sender, e) => ShowOrActivateGameWindow(getSystemTheme);
+
             var appVersionMenu = new CustomToolStripMenuItem(
                 $"{Application.ProductName} v{Application.ProductVersion}"
             )
@@ -132,6 +136,7 @@ namespace RunCat365
                 new ToolStripSeparator(),
                 settingsMenu,
                 informationMenu,
+                endlessGameMenu,
                 new ToolStripSeparator(),
                 exitMenu
             );
@@ -194,6 +199,7 @@ namespace RunCat365
                 if (icon is null) continue;
                 list.Add((Icon)icon);
             }
+            icons.ForEach(icon => icon.Dispose());
             icons.Clear();
             icons.AddRange(list);
         }
@@ -205,6 +211,23 @@ namespace RunCat365
             if (toggleStartup(item.Checked))
             {
                 item.Checked = !item.Checked;
+            }
+        }
+
+        private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
+        {
+            if (endlessGameForm is null)
+            {
+                endlessGameForm = new EndlessGameForm(getSystemTheme());
+                endlessGameForm.FormClosed += (sender, e) =>
+                {
+                    endlessGameForm = null;
+                };
+                endlessGameForm.Show();
+            }
+            else
+            {
+                endlessGameForm.Activate();
             }
         }
 

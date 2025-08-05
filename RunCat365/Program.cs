@@ -160,7 +160,8 @@ namespace RunCat365
         {
             if (e.Category == UserPreferenceCategory.General)
             {
-                contextMenuManager.SetIcons(GetSystemTheme(), manualTheme, runner);
+                var systemTheme = GetSystemTheme();
+                contextMenuManager.SetIcons(systemTheme, manualTheme, runner);
             }
         }
 
