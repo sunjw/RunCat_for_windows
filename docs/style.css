@@ -75,6 +75,15 @@ img.demo {
   height: 200px;
 }
 
+p.microsoft-store-banner img {
+  height: 78px;
+}
+
+p.microsoft-store-banner img:active {
+  opacity: 0.7;
+  transform: translateY(2px);
+}
+
 img.screenshot {
   width: 600px;
   height: 343px;
