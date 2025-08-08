@@ -79,8 +79,6 @@ namespace RunCat365
                 t => manualTheme = t,
                 () => fpsMaxLimit,
                 f => fpsMaxLimit = f,
-                () => GetStartup(),
-                s => ToggleStartUp(s),
                 () => OpenRepository(),
                 () => Exit()
             );
@@ -111,39 +109,6 @@ namespace RunCat365
             rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
-        }
-
-        private static bool GetStartup()
-        {
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
-            if (rKey is null) return false;
-            var value = (rKey.GetValue(Application.ProductName) is not null);
-            rKey.Close();
-            return value;
-        }
-
-        private static bool ToggleStartUp(bool isChecked)
-        {
-            var productName = Application.ProductName;
-            if (productName is null) return false;
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName, true);
-            if (rKey is null) return false;
-            if (isChecked)
-            {
-                rKey.DeleteValue(productName, false);
-            }
-            else
-            {
-                var fileName = Environment.ProcessPath;
-                if (fileName != null)
-                {
-                    rKey.SetValue(productName, fileName);
-                }
-            }
-            rKey.Close();
-            return true;
         }
 
         private void ShowBalloonTip()

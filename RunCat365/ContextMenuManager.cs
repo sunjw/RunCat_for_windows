@@ -33,8 +33,6 @@ namespace RunCat365
             Action<Theme> setManualTheme,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
-            Func<bool> getStartup,
-            Func<bool, bool> toggleStartup,
             Action openRepository,
             Action onExit
         )
@@ -93,17 +91,10 @@ namespace RunCat365
                 _ => null
             );
 
-            var startupMenu = new CustomToolStripMenuItem("Launch at startup")
-            {
-                Checked = getStartup()
-            };
-            startupMenu.Click += (sender, e) => HandleStartupMenuClick(sender, toggleStartup);
-
             var settingsMenu = new CustomToolStripMenuItem("Settings");
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
-                fpsMaxLimitMenu,
-                startupMenu
+                fpsMaxLimitMenu
             );
 
             var endlessGameMenu = new CustomToolStripMenuItem("Endless Game");
@@ -194,16 +185,6 @@ namespace RunCat365
             icons.ForEach(icon => icon.Dispose());
             icons.Clear();
             icons.AddRange(list);
-        }
-
-        private static void HandleStartupMenuClick(object? sender, Func<bool, bool> toggleStartup)
-        {
-            if (sender is null) return;
-            var item = (ToolStripMenuItem)sender;
-            if (toggleStartup(item.Checked))
-            {
-                item.Checked = !item.Checked;
-            }
         }
 
         private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
