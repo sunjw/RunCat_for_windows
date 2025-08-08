@@ -93,7 +93,7 @@ namespace RunCat365
                 _ => null
             );
 
-            var startupMenu = new CustomToolStripMenuItem("Startup at launch")
+            var startupMenu = new CustomToolStripMenuItem("Launch at startup")
             {
                 Checked = getStartup()
             };
