@@ -12,10 +12,11 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using FormsTimer = System.Windows.Forms.Timer;
 using Microsoft.Win32;
 using RunCat365.Properties;
 using System.Diagnostics;
+using Windows.ApplicationModel;
+using FormsTimer = System.Windows.Forms.Timer;
 
 namespace RunCat365
 {
@@ -56,6 +57,7 @@ namespace RunCat365
         private Theme manualTheme = Theme.System;
         private FPSMaxLimit fpsMaxLimit = FPSMaxLimit.FPS40;
         private int fetchCounter = 5;
+        private static StartupTask? startupTask;
 
         public RunCat365ApplicationContext()
         {
@@ -79,6 +81,8 @@ namespace RunCat365
                 t => manualTheme = t,
                 () => fpsMaxLimit,
                 f => fpsMaxLimit = f,
+                () => GetStartupAsync().Result,
+                s => SetStartupAsync(s).Result,
                 () => OpenRepository(),
                 () => Exit()
             );
@@ -109,6 +113,48 @@ namespace RunCat365
             rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
+        }
+
+        private static async Task<bool> GetStartupAsync() {
+            if (startupTask is null) startupTask = await StartupTask.GetAsync("RunCatStartup");
+            if (startupTask is null) return false;
+            if (startupTask.State == StartupTaskState.Enabled) return true;
+            return false;
+
+        }
+
+        private static async Task<bool> SetStartupAsync(bool isChecked) {
+            bool active = !isChecked;
+            bool changeCheck = false;
+            if (startupTask is null) startupTask = await StartupTask.GetAsync("RunCatStartup");
+            if (active) {
+                switch (startupTask.State) {
+                    case StartupTaskState.Enabled:
+                        changeCheck = true;
+                        break;
+                    case StartupTaskState.Disabled:
+                        StartupTaskState newState = await startupTask.RequestEnableAsync();
+                        if (newState == StartupTaskState.Enabled) {
+                            changeCheck = true;
+                        } else {
+                            MessageBox.Show("Launch at Startup could not be activated.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            changeCheck = false;
+                        }
+                        break;
+                    case StartupTaskState.DisabledByUser:
+                        MessageBox.Show("Launch at startup was disabled by the user, enable it in Task Manager > Startup, search RunCat365 and enable it.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        changeCheck = false;
+                        break;
+                    case StartupTaskState.DisabledByPolicy:
+                        MessageBox.Show("Launch at startup was disabled by policy.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        changeCheck = false;
+                        break;
+                }
+            } else if (!active) {
+                if (startupTask.State == StartupTaskState.Enabled) startupTask.Disable();
+                changeCheck = true;
+            }
+            return changeCheck;
         }
 
         private void ShowBalloonTip()
