@@ -159,7 +159,7 @@ namespace RunCat365
                             changeCheck = false;
                             break;
                     }
-                } else if (!active) {
+                } else {
                     if (startupTask.State == StartupTaskState.Enabled) startupTask.Disable();
                     changeCheck = true;
                 }
