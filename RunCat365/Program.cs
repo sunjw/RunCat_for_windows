@@ -133,8 +133,8 @@ namespace RunCat365
 
         private static async Task<bool> SetStartupAsync(bool isChecked) {
             if (IsRunningAsPackaged()) {
-                bool active = !isChecked;
-                bool changeCheck = false;
+                var active = !isChecked;
+                var changeCheck = false;
                 if (startupTask is null) startupTask = await StartupTask.GetAsync("RunCatStartup");
                 if (active) {
                     switch (startupTask.State) {
