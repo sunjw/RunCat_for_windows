@@ -17,59 +17,30 @@ using Windows.ApplicationModel;
 
 namespace RunCat365
 {
-    internal static class StartupManager
+
+    internal interface ILaunchAtStartupManager
     {
+        bool GetEnabled();
+        bool SetEnabled(bool enabled);
+    }
 
-        private static StartupTask? startupTask;
+    internal sealed class PackagedLaunchAtStartupManager : ILaunchAtStartupManager
+    {
+        private StartupTask? startupTask;
 
-        public static bool GetStartup()
+        public bool GetEnabled()
         {
-            if (IsRunningAsPackaged())
-            {
-                return GetStartupAsync_Packed().Result;
-            }
-            else
-            {
-                return GetStartup_NotPacked();
-            }
-        }
-
-        public static bool SetStartup(bool isChecked)
-        {
-            if (IsRunningAsPackaged())
-            {
-                return SetStartupAsync_Packed(isChecked).Result;
-            }
-            else
-            {
-                return SetStartup_NotPacked(isChecked);
-            }
-        }
-
-        private static async Task<bool> GetStartupAsync_Packed()
-        {
-            if (startupTask is null) startupTask = await StartupTask.GetAsync("RunCatStartup");
+            if (startupTask is null) startupTask = Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
             if (startupTask is null) return false;
             if (startupTask.State == StartupTaskState.Enabled) return true;
             return false;
         }
 
-        private static bool GetStartup_NotPacked()
+        public bool SetEnabled(bool enabled)
         {
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
-            if (rKey is null) return false;
-            var value = (rKey.GetValue(Application.ProductName) is not null);
-            rKey.Close();
-            return value;
-        }
-
-        private static async Task<bool> SetStartupAsync_Packed(bool isChecked)
-        {
-            var active = !isChecked;
             var changeCheck = false;
-            if (startupTask is null) startupTask = await StartupTask.GetAsync("RunCatStartup");
-            if (active)
+            if (startupTask is null) startupTask = Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
+            if (!enabled)
             {
                 switch (startupTask.State)
                 {
@@ -77,8 +48,8 @@ namespace RunCat365
                         changeCheck = true;
                         break;
                     case StartupTaskState.Disabled:
-                        StartupTaskState newState = await startupTask.RequestEnableAsync();
-                        if (newState == StartupTaskState.Enabled)
+                        StartupTaskState newStartupState = Task.Run(async () => await startupTask.RequestEnableAsync()).Result;
+                        if (newStartupState == StartupTaskState.Enabled)
                         {
                             changeCheck = true;
                         }
@@ -105,15 +76,28 @@ namespace RunCat365
             }
             return changeCheck;
         }
+    }
 
-        private static bool SetStartup_NotPacked(bool isChecked)
+    internal sealed class UnpackagedLaunchAtStartupManager : ILaunchAtStartupManager
+    {
+        public bool GetEnabled()
+        {
+            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
+            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
+            if (rKey is null) return false;
+            var value = (rKey.GetValue(Application.ProductName) is not null);
+            rKey.Close();
+            return value;
+        }
+
+        public bool SetEnabled(bool enabled)
         {
             var productName = Application.ProductName;
             if (productName is null) return false;
             var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
             using var rKey = Registry.CurrentUser.OpenSubKey(keyName, true);
             if (rKey is null) return false;
-            if (isChecked)
+            if (enabled)
             {
                 rKey.DeleteValue(productName, false);
             }
@@ -128,8 +112,25 @@ namespace RunCat365
             rKey.Close();
             return true;
         }
+    }
 
-        private static bool IsRunningAsPackaged()
+    internal class LaunchAtStartupManager
+    {
+
+        private readonly ILaunchAtStartupManager _launchAtStartupManager;
+
+        public LaunchAtStartupManager()
+        {
+            _launchAtStartupManager = IsRunningAsPackaged()
+                ? new PackagedLaunchAtStartupManager()
+                : new UnpackagedLaunchAtStartupManager();
+        }
+
+        public bool GetStartup() => _launchAtStartupManager.GetEnabled();
+
+        public bool SetStartup(bool enabled) => _launchAtStartupManager.SetEnabled(enabled);
+
+        private bool IsRunningAsPackaged()
         {
             try
             {

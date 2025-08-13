@@ -1,4 +1,4 @@
-// Copyright 2020 Takuto Nakamura
+﻿// Copyright 2020 Takuto Nakamura
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
+        private readonly LaunchAtStartupManager launchAtStartupManager;
         private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
         private readonly FormsTimer animateTimer;
@@ -70,6 +71,7 @@ namespace RunCat365
             cpuRepository = new CPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
+            launchAtStartupManager = new LaunchAtStartupManager();
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
@@ -79,8 +81,8 @@ namespace RunCat365
                 t => manualTheme = t,
                 () => fpsMaxLimit,
                 f => fpsMaxLimit = f,
-                () => StartupManager.GetStartup(),
-                s => StartupManager.SetStartup(s),
+                () => launchAtStartupManager.GetStartup(),
+                s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
                 () => Exit()
             );
