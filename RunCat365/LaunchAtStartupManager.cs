@@ -55,18 +55,13 @@ namespace RunCat365
                         }
                         else
                         {
-                            MessageBox.Show("Launch at Startup could not be activated.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            changeCheck = false;
+                            throw new InvalidOperationException("Launch at Startup could not be activated.");
                         }
                         break;
                     case StartupTaskState.DisabledByUser:
-                        MessageBox.Show("Launch at startup was disabled by the user, enable it in Task Manager > Startup, search RunCat 365 and enable it.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        changeCheck = false;
-                        break;
+                        throw new InvalidOperationException("Launch at startup was disabled by the user, enable it in Task Manager > Startup, search RunCat 365 and enable it.");
                     case StartupTaskState.DisabledByPolicy:
-                        MessageBox.Show("Launch at startup was disabled by policy.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        changeCheck = false;
-                        break;
+                        throw new InvalidOperationException("Launch at startup was disabled by policy.");
                 }
             }
             else

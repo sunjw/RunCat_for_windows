@@ -200,10 +200,18 @@ namespace RunCat365
         {
             if (sender is null) return;
             var item = (ToolStripMenuItem)sender;
-            if (toggleLaunchAtStartup(item.Checked))
+            try
             {
-                item.Checked = !item.Checked;
+                if (toggleLaunchAtStartup(item.Checked))
+                {
+                    item.Checked = !item.Checked;
+                }
             }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
         }
 
         private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
