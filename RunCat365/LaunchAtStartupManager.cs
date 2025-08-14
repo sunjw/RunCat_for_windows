@@ -26,7 +26,7 @@ namespace RunCat365
 
     internal sealed class PackagedLaunchAtStartupManager : ILaunchAtStartupManager
     {
-        private StartupTask? startupTask;
+        private static StartupTask? startupTask;
 
         public bool GetEnabled()
         {
