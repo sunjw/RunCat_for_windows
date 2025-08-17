@@ -17,7 +17,6 @@ using Windows.ApplicationModel;
 
 namespace RunCat365
 {
-
     internal interface ILaunchAtStartupManager
     {
         bool GetEnabled();
@@ -30,7 +29,7 @@ namespace RunCat365
 
         public bool GetEnabled()
         {
-            if (startupTask is null) startupTask = Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
+            startupTask ??= Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
             if (startupTask is null) return false;
             if (startupTask.State == StartupTaskState.Enabled) return true;
             return false;
@@ -38,38 +37,36 @@ namespace RunCat365
 
         public bool SetEnabled(bool enabled)
         {
-            var changeCheck = false;
-            if (startupTask is null) startupTask = Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
-            if (!enabled)
+            startupTask ??= Task.Run(async () => await StartupTask.GetAsync("RunCatStartup")).Result;
+            if (enabled)
+            {
+                if (startupTask.State == StartupTaskState.Enabled) startupTask.Disable();
+                return true;
+            }
+            else
             {
                 switch (startupTask.State)
                 {
                     case StartupTaskState.Enabled:
-                        changeCheck = true;
-                        break;
+                        return true;
                     case StartupTaskState.Disabled:
-                        StartupTaskState newStartupState = Task.Run(async () => await startupTask.RequestEnableAsync()).Result;
+                        var newStartupState = Task.Run(async () => await startupTask.RequestEnableAsync()).Result;
                         if (newStartupState == StartupTaskState.Enabled)
                         {
-                            changeCheck = true;
+                            return true;
                         }
                         else
                         {
                             throw new InvalidOperationException("Launch at Startup could not be activated.");
                         }
-                        break;
                     case StartupTaskState.DisabledByUser:
                         throw new InvalidOperationException("Launch at startup was disabled by the user, enable it in Task Manager > Startup, search RunCat 365 and enable it.");
                     case StartupTaskState.DisabledByPolicy:
                         throw new InvalidOperationException("Launch at startup was disabled by policy.");
+                    default:
+                        return false;
                 }
             }
-            else
-            {
-                if (startupTask.State == StartupTaskState.Enabled) startupTask.Disable();
-                changeCheck = true;
-            }
-            return changeCheck;
         }
     }
 
@@ -99,7 +96,7 @@ namespace RunCat365
             else
             {
                 var fileName = Environment.ProcessPath;
-                if (fileName != null)
+                if (fileName is not null)
                 {
                     rKey.SetValue(productName, fileName);
                 }
@@ -111,7 +108,6 @@ namespace RunCat365
 
     internal class LaunchAtStartupManager
     {
-
         private readonly ILaunchAtStartupManager _launchAtStartupManager;
 
         public LaunchAtStartupManager()
@@ -125,14 +121,14 @@ namespace RunCat365
 
         public bool SetStartup(bool enabled) => _launchAtStartupManager.SetEnabled(enabled);
 
-        private bool IsRunningAsPackaged()
+        private static bool IsRunningAsPackaged()
         {
             try
             {
-                var _ = Package.Current;
+                _ = Package.Current;
                 return true;
             }
-            catch
+            catch (InvalidOperationException)
             {
                 return false;
             }

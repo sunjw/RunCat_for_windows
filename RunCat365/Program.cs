@@ -158,7 +158,6 @@ namespace RunCat365
             Application.Exit();
         }
 
-
         private void ChangeRunner(Runner r)
         {
             runner = r;
