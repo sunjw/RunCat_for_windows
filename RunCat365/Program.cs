@@ -65,7 +65,6 @@ namespace RunCat365
             _ = Enum.TryParse(UserSettings.Default.Theme, out manualTheme);
             _ = Enum.TryParse(UserSettings.Default.FPSMaxLimit, out fpsMaxLimit);
 
-            Application.ApplicationExit += new EventHandler(OnApplicationExit);
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
             cpuRepository = new CPURepository();
@@ -75,12 +74,12 @@ namespace RunCat365
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
-                r => runner = r,
+                r => ChangeRunner(r),
                 () => GetSystemTheme(),
                 () => manualTheme,
-                t => manualTheme = t,
+                t => ChangeManualTheme(t),
                 () => fpsMaxLimit,
-                f => fpsMaxLimit = f,
+                f => ChangeFPSMaxLimit(f),
                 () => launchAtStartupManager.GetStartup(),
                 s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
@@ -159,10 +158,24 @@ namespace RunCat365
             Application.Exit();
         }
 
-        private void OnApplicationExit(object? sender, EventArgs e)
+
+        private void ChangeRunner(Runner r)
         {
+            runner = r;
             UserSettings.Default.Runner = runner.ToString();
+            UserSettings.Default.Save();
+        }
+
+        private void ChangeManualTheme(Theme t)
+        {
+            manualTheme = t;
             UserSettings.Default.Theme = manualTheme.ToString();
+            UserSettings.Default.Save();
+        }
+
+        private void ChangeFPSMaxLimit(FPSMaxLimit f)
+        {
+            fpsMaxLimit = f;
             UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
             UserSettings.Default.Save();
         }
