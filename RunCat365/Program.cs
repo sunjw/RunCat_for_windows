@@ -12,10 +12,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using FormsTimer = System.Windows.Forms.Timer;
 using Microsoft.Win32;
 using RunCat365.Properties;
 using System.Diagnostics;
+using FormsTimer = System.Windows.Forms.Timer;
 
 namespace RunCat365
 {
@@ -49,6 +49,7 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
+        private readonly LaunchAtStartupManager launchAtStartupManager;
         private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
         private readonly FormsTimer animateTimer;
@@ -69,6 +70,7 @@ namespace RunCat365
             cpuRepository = new CPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
+            launchAtStartupManager = new LaunchAtStartupManager();
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
@@ -78,6 +80,8 @@ namespace RunCat365
                 t => ChangeManualTheme(t),
                 () => fpsMaxLimit,
                 f => ChangeFPSMaxLimit(f),
+                () => launchAtStartupManager.GetStartup(),
+                s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
                 () => Exit()
             );
