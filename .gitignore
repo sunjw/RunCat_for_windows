@@ -16,3 +16,6 @@ BundleArtifacts/
 *.userosscache
 *.sln.docstates
 *.assets.cache
+
+# Wap
+WapForStore/**/*.assets.cache

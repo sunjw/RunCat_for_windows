@@ -1,4 +1,4 @@
-// Copyright 2020 Takuto Nakamura
+﻿// Copyright 2020 Takuto Nakamura
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using FormsTimer = System.Windows.Forms.Timer;
 using Microsoft.Win32;
 using RunCat365.Properties;
 using System.Diagnostics;
+using FormsTimer = System.Windows.Forms.Timer;
 
 namespace RunCat365
 {
@@ -49,6 +49,7 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
+        private readonly LaunchAtStartupManager launchAtStartupManager;
         private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
         private readonly FormsTimer animateTimer;
@@ -64,23 +65,23 @@ namespace RunCat365
             _ = Enum.TryParse(UserSettings.Default.Theme, out manualTheme);
             _ = Enum.TryParse(UserSettings.Default.FPSMaxLimit, out fpsMaxLimit);
 
-            Application.ApplicationExit += new EventHandler(OnApplicationExit);
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
             cpuRepository = new CPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
+            launchAtStartupManager = new LaunchAtStartupManager();
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
-                r => runner = r,
+                r => ChangeRunner(r),
                 () => GetSystemTheme(),
                 () => manualTheme,
-                t => manualTheme = t,
+                t => ChangeManualTheme(t),
                 () => fpsMaxLimit,
-                f => fpsMaxLimit = f,
-                () => GetStartup(),
-                s => ToggleStartUp(s),
+                f => ChangeFPSMaxLimit(f),
+                () => launchAtStartupManager.GetStartup(),
+                s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
                 () => Exit()
             );
@@ -111,39 +112,6 @@ namespace RunCat365
             rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
-        }
-
-        private static bool GetStartup()
-        {
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
-            if (rKey is null) return false;
-            var value = (rKey.GetValue(Application.ProductName) is not null);
-            rKey.Close();
-            return value;
-        }
-
-        private static bool ToggleStartUp(bool isChecked)
-        {
-            var productName = Application.ProductName;
-            if (productName is null) return false;
-            var keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            using var rKey = Registry.CurrentUser.OpenSubKey(keyName, true);
-            if (rKey is null) return false;
-            if (isChecked)
-            {
-                rKey.DeleteValue(productName, false);
-            }
-            else
-            {
-                var fileName = Environment.ProcessPath;
-                if (fileName != null)
-                {
-                    rKey.SetValue(productName, fileName);
-                }
-            }
-            rKey.Close();
-            return true;
         }
 
         private void ShowBalloonTip()
@@ -190,10 +158,23 @@ namespace RunCat365
             Application.Exit();
         }
 
-        private void OnApplicationExit(object? sender, EventArgs e)
+        private void ChangeRunner(Runner r)
         {
+            runner = r;
             UserSettings.Default.Runner = runner.ToString();
+            UserSettings.Default.Save();
+        }
+
+        private void ChangeManualTheme(Theme t)
+        {
+            manualTheme = t;
             UserSettings.Default.Theme = manualTheme.ToString();
+            UserSettings.Default.Save();
+        }
+
+        private void ChangeFPSMaxLimit(FPSMaxLimit f)
+        {
+            fpsMaxLimit = f;
             UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
             UserSettings.Default.Save();
         }

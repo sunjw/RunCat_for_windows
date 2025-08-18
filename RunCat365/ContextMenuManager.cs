@@ -33,8 +33,8 @@ namespace RunCat365
             Action<Theme> setManualTheme,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
-            Func<bool> getStartup,
-            Func<bool, bool> toggleStartup,
+            Func<bool> getLaunchAtStartup,
+            Func<bool, bool> toggleLaunchAtStartup,
             Action openRepository,
             Action onExit
         )
@@ -93,17 +93,17 @@ namespace RunCat365
                 _ => null
             );
 
-            var startupMenu = new CustomToolStripMenuItem("Startup at launch")
+            var launchAtStartupMenu = new CustomToolStripMenuItem("Launch at startup")
             {
-                Checked = getStartup()
+                Checked = getLaunchAtStartup()
             };
-            startupMenu.Click += (sender, e) => HandleStartupMenuClick(sender, toggleStartup);
+            launchAtStartupMenu.Click += (sender, e) => HandleStartupMenuClick(sender, toggleLaunchAtStartup);
 
             var settingsMenu = new CustomToolStripMenuItem("Settings");
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
                 fpsMaxLimitMenu,
-                startupMenu
+                launchAtStartupMenu
             );
 
             var endlessGameMenu = new CustomToolStripMenuItem("Endless Game");
@@ -204,14 +204,22 @@ namespace RunCat365
             icons.AddRange(list);
         }
 
-        private static void HandleStartupMenuClick(object? sender, Func<bool, bool> toggleStartup)
+        private static void HandleStartupMenuClick(object? sender, Func<bool, bool> toggleLaunchAtStartup)
         {
             if (sender is null) return;
             var item = (ToolStripMenuItem)sender;
-            if (toggleStartup(item.Checked))
+            try
             {
-                item.Checked = !item.Checked;
+                if (toggleLaunchAtStartup(item.Checked))
+                {
+                    item.Checked = !item.Checked;
+                }
             }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
         }
 
         private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
