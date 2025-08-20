@@ -63,6 +63,7 @@ namespace RunCat365
         {
             base.OnFormClosing(e);
             timer.Stop();
+            timer.Dispose();
         }
 
         private void Initialize()

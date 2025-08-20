@@ -41,7 +41,7 @@ namespace RunCat365
         }
     }
 
-    public class RunCat365ApplicationContext : ApplicationContext
+    public class RunCat365ApplicationContext : ApplicationContext, IDisposable
     {
         private const int FETCH_TIMER_DEFAULT_INTERVAL = 1000;
         private const int FETCH_COUNTER_SIZE = 5;
@@ -109,7 +109,6 @@ namespace RunCat365
             using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
             if (rKey is null) return Theme.Light;
             var value = rKey.GetValue("SystemUsesLightTheme");
-            rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
         }
@@ -151,11 +150,32 @@ namespace RunCat365
 
         private void Exit()
         {
-            cpuRepository.Close();
-            animateTimer.Stop();
-            fetchTimer.Stop();
-            contextMenuManager.HideNotifyIcon();
+            Dispose();
             Application.Exit();
+        }
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
+                
+                animateTimer?.Stop();
+                animateTimer?.Dispose();
+                fetchTimer?.Stop();
+                fetchTimer?.Dispose();
+                
+                cpuRepository?.Close();
+                
+                contextMenuManager?.HideNotifyIcon();
+                contextMenuManager?.Dispose();
+            }
         }
 
         private void ChangeRunner(Runner r)
