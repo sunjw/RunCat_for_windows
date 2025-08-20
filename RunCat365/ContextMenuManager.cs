@@ -284,9 +284,14 @@ namespace RunCat365
                 {
                     icons.ForEach(icon => icon.Dispose());
                     icons.Clear();
-                }              
-                notifyIcon?.Dispose();
-                notifyIcon.ContextMenuStrip?.Dispose();
+                }
+
+                if (notifyIcon is not null)
+                {
+                    notifyIcon.ContextMenuStrip?.Dispose();
+                    notifyIcon.Dispose();
+                }
+                
                 endlessGameForm?.Dispose();
             }
         }
