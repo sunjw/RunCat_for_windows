@@ -191,7 +191,7 @@ namespace RunCat365
                 if (icon is null) continue;
                 list.Add((Icon)icon);
             }
-            
+
             lock (iconLock)
             {
                 icons.ForEach(icon => icon.Dispose());
@@ -216,7 +216,7 @@ namespace RunCat365
             {
                 MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
+
         }
 
         private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
@@ -291,7 +291,7 @@ namespace RunCat365
                     notifyIcon.ContextMenuStrip?.Dispose();
                     notifyIcon.Dispose();
                 }
-                
+
                 endlessGameForm?.Dispose();
             }
         }
