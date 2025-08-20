@@ -41,7 +41,7 @@ namespace RunCat365
         }
     }
 
-    public class RunCat365ApplicationContext : ApplicationContext, IDisposable
+    internal class RunCat365ApplicationContext : ApplicationContext, IDisposable
     {
         private const int FETCH_TIMER_DEFAULT_INTERVAL = 1000;
         private const int FETCH_COUNTER_SIZE = 5;
