@@ -41,7 +41,7 @@ namespace RunCat365
         }
     }
 
-    internal class RunCat365ApplicationContext : ApplicationContext, IDisposable
+    internal class RunCat365ApplicationContext : ApplicationContext
     {
         private const int FETCH_TIMER_DEFAULT_INTERVAL = 1000;
         private const int FETCH_COUNTER_SIZE = 5;
@@ -153,29 +153,24 @@ namespace RunCat365
             Dispose();
             Application.Exit();
         }
-        
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
-                
+
                 animateTimer?.Stop();
                 animateTimer?.Dispose();
                 fetchTimer?.Stop();
                 fetchTimer?.Dispose();
-                
+
                 cpuRepository?.Close();
-                
+
                 contextMenuManager?.HideNotifyIcon();
                 contextMenuManager?.Dispose();
             }
+            base.Dispose(disposing);
         }
 
         private void ChangeRunner(Runner r)
