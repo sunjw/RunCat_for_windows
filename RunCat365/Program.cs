@@ -83,7 +83,7 @@ namespace RunCat365
                 () => launchAtStartupManager.GetStartup(),
                 s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
-                () => Exit()
+                () => Application.Exit()
             );
 
             animateTimer = new FormsTimer
@@ -146,31 +146,6 @@ namespace RunCat365
             {
                 Console.WriteLine($"Error: {e.Message}");
             }
-        }
-
-        private void Exit()
-        {
-            Dispose();
-            Application.Exit();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
-
-                animateTimer?.Stop();
-                animateTimer?.Dispose();
-                fetchTimer?.Stop();
-                fetchTimer?.Dispose();
-
-                cpuRepository?.Close();
-
-                contextMenuManager?.HideNotifyIcon();
-                contextMenuManager?.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void ChangeRunner(Runner r)
@@ -236,6 +211,25 @@ namespace RunCat365
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
             animateTimer.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
+
+                animateTimer?.Stop();
+                animateTimer?.Dispose();
+                fetchTimer?.Stop();
+                fetchTimer?.Dispose();
+
+                cpuRepository?.Close();
+
+                contextMenuManager?.HideNotifyIcon();
+                contextMenuManager?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
