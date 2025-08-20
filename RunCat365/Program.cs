@@ -41,7 +41,7 @@ namespace RunCat365
         }
     }
 
-    public class RunCat365ApplicationContext : ApplicationContext
+    internal class RunCat365ApplicationContext : ApplicationContext
     {
         private const int FETCH_TIMER_DEFAULT_INTERVAL = 1000;
         private const int FETCH_COUNTER_SIZE = 5;
@@ -83,7 +83,7 @@ namespace RunCat365
                 () => launchAtStartupManager.GetStartup(),
                 s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
-                () => Exit()
+                () => Application.Exit()
             );
 
             animateTimer = new FormsTimer
@@ -109,7 +109,6 @@ namespace RunCat365
             using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
             if (rKey is null) return Theme.Light;
             var value = rKey.GetValue("SystemUsesLightTheme");
-            rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
         }
@@ -147,15 +146,6 @@ namespace RunCat365
             {
                 Console.WriteLine($"Error: {e.Message}");
             }
-        }
-
-        private void Exit()
-        {
-            cpuRepository.Close();
-            animateTimer.Stop();
-            fetchTimer.Stop();
-            contextMenuManager.HideNotifyIcon();
-            Application.Exit();
         }
 
         private void ChangeRunner(Runner r)
@@ -221,6 +211,25 @@ namespace RunCat365
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
             animateTimer.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
+
+                animateTimer?.Stop();
+                animateTimer?.Dispose();
+                fetchTimer?.Stop();
+                fetchTimer?.Dispose();
+
+                cpuRepository?.Close();
+
+                contextMenuManager?.HideNotifyIcon();
+                contextMenuManager?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

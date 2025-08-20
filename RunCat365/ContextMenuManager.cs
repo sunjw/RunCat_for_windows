@@ -17,7 +17,7 @@ using System.ComponentModel;
 
 namespace RunCat365
 {
-    internal class ContextMenuManager
+    internal class ContextMenuManager : IDisposable
     {
         private readonly CustomToolStripMenuItem systemInfoMenu = new();
         private readonly NotifyIcon notifyIcon = new();
@@ -191,7 +191,7 @@ namespace RunCat365
                 if (icon is null) continue;
                 list.Add((Icon)icon);
             }
-            
+
             lock (iconLock)
             {
                 icons.ForEach(icon => icon.Dispose());
@@ -216,7 +216,7 @@ namespace RunCat365
             {
                 MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
+
         }
 
         private void ShowOrActivateGameWindow(Func<Theme> getSystemTheme)
@@ -248,7 +248,7 @@ namespace RunCat365
         {
             lock (iconLock)
             {
-                if (icons.Count == 0) return; // アイコンがない場合は何もしない
+                if (icons.Count == 0) return;
                 if (icons.Count <= current) current = 0;
                 notifyIcon.Icon = icons[current];
                 current = (current + 1) % icons.Count;
@@ -268,6 +268,32 @@ namespace RunCat365
         internal void HideNotifyIcon()
         {
             notifyIcon.Visible = false;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                lock (iconLock)
+                {
+                    icons.ForEach(icon => icon.Dispose());
+                    icons.Clear();
+                }
+
+                if (notifyIcon is not null)
+                {
+                    notifyIcon.ContextMenuStrip?.Dispose();
+                    notifyIcon.Dispose();
+                }
+
+                endlessGameForm?.Dispose();
+            }
         }
 
         private delegate bool CustomTryParseDelegate<T>(string? value, out T result);
