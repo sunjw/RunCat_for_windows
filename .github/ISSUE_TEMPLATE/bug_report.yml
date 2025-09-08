@@ -58,5 +58,8 @@ body:
       label: "Check List"
       options:
         - label: "Uninstalled App."
+          required: true
         - label: "Re-launched your computer."
+          required: true
         - label: "Checked that no similar issues already exist."
+          required: true
