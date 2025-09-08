@@ -1,5 +1,8 @@
 ## Type of Contribution
 
+<!-- Each pull request should fix only one issue or propose one feature. -->
+<!-- Do not mix unrelated changes in a single PR. -->
+
 - [ ] Bug Fix
 - [ ] New Feature
 - [ ] Refactoring
