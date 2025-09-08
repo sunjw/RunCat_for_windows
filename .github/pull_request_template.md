@@ -1,8 +1,12 @@
-## Type of Contribution
+## Context of Contribution
+
+<!-- Each pull request should fix only one issue or propose one feature. -->
+<!-- Do not mix unrelated changes in a single PR. -->
 
 - [ ] Bug Fix
-- [ ] New Feature
 - [ ] Refactoring
+- [ ] New Feature
+- [ ] Others
 
 ## Summary of the Proposal
 
@@ -16,6 +20,7 @@
 
 ## Checklist
 
+- [ ] This PR does not contain commits of multiple contexts.
 - [ ] Code follows proper indentation and naming conventions.
 - [ ] Works correctly in both dark theme and light theme.
 - [ ] Works correctly on any device.
