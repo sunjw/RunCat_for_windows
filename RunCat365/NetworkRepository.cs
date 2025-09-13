@@ -1,4 +1,4 @@
-// Copyright 2025 Takuto Nakamura
+ï»¿// Copyright 2025 Takuto Nakamura
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ namespace RunCat365
             return new List<string>
             {
                 $"Network:",
-                $"   ©À©¤ Sent: {NetworkUtils.FormatSpeed(networkInfo.SentSpeed)}",
-                $"   ©¸©¤ Received: {NetworkUtils.FormatSpeed(networkInfo.ReceivedSpeed)}"
+                $"   â”œâ”€ Sent: {NetworkUtils.FormatSpeed(networkInfo.SentSpeed)}",
+                $"   â””â”€ Received: {NetworkUtils.FormatSpeed(networkInfo.ReceivedSpeed)}"
             };
         }
     }
@@ -82,14 +82,7 @@ namespace RunCat365
     {
         internal static string FormatSpeed(float speedBytes)
         {
-            if (speedBytes >= 1073741824)
-                return $"{speedBytes / 1073741824f:F1} GB/s";
-            else if (speedBytes >= 1048576)
-                return $"{speedBytes / 1048576f:F1} MB/s";
-            else if (speedBytes >= 1024)
-                return $"{speedBytes / 1024f:F1} KB/s";
-            else
-                return $"{speedBytes:F1} B/s";
+            return ((long)speedBytes).ToByteFormatted() + "/s";
         }
 
         internal static string? GetNetworkInterfaceName()

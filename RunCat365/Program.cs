@@ -57,9 +57,6 @@ namespace RunCat365
         private Theme manualTheme = Theme.System;
         private FPSMaxLimit fpsMaxLimit = FPSMaxLimit.FPS40;
         private int fetchCounter = 5;
-        private readonly PerformanceCounter netSentSpeed;
-        private readonly PerformanceCounter netReceivedSpeed;
-        private readonly string networkInterfaceName;
         private readonly NetworkRepository networkRepository;
 
         public RunCat365ApplicationContext()
@@ -104,10 +101,6 @@ namespace RunCat365
             };
             fetchTimer.Tick += new EventHandler(FetchTick);
             fetchTimer.Start();
-
-            networkInterfaceName = NetworkUtils.GetNetworkInterfaceName() ?? throw new InvalidOperationException("No valid network interface found.");
-            netSentSpeed = new PerformanceCounter("Network Interface", "Bytes Sent/sec", networkInterfaceName);
-            netReceivedSpeed = new PerformanceCounter("Network Interface", "Bytes Received/sec", networkInterfaceName);
 
             ShowBalloonTip();
         }
