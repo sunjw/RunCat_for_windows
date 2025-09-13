@@ -44,37 +44,41 @@ namespace RunCat365
 
     internal class NetworkRepository
     {
-        private readonly PerformanceCounter netSentSpeed;
-        private readonly PerformanceCounter netReceivedSpeed;
-        private readonly string networkInterfaceName;
+        private readonly NetworkInterface networkInterface;
+        private long lastSent;
+        private long lastReceived;
+        private DateTime lastUpdate;
         private NetworkInfo networkInfo;
 
         internal NetworkRepository()
         {
-            networkInterfaceName = NetworkUtils.GetNetworkInterfaceName() ?? throw new InvalidOperationException("No valid network interface found.");
-            netSentSpeed = new PerformanceCounter("Network Interface", "Bytes Sent/sec", networkInterfaceName);
-            netReceivedSpeed = new PerformanceCounter("Network Interface", "Bytes Received/sec", networkInterfaceName);
-            // Discard first value
-            _ = netSentSpeed.NextValue();
-            _ = netReceivedSpeed.NextValue();
+            networkInterface = NetworkUtils.GetNetworkInterface()
+                ?? throw new InvalidOperationException("No valid network interface found.");
+            var stats = networkInterface.GetIPStatistics();
+            lastSent = stats.BytesSent;
+            lastReceived = stats.BytesReceived;
+            lastUpdate = DateTime.UtcNow;
         }
 
         internal void Update()
         {
-            networkInfo.SentSpeed = netSentSpeed.NextValue();
-            networkInfo.ReceivedSpeed = netReceivedSpeed.NextValue();
+            var stats = networkInterface.GetIPStatistics();
+            var now = DateTime.UtcNow;
+            var elapsedSec = (now - lastUpdate).TotalSeconds;
+            if (elapsedSec > 0)
+            {
+                networkInfo.SentSpeed = (float)((stats.BytesSent - lastSent) / elapsedSec);
+                networkInfo.ReceivedSpeed = (float)((stats.BytesReceived - lastReceived) / elapsedSec);
+            }
+            lastSent = stats.BytesSent;
+            lastReceived = stats.BytesReceived;
+            lastUpdate = now;
         }
 
         internal NetworkInfo Get()
         {
             Update();
             return networkInfo;
-        }
-
-        internal void Close()
-        {
-            netSentSpeed.Close();
-            netReceivedSpeed.Close();
         }
     }
 
@@ -85,18 +89,18 @@ namespace RunCat365
             return ((long)speedBytes).ToByteFormatted() + "/s";
         }
 
-        internal static string? GetNetworkInterfaceName()
+        internal static NetworkInterface? GetNetworkInterface()
         {
-            var interfaces = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             var networkInterface = interfaces.FirstOrDefault(ni =>
-                ni.NetworkInterfaceType != System.Net.NetworkInformation.NetworkInterfaceType.Loopback &&
-                ni.NetworkInterfaceType != System.Net.NetworkInformation.NetworkInterfaceType.Tunnel &&
-                ni.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up &&
+                ni.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
+                ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel &&
+                ni.OperationalStatus == OperationalStatus.Up &&
                 !ni.Description.ToLower().Contains("vpn") &&
                 !ni.Description.ToLower().Contains("tap") &&
                 !ni.Description.ToLower().Contains("virtual") &&
                 !ni.Description.ToLower().Contains("tun"));
-            return networkInterface?.Description;
+            return networkInterface;
         }
     }
 }
