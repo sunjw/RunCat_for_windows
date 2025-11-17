@@ -22,5 +22,6 @@
 
 - [ ] This PR does not contain commits of multiple contexts.
 - [ ] Code follows proper indentation and naming conventions.
+- [ ] Implemented using only APIs that can be submitted to the Microsoft Store.
 - [ ] Works correctly in both dark theme and light theme.
 - [ ] Works correctly on any device.
