@@ -30,6 +30,7 @@ namespace RunCat365
         private int score = 0;
         private bool isJumpRequested = false;
         private readonly bool isAutoPlay = false;
+        private readonly ContextMenuManager contextMenuManager;
 
         internal EndlessGameForm(Theme systemTheme)
         {
@@ -102,7 +103,7 @@ namespace RunCat365
             roads.RemoveAt(0);
             if (firstRoad == Road.Sprout)
             {
-                score += 1;
+                score += 100;
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
             if (counter == 0)
@@ -213,9 +214,10 @@ namespace RunCat365
                 var stringFormat = new StringFormat
                 {
                     Alignment = StringAlignment.Far,
-                    LineAlignment = StringAlignment.Center
+                    LineAlignment = StringAlignment.Center,
                 };
-                g.DrawString($"Score: {score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
+                g.DrawString($"Score:{score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
+                g.DrawString($"Max Score:{GameStatusExtension.maxScore}", font15, brush, new Rectangle(20, 10, 870, 50));
             }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
@@ -242,8 +244,16 @@ namespace RunCat365
                 using Brush brush = new SolidBrush(textColor);
                 var message = "Press space to play.";
                 if (status == GameStatus.GameOver)
-                {
-                    message = "GAME OVER\n\n" + message;
+                { 
+                    if (score >= GameStatusExtension.maxScore)
+                    {
+                        saveRecord(score);
+                        message = "GAME OVER\nNew Record!!\n" + message;
+                    }
+                    else
+                    {
+                        message = "GAME OVER\n\n" + message;
+                    }
                 }
                 var stringFormat = new StringFormat
                 {
@@ -251,7 +261,12 @@ namespace RunCat365
                     LineAlignment = StringAlignment.Center
                 };
                 g.DrawString(message, font18, brush, new Rectangle(0, 0, 600, 250), stringFormat);
+                
             }
+        }
+        private void saveRecord(int score)
+        {
+            GameStatusExtension.maxScore = score;
         }
     }
 

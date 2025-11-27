@@ -20,4 +20,8 @@ namespace RunCat365
         Playing,
         GameOver
     }
+    internal static class GameStatusExtension
+    {
+        public static int maxScore = 0;
+    }
 }
