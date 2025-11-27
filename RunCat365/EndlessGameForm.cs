@@ -30,7 +30,6 @@ namespace RunCat365
         private int score = 0;
         private bool isJumpRequested = false;
         private readonly bool isAutoPlay = false;
-        private readonly ContextMenuManager contextMenuManager;
 
         internal EndlessGameForm(Theme systemTheme)
         {
@@ -214,7 +213,7 @@ namespace RunCat365
                 var stringFormat = new StringFormat
                 {
                     Alignment = StringAlignment.Far,
-                    LineAlignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
                 };
                 g.DrawString($"Score:{score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
                 g.DrawString($"Max Score:{GameStatusExtension.maxScore}", font15, brush, new Rectangle(20, 10, 870, 50));
