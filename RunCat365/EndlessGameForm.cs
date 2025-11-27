@@ -102,7 +102,7 @@ namespace RunCat365
             roads.RemoveAt(0);
             if (firstRoad == Road.Sprout)
             {
-                score += 100;
+                score += 1;
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
             if (counter == 0)
