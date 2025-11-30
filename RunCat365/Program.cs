@@ -49,6 +49,7 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
+        private readonly NetworkRepository networkRepository;
         private readonly LaunchAtStartupManager launchAtStartupManager;
         private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
@@ -57,7 +58,6 @@ namespace RunCat365
         private Theme manualTheme = Theme.System;
         private FPSMaxLimit fpsMaxLimit = FPSMaxLimit.FPS40;
         private int fetchCounter = 5;
-        private readonly NetworkRepository networkRepository;
 
         public RunCat365ApplicationContext()
         {
@@ -179,17 +179,17 @@ namespace RunCat365
         private void FetchSystemInfo(
             CPUInfo cpuInfo,
             MemoryInfo memoryInfo,
-            List<StorageInfo> storageValue
+            List<StorageInfo> storageValue,
+            NetworkInfo networkInfo
         )
         {
             contextMenuManager.SetNotifyIconText(cpuInfo.GetDescription());
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
-            var networkInfo = networkRepository.Get();
-            systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
+            systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
         }
 
@@ -210,7 +210,8 @@ namespace RunCat365
             var cpuInfo = cpuRepository.Get();
             var memoryInfo = memoryRepository.Get();
             var storageInfo = storageRepository.Get();
-            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo);
+            var networkInfo = networkRepository.Get();
+            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo, networkInfo);
 
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
