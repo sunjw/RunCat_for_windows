@@ -24,19 +24,19 @@ namespace RunCat365
 
     internal static class NetworkInfoExtension
     {
-        internal static string GetDescription(this NetworkInfo networkInfo)
-        {
-            return $"Sent: {NetworkUtils.FormatSpeed(networkInfo.SentSpeed)}\nReceived: {NetworkUtils.FormatSpeed(networkInfo.ReceivedSpeed)}";
-        }
-
         internal static List<string> GenerateIndicator(this NetworkInfo networkInfo)
         {
             return new List<string>
             {
                 $"Network:",
-                $"   ├─ Sent: {NetworkUtils.FormatSpeed(networkInfo.SentSpeed)}",
-                $"   └─ Received: {NetworkUtils.FormatSpeed(networkInfo.ReceivedSpeed)}"
+                $"   ├─ Sent: {FormatSpeed(networkInfo.SentSpeed)}",
+                $"   └─ Received: {FormatSpeed(networkInfo.ReceivedSpeed)}"
             };
+        }
+
+        private static string FormatSpeed(float speedBytes)
+        {
+            return ((long)speedBytes).ToByteFormatted() + "/s";
         }
     }
 
@@ -50,12 +50,33 @@ namespace RunCat365
 
         internal NetworkRepository()
         {
-            networkInterface = NetworkUtils.GetNetworkInterface()
+            networkInterface = GetActiveNetworkInterface()
                 ?? throw new InvalidOperationException("No valid network interface found.");
             var stats = networkInterface.GetIPStatistics();
             lastSent = stats.BytesSent;
             lastReceived = stats.BytesReceived;
             lastUpdate = DateTime.UtcNow;
+        }
+
+        private static NetworkInterface? GetActiveNetworkInterface()
+        {
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+            return interfaces.FirstOrDefault(IsValidNetworkInterface);
+        }
+
+        private static bool IsValidNetworkInterface(NetworkInterface networkInterface)
+        {
+            if (networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback) return false;
+            if (networkInterface.NetworkInterfaceType == NetworkInterfaceType.Tunnel) return false;
+            if (networkInterface.OperationalStatus != OperationalStatus.Up) return false;
+
+            var description = networkInterface.Description.ToLower();
+            if (description.Contains("vpn")) return false;
+            if (description.Contains("tap")) return false;
+            if (description.Contains("virtual")) return false;
+            if (description.Contains("tun")) return false;
+
+            return true;
         }
 
         internal void Update()
@@ -77,28 +98,6 @@ namespace RunCat365
         {
             Update();
             return networkInfo;
-        }
-    }
-
-    internal static class NetworkUtils
-    {
-        internal static string FormatSpeed(float speedBytes)
-        {
-            return ((long)speedBytes).ToByteFormatted() + "/s";
-        }
-
-        internal static NetworkInterface? GetNetworkInterface()
-        {
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            var networkInterface = interfaces.FirstOrDefault(ni =>
-                ni.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
-                ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel &&
-                ni.OperationalStatus == OperationalStatus.Up &&
-                !ni.Description.ToLower().Contains("vpn") &&
-                !ni.Description.ToLower().Contains("tap") &&
-                !ni.Description.ToLower().Contains("virtual") &&
-                !ni.Description.ToLower().Contains("tun"));
-            return networkInterface;
         }
     }
 }
