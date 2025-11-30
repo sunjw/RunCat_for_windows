@@ -57,6 +57,7 @@ namespace RunCat365
         private Theme manualTheme = Theme.System;
         private FPSMaxLimit fpsMaxLimit = FPSMaxLimit.FPS40;
         private int fetchCounter = 5;
+        private readonly NetworkRepository networkRepository;
 
         public RunCat365ApplicationContext()
         {
@@ -71,6 +72,7 @@ namespace RunCat365
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
             launchAtStartupManager = new LaunchAtStartupManager();
+            networkRepository = new NetworkRepository();
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
@@ -184,6 +186,8 @@ namespace RunCat365
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
+            var networkInfo = networkRepository.Get();
+            systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
