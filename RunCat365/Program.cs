@@ -191,9 +191,6 @@ namespace RunCat365
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
-            string cpuText = cpuInfo.GetDescription();
-            string netText = networkInfo.GetDescription();
-            contextMenuManager.SetNotifyIconText($"{cpuText}\n{netText}");
         }
 
         private int CalculateInterval(float cpuTotalValue)
