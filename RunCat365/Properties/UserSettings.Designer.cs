@@ -74,12 +74,12 @@ namespace RunCat365.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int MaxScore {
+        public int HighScore {
             get {
-                return ((int)(this["MaxScore"]));
+                return ((int)(this["HighScore"]));
             }
             set {
-                this["MaxScore"] = value;
+                this["HighScore"] = value;
             }
         }
     }

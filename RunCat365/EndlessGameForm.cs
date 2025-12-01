@@ -216,7 +216,7 @@ namespace RunCat365
                     LineAlignment = StringAlignment.Center
                 };
                 g.DrawString($"Score:{score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
-                g.DrawString($"Max Score:{UserSettings.Default.MaxScore}", font15, brush, new Rectangle(20, 10, 870, 50));
+                g.DrawString($"High Score:{UserSettings.Default.HighScore}", font15, brush, new Rectangle(20, 10, 870, 50));
             }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
@@ -244,7 +244,7 @@ namespace RunCat365
                 var message = "Press space to play.";
                 if (status == GameStatus.GameOver)
                 { 
-                    if (score >= UserSettings.Default.MaxScore)
+                    if (score >= UserSettings.Default.HighScore)
                     {
                         SaveRecord(score);
                         message = "GAME OVER\nNew Record!!\n" + message;
@@ -265,7 +265,7 @@ namespace RunCat365
         }
         private void SaveRecord(int score)
         {
-            UserSettings.Default.MaxScore = score;
+            UserSettings.Default.HighScore = score;
             UserSettings.Default.Save();
         }
     }
