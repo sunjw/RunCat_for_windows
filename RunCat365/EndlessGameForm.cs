@@ -103,6 +103,10 @@ namespace RunCat365
             if (firstRoad == Road.Sprout)
             {
                 score += 1;
+                if (score > UserSettings.Default.HighScore)
+                {
+                    UserSettings.Default.HighScore = score;
+                }
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
             if (counter == 0)
