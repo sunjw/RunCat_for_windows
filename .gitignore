@@ -7,7 +7,8 @@ obj/
 .DS_Store
 TestResults
 
-AppPackages/
+/WapForStore/AppPackages/**
+!/WapForStore/AppPackages/rm-wap-for-store.sh
 BundleArtifacts/
 
 # User-specific files

@@ -41,7 +41,7 @@ namespace RunCat365
         }
     }
 
-    public class RunCat365ApplicationContext : ApplicationContext
+    internal class RunCat365ApplicationContext : ApplicationContext
     {
         private const int FETCH_TIMER_DEFAULT_INTERVAL = 1000;
         private const int FETCH_COUNTER_SIZE = 5;
@@ -49,6 +49,7 @@ namespace RunCat365
         private readonly CPURepository cpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
+        private readonly NetworkRepository networkRepository;
         private readonly LaunchAtStartupManager launchAtStartupManager;
         private readonly ContextMenuManager contextMenuManager;
         private readonly FormsTimer fetchTimer;
@@ -71,6 +72,7 @@ namespace RunCat365
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
             launchAtStartupManager = new LaunchAtStartupManager();
+            networkRepository = new NetworkRepository();
 
             contextMenuManager = new ContextMenuManager(
                 () => runner,
@@ -83,7 +85,7 @@ namespace RunCat365
                 () => launchAtStartupManager.GetStartup(),
                 s => launchAtStartupManager.SetStartup(s),
                 () => OpenRepository(),
-                () => Exit()
+                () => Application.Exit()
             );
 
             animateTimer = new FormsTimer
@@ -109,7 +111,6 @@ namespace RunCat365
             using var rKey = Registry.CurrentUser.OpenSubKey(keyName);
             if (rKey is null) return Theme.Light;
             var value = rKey.GetValue("SystemUsesLightTheme");
-            rKey.Close();
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
         }
@@ -149,15 +150,6 @@ namespace RunCat365
             }
         }
 
-        private void Exit()
-        {
-            cpuRepository.Close();
-            animateTimer.Stop();
-            fetchTimer.Stop();
-            contextMenuManager.HideNotifyIcon();
-            Application.Exit();
-        }
-
         private void ChangeRunner(Runner r)
         {
             runner = r;
@@ -187,7 +179,8 @@ namespace RunCat365
         private void FetchSystemInfo(
             CPUInfo cpuInfo,
             MemoryInfo memoryInfo,
-            List<StorageInfo> storageValue
+            List<StorageInfo> storageValue,
+            NetworkInfo networkInfo
         )
         {
             contextMenuManager.SetNotifyIconText(cpuInfo.GetDescription());
@@ -196,6 +189,7 @@ namespace RunCat365
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
+            systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
         }
 
@@ -216,11 +210,31 @@ namespace RunCat365
             var cpuInfo = cpuRepository.Get();
             var memoryInfo = memoryRepository.Get();
             var storageInfo = storageRepository.Get();
-            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo);
+            var networkInfo = networkRepository.Get();
+            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo, networkInfo);
 
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
             animateTimer.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SystemEvents.UserPreferenceChanged -= UserPreferenceChanged;
+
+                animateTimer?.Stop();
+                animateTimer?.Dispose();
+                fetchTimer?.Stop();
+                fetchTimer?.Dispose();
+
+                cpuRepository?.Close();
+
+                contextMenuManager?.HideNotifyIcon();
+                contextMenuManager?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

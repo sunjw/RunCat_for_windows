@@ -38,4 +38,6 @@ body:
       label: "Check List"
       options:
         - label: "The proposed feature is beneficial to a wide range of users and not just a personal preference."
+          required: true
         - label: "Checked that no similar requests already exist."
+          required: true
