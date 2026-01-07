@@ -16,11 +16,6 @@ namespace RunCat365
 {
     internal class CustomToolStripMenuItem : ToolStripMenuItem
     {
-        internal CustomToolStripMenuItem() : base()
-        {
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
-        }
-
         internal CustomToolStripMenuItem(string? text) : base(text)
         {
             Font = new Font("Consolas", 9F, FontStyle.Regular);
