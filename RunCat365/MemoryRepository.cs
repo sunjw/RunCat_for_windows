@@ -31,9 +31,9 @@ namespace RunCat365
             var resultLines = new List<string>
             {
                 $"Memory: {memoryInfo.MemoryLoad}%",
-                $"   ├─ Total: {memoryInfo.TotalMemory.ToByteFormatted()}",
-                $"   ├─ Used: {memoryInfo.UsedMemory.ToByteFormatted()}",
-                $"   └─ Available: {memoryInfo.AvailableMemory.ToByteFormatted()}"
+                $" ├─ Total: {memoryInfo.TotalMemory.ToByteFormatted()}",
+                $" ├─ Used: {memoryInfo.UsedMemory.ToByteFormatted()}",
+                $" └─ Available: {memoryInfo.AvailableMemory.ToByteFormatted()}"
             };
             return resultLines;
         }
