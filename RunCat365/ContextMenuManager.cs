@@ -194,8 +194,6 @@ namespace RunCat365
 
             lock (iconLock)
             {
-                // Don't dispose icons from ResourceManager - they are managed resources
-                // Disposing them causes ObjectDisposedException when NotifyIcon tries to access them
                 icons.Clear();
                 icons.AddRange(list);
                 current = 0;
@@ -283,7 +281,6 @@ namespace RunCat365
             {
                 lock (iconLock)
                 {
-                    // Don't dispose icons from ResourceManager - they are managed resources
                     icons.Clear();
                 }
 
