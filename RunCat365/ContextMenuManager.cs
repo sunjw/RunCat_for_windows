@@ -22,7 +22,7 @@ namespace RunCat365
         private readonly CustomToolStripMenuItem systemInfoMenu = new();
         private readonly NotifyIcon notifyIcon = new();
         private readonly List<Icon> icons = [];
-        private readonly object iconLock = new();
+        private readonly Lock iconLock = new();
         private int current = 0;
         private EndlessGameForm? endlessGameForm;
 

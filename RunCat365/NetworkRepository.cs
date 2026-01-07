@@ -26,12 +26,11 @@ namespace RunCat365
     {
         internal static List<string> GenerateIndicator(this NetworkInfo networkInfo)
         {
-            return new List<string>
-            {
+            return [
                 $"Network:",
                 $" ├─ Sent: {FormatSpeed(networkInfo.SentSpeed)}",
                 $" └─ Received: {FormatSpeed(networkInfo.ReceivedSpeed)}"
-            };
+            ];
         }
 
         private static string FormatSpeed(float speedBytes)
