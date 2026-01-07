@@ -29,8 +29,8 @@ namespace RunCat365
             return new List<string>
             {
                 $"Network:",
-                $"   ├─ Sent: {FormatSpeed(networkInfo.SentSpeed)}",
-                $"   └─ Received: {FormatSpeed(networkInfo.ReceivedSpeed)}"
+                $" ├─ Sent: {FormatSpeed(networkInfo.SentSpeed)}",
+                $" └─ Received: {FormatSpeed(networkInfo.ReceivedSpeed)}"
             };
         }
 
