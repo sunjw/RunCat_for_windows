@@ -36,9 +36,9 @@ namespace RunCat365
             var resultLines = new List<string>
             {
                 $"CPU: {cpuInfo.Total:f1}%",
-                $"   ├─ User: {cpuInfo.User:f1}%",
-                $"   ├─ Kernel: {cpuInfo.Kernel:f1}%",
-                $"   └─ Available: {cpuInfo.Idle:f1}%"
+                $" ├─ User: {cpuInfo.User:f1}%",
+                $" ├─ Kernel: {cpuInfo.Kernel:f1}%",
+                $" └─ Available: {cpuInfo.Idle:f1}%"
             };
             return resultLines;
         }
