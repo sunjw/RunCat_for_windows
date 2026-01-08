@@ -40,6 +40,7 @@ namespace RunCat365
             Action onExit
         )
         {
+            systemInfoMenu.EnableMonoFont();
             systemInfoMenu.Text = "-\n-\n-\n-\n-";
             systemInfoMenu.Enabled = false;
 

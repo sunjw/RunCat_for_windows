@@ -18,18 +18,15 @@ namespace RunCat365
     {
         internal CustomToolStripMenuItem() : base()
         {
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
         }
 
         internal CustomToolStripMenuItem(string? text) : base(text)
         {
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
         }
 
         private CustomToolStripMenuItem(string? text, Image? image, bool isChecked, EventHandler? onClick) : base(text, image, onClick)
         {
             Checked = isChecked;
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
         }
 
         private readonly TextFormatFlags multiLineTextFlags =
@@ -42,6 +39,11 @@ namespace RunCat365
             TextFormatFlags.LeftAndRightPadding |
             TextFormatFlags.VerticalCenter |
             TextFormatFlags.EndEllipsis;
+
+        public void EnableMonoFont()
+        {
+            Font = new Font("Consolas", 9F, FontStyle.Regular);
+        }
 
         public override Size GetPreferredSize(Size constrainingSize)
         {
