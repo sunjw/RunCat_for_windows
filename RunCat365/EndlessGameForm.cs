@@ -14,6 +14,7 @@
 
 using RunCat365.Properties;
 using FormsTimer = System.Windows.Forms.Timer;
+using Strings = RunCat365.Properties.Strings;
 
 namespace RunCat365
 {
@@ -40,7 +41,7 @@ namespace RunCat365
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Endless Game";
+            Text = Strings.Window_EndlessGame;
             Icon = Resources.AppIcon;
             BackColor = systemTheme == Theme.Light ? Color.Gainsboro : Color.Gray;
 

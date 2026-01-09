@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
 using System.Diagnostics.CodeAnalysis;
 
 namespace RunCat365
@@ -34,6 +35,18 @@ namespace RunCat365
                 FPSMaxLimit.FPS30 => "30fps",
                 FPSMaxLimit.FPS20 => "20fps",
                 FPSMaxLimit.FPS10 => "10fps",
+                _ => "",
+            };
+        }
+
+        internal static string GetLocalizedString(this FPSMaxLimit fpsMaxLimit)
+        {
+            return fpsMaxLimit switch
+            {
+                FPSMaxLimit.FPS40 => Strings.FPS_40,
+                FPSMaxLimit.FPS30 => Strings.FPS_30,
+                FPSMaxLimit.FPS20 => Strings.FPS_20,
+                FPSMaxLimit.FPS10 => Strings.FPS_10,
                 _ => "",
             };
         }

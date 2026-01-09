@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Menu Items -->
+  <data name="Menu_Runners" xml:space="preserve">
+    <value>ランナー</value>
+  </data>
+  <data name="Menu_Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="Menu_FPSMaxLimit" xml:space="preserve">
+    <value>FPS上限</value>
+  </data>
+  <data name="Menu_LaunchAtStartup" xml:space="preserve">
+    <value>スタートアップに登録</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Menu_EndlessGame" xml:space="preserve">
+    <value>エンドレスゲーム</value>
+  </data>
+  <data name="Menu_Information" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="Menu_OpenRepository" xml:space="preserve">
+    <value>リポジトリを開く</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+
+  <!-- Theme -->
+  <data name="Theme_System" xml:space="preserve">
+    <value>システム</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+
+  <!-- Runner -->
+  <data name="Runner_Cat" xml:space="preserve">
+    <value>猫</value>
+  </data>
+  <data name="Runner_Parrot" xml:space="preserve">
+    <value>オウム</value>
+  </data>
+  <data name="Runner_Horse" xml:space="preserve">
+    <value>馬</value>
+  </data>
+
+  <!-- FPS Max Limit -->
+  <data name="FPS_40" xml:space="preserve">
+    <value>40fps</value>
+  </data>
+  <data name="FPS_30" xml:space="preserve">
+    <value>30fps</value>
+  </data>
+  <data name="FPS_20" xml:space="preserve">
+    <value>20fps</value>
+  </data>
+  <data name="FPS_10" xml:space="preserve">
+    <value>10fps</value>
+  </data>
+
+  <!-- Messages -->
+  <data name="Message_AppLaunched" xml:space="preserve">
+    <value>アプリが起動しました。タスクバーにアイコンが表示されていない場合は、省略されているので手動で移動してピン留めしてください。</value>
+  </data>
+  <data name="Message_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+
+  <!-- Window Titles -->
+  <data name="Window_EndlessGame" xml:space="preserve">
+    <value>エンドレスゲーム</value>
+  </data>
+</root>
