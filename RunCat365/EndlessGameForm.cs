@@ -208,7 +208,7 @@ namespace RunCat365
             var textColor = systemTheme == Theme.Light ? Color.Black : Color.White;
             var g = e.Graphics;
 
-            using (Font font15 = new("Courier New", 15))
+            using (Font font15 = new("Consolas", 15))
             using (Brush brush = new SolidBrush(textColor))
             {
                 var stringFormat = new StringFormat
@@ -239,12 +239,12 @@ namespace RunCat365
                 using Brush fillBrush = new SolidBrush(Color.FromArgb(77, 0, 0, 0));
                 g.FillRectangle(fillBrush, new Rectangle(0, 0, 600, 250));
 
-                using Font font18 = new("Courier New", 18, FontStyle.Bold);
+                using Font font18 = new("Segoe UI", 16, FontStyle.Bold);
                 using Brush brush = new SolidBrush(textColor);
                 var message = Strings.Game_PressSpaceToPlay;
                 if (status == GameStatus.GameOver)
                 {
-                    message = $"{Strings.Game_GameOver}\n\n{message}";
+                    message = $"{Strings.Game_GameOver}\n{message}";
                 }
                 var stringFormat = new StringFormat
                 {
