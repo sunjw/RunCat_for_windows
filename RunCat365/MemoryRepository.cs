@@ -14,7 +14,6 @@
 
 using RunCat365.Properties;
 using System.Runtime.InteropServices;
-using Strings = RunCat365.Properties.Strings;
 
 namespace RunCat365
 {

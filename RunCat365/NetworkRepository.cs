@@ -14,7 +14,6 @@
 
 using RunCat365.Properties;
 using System.Net.NetworkInformation;
-using Strings = RunCat365.Properties.Strings;
 
 namespace RunCat365
 {
