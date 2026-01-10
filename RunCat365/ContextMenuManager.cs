@@ -165,7 +165,12 @@ namespace RunCat365
                 childItem.Checked = false;
             }
             item.Checked = true;
-            if (tryParseMethod(item.Text, out T parsedValue))
+
+            if (item.Tag is T tagValue)
+            {
+                assignValueAction(tagValue);
+            }
+            else if (tryParseMethod(item.Text, out T parsedValue))
             {
                 assignValueAction(parsedValue);
             }
