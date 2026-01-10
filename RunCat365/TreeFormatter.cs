@@ -16,10 +16,12 @@ namespace RunCat365
 {
     internal static class TreeFormatter
     {
-        private const string BranchMiddle = " ├─ ";
-        private const string BranchLast = " └─ ";
-        private const string IndentContinue = " │  ";
-        private const string IndentLast = "    ";
+        private static readonly bool isFullWidth = SupportedLanguageExtension.GetCurrentLanguage().IsFullWidth();
+
+        private static string BranchMiddle => isFullWidth ? "├─" : "├─ ";
+        private static string BranchLast => isFullWidth ? "└─" : "└─ ";
+        private static string IndentContinue => isFullWidth ? "│　" : "│  ";
+        private static string IndentLast => isFullWidth ? "　　" : "   ";
 
         internal static string CreateRoot(string content)
         {

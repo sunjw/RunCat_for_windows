@@ -51,5 +51,14 @@ namespace RunCat365
                 _ => "Consolas",
             };
         }
+
+        internal static bool IsFullWidth(this SupportedLanguage language)
+        {
+            return language switch
+            {
+                SupportedLanguage.Japanese => true,
+                _ => false,
+            };
+        }
     }
 }
