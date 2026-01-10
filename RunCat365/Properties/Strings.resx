@@ -123,6 +123,17 @@
     <value>Endless Game</value>
   </data>
 
+  <!-- Endless Game -->
+  <data name="Game_Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Game_PressSpaceToPlay" xml:space="preserve">
+    <value>Press space to play.</value>
+  </data>
+  <data name="Game_GameOver" xml:space="preserve">
+    <value>GAME OVER</value>
+  </data>
+
   <!-- System Info Labels -->
   <data name="SystemInfo_CPU" xml:space="preserve">
     <value>CPU</value>

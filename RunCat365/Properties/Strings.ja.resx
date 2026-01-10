@@ -123,6 +123,17 @@
     <value>エンドレスゲーム</value>
   </data>
 
+  <!-- Endless Game -->
+  <data name="Game_Score" xml:space="preserve">
+    <value>スコア</value>
+  </data>
+  <data name="Game_PressSpaceToPlay" xml:space="preserve">
+    <value>スペースキーでスタート</value>
+  </data>
+  <data name="Game_GameOver" xml:space="preserve">
+    <value>ゲームオーバー</value>
+  </data>
+
   <!-- System Info Labels -->
   <data name="SystemInfo_CPU" xml:space="preserve">
     <value>CPU</value>

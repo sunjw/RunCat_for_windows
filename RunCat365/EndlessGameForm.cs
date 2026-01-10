@@ -216,7 +216,7 @@ namespace RunCat365
                     Alignment = StringAlignment.Far,
                     LineAlignment = StringAlignment.Center
                 };
-                g.DrawString($"Score: {score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
+                g.DrawString($"{Strings.Game_Score}: {score}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
             }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
@@ -241,10 +241,10 @@ namespace RunCat365
 
                 using Font font18 = new("Courier New", 18, FontStyle.Bold);
                 using Brush brush = new SolidBrush(textColor);
-                var message = "Press space to play.";
+                var message = Strings.Game_PressSpaceToPlay;
                 if (status == GameStatus.GameOver)
                 {
-                    message = "GAME OVER\n\n" + message;
+                    message = $"{Strings.Game_GameOver}\n\n{message}";
                 }
                 var stringFormat = new StringFormat
                 {
