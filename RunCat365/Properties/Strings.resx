@@ -110,20 +110,6 @@
     <value>Horse</value>
   </data>
 
-  <!-- FPS Max Limit -->
-  <data name="FPS_40" xml:space="preserve">
-    <value>40fps</value>
-  </data>
-  <data name="FPS_30" xml:space="preserve">
-    <value>30fps</value>
-  </data>
-  <data name="FPS_20" xml:space="preserve">
-    <value>20fps</value>
-  </data>
-  <data name="FPS_10" xml:space="preserve">
-    <value>10fps</value>
-  </data>
-
   <!-- Messages -->
   <data name="Message_AppLaunched" xml:space="preserve">
     <value>App has launched. If the icon is not on the taskbar, it has been omitted, so please move it manually and pin it.</value>

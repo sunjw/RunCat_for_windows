@@ -80,7 +80,7 @@ namespace RunCat365
 
             var fpsMaxLimitMenu = new CustomToolStripMenuItem(Strings.Menu_FPSMaxLimit);
             fpsMaxLimitMenu.SetupSubMenusFromEnum<FPSMaxLimit>(
-                f => f.GetLocalizedString(),
+                f => f.GetString(),
                 (parent, sender, e) =>
                 {
                     HandleMenuItemSelection<FPSMaxLimit>(
