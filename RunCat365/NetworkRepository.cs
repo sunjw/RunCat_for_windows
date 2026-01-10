@@ -12,7 +12,9 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
 using System.Net.NetworkInformation;
+using Strings = RunCat365.Properties.Strings;
 
 namespace RunCat365
 {
@@ -27,9 +29,9 @@ namespace RunCat365
         internal static List<string> GenerateIndicator(this NetworkInfo networkInfo)
         {
             return [
-                $"Network:",
-                $" ├─ Sent: {FormatSpeed(networkInfo.SentSpeed)}",
-                $" └─ Received: {FormatSpeed(networkInfo.ReceivedSpeed)}"
+                $"{Strings.SystemInfo_Network}:",
+                $" ├─ {Strings.SystemInfo_Sent}: {FormatSpeed(networkInfo.SentSpeed)}",
+                $" └─ {Strings.SystemInfo_Received}: {FormatSpeed(networkInfo.ReceivedSpeed)}"
             ];
         }
 

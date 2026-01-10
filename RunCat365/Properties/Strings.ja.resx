@@ -136,4 +136,39 @@
   <data name="Window_EndlessGame" xml:space="preserve">
     <value>エンドレスゲーム</value>
   </data>
+
+  <!-- System Info Labels -->
+  <data name="SystemInfo_CPU" xml:space="preserve">
+    <value>CPU</value>
+  </data>
+  <data name="SystemInfo_User" xml:space="preserve">
+    <value>ユーザー</value>
+  </data>
+  <data name="SystemInfo_Kernel" xml:space="preserve">
+    <value>カーネル</value>
+  </data>
+  <data name="SystemInfo_Available" xml:space="preserve">
+    <value>使用可能</value>
+  </data>
+  <data name="SystemInfo_Memory" xml:space="preserve">
+    <value>メモリ</value>
+  </data>
+  <data name="SystemInfo_Total" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="SystemInfo_Used" xml:space="preserve">
+    <value>使用中</value>
+  </data>
+  <data name="SystemInfo_Storage" xml:space="preserve">
+    <value>ストレージ</value>
+  </data>
+  <data name="SystemInfo_Network" xml:space="preserve">
+    <value>ネットワーク</value>
+  </data>
+  <data name="SystemInfo_Sent" xml:space="preserve">
+    <value>送信</value>
+  </data>
+  <data name="SystemInfo_Received" xml:space="preserve">
+    <value>受信</value>
+  </data>
 </root>

@@ -12,6 +12,9 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
+using Strings = RunCat365.Properties.Strings;
+
 namespace RunCat365
 {
     enum Drive
@@ -57,7 +60,7 @@ namespace RunCat365
         {
             var resultLines = new List<string>
             {
-                "Storage:"
+                $"{Strings.SystemInfo_Storage}:"
             };
 
             if (storageInfoList.Count == 0) return resultLines;
@@ -70,8 +73,8 @@ namespace RunCat365
                 var childIndent = isLastItem ?  "    " : " │  ";
                 var percentage = ((double)info.UsedSpaceSize / info.TotalSize) * 100.0;
                 resultLines.Add($"{parentPrefix}{info.Drive.GetString()}: {percentage:f1}%");
-                resultLines.Add($"{childIndent} ├─ Used: {info.UsedSpaceSize.ToByteFormatted()}");
-                resultLines.Add($"{childIndent} └─ Available: {info.AvailableSpaceSize.ToByteFormatted()}");
+                resultLines.Add($"{childIndent} ├─ {Strings.SystemInfo_Used}: {info.UsedSpaceSize.ToByteFormatted()}");
+                resultLines.Add($"{childIndent} └─ {Strings.SystemInfo_Available}: {info.AvailableSpaceSize.ToByteFormatted()}");
             }
 
             return resultLines;

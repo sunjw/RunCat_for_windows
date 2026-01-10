@@ -136,4 +136,39 @@
   <data name="Window_EndlessGame" xml:space="preserve">
     <value>Endless Game</value>
   </data>
+
+  <!-- System Info Labels -->
+  <data name="SystemInfo_CPU" xml:space="preserve">
+    <value>CPU</value>
+  </data>
+  <data name="SystemInfo_User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="SystemInfo_Kernel" xml:space="preserve">
+    <value>Kernel</value>
+  </data>
+  <data name="SystemInfo_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="SystemInfo_Memory" xml:space="preserve">
+    <value>Memory</value>
+  </data>
+  <data name="SystemInfo_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="SystemInfo_Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="SystemInfo_Storage" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="SystemInfo_Network" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="SystemInfo_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="SystemInfo_Received" xml:space="preserve">
+    <value>Received</value>
+  </data>
 </root>

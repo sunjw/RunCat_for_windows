@@ -253,5 +253,104 @@ namespace RunCat365.Properties {
                 return ResourceManager.GetString("Window_EndlessGame", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU.
+        /// </summary>
+        internal static string SystemInfo_CPU {
+            get {
+                return ResourceManager.GetString("SystemInfo_CPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        internal static string SystemInfo_User {
+            get {
+                return ResourceManager.GetString("SystemInfo_User", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kernel.
+        /// </summary>
+        internal static string SystemInfo_Kernel {
+            get {
+                return ResourceManager.GetString("SystemInfo_Kernel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        internal static string SystemInfo_Available {
+            get {
+                return ResourceManager.GetString("SystemInfo_Available", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Memory.
+        /// </summary>
+        internal static string SystemInfo_Memory {
+            get {
+                return ResourceManager.GetString("SystemInfo_Memory", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string SystemInfo_Total {
+            get {
+                return ResourceManager.GetString("SystemInfo_Total", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Used.
+        /// </summary>
+        internal static string SystemInfo_Used {
+            get {
+                return ResourceManager.GetString("SystemInfo_Used", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Storage.
+        /// </summary>
+        internal static string SystemInfo_Storage {
+            get {
+                return ResourceManager.GetString("SystemInfo_Storage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Network.
+        /// </summary>
+        internal static string SystemInfo_Network {
+            get {
+                return ResourceManager.GetString("SystemInfo_Network", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sent.
+        /// </summary>
+        internal static string SystemInfo_Sent {
+            get {
+                return ResourceManager.GetString("SystemInfo_Sent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Received.
+        /// </summary>
+        internal static string SystemInfo_Received {
+            get {
+                return ResourceManager.GetString("SystemInfo_Received", resourceCulture);
+            }
+        }
     }
 }
