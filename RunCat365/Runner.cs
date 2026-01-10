@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
+
 namespace RunCat365
 {
     enum Runner
@@ -30,6 +32,17 @@ namespace RunCat365
                 Runner.Cat => "Cat",
                 Runner.Parrot => "Parrot",
                 Runner.Horse => "Horse",
+                _ => "",
+            };
+        }
+
+        internal static string GetLocalizedString(this Runner runner)
+        {
+            return runner switch
+            {
+                Runner.Cat => Strings.Runner_Cat,
+                Runner.Parrot => Strings.Runner_Parrot,
+                Runner.Horse => Strings.Runner_Horse,
                 _ => "",
             };
         }

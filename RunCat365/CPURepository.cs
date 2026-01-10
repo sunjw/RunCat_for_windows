@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
 using System.Diagnostics;
 
 namespace RunCat365
@@ -28,17 +29,17 @@ namespace RunCat365
     {
         internal static string GetDescription(this CPUInfo cpuInfo)
         {
-            return $"CPU: {cpuInfo.Total:f1}%";
+            return $"{Strings.SystemInfo_CPU}: {cpuInfo.Total:f1}%";
         }
 
         internal static List<string> GenerateIndicator(this CPUInfo cpuInfo)
         {
             var resultLines = new List<string>
             {
-                $"CPU: {cpuInfo.Total:f1}%",
-                $" ├─ User: {cpuInfo.User:f1}%",
-                $" ├─ Kernel: {cpuInfo.Kernel:f1}%",
-                $" └─ Available: {cpuInfo.Idle:f1}%"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_CPU}: {cpuInfo.Total:f1}%"),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_User}: {cpuInfo.User:f1}%", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Kernel}: {cpuInfo.Kernel:f1}%", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Available}: {cpuInfo.Idle:f1}%", true)
             };
             return resultLines;
         }

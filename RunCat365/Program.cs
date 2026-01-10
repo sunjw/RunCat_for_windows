@@ -15,6 +15,7 @@
 using Microsoft.Win32;
 using RunCat365.Properties;
 using System.Diagnostics;
+using System.Globalization;
 using FormsTimer = System.Windows.Forms.Timer;
 
 namespace RunCat365
@@ -24,6 +25,11 @@ namespace RunCat365
         [STAThread]
         static void Main()
         {
+            #if DEBUG
+            // Specify language manually.
+            CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+            #endif
+
             // Terminate RunCat365 if there's any existing instance.
             using var procMutex = new Mutex(true, "_RUNCAT_MUTEX", out var result);
             if (!result) return;

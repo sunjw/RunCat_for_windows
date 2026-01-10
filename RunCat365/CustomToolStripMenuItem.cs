@@ -26,8 +26,9 @@ namespace RunCat365
             Font = new Font("Consolas", 9F, FontStyle.Regular);
         }
 
-        private CustomToolStripMenuItem(string? text, Image? image, bool isChecked, EventHandler? onClick) : base(text, image, onClick)
+        private CustomToolStripMenuItem(string? text, Image? image, object? tag, bool isChecked, EventHandler? onClick) : base(text, image, onClick)
         {
+            Tag = tag;
             Checked = isChecked;
             Font = new Font("Consolas", 9F, FontStyle.Regular);
         }
@@ -88,6 +89,7 @@ namespace RunCat365
                 var item = new CustomToolStripMenuItem(
                     entityName,
                     iconImage,
+                    value,
                     isChecked(value),
                     (sender, e) => onClick(this, sender, e)
                 );

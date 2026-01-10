@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
+
 namespace RunCat365
 {
     enum Theme
@@ -30,6 +32,17 @@ namespace RunCat365
                 Theme.System => "System",
                 Theme.Light => "Light",
                 Theme.Dark => "Dark",
+                _ => "",
+            };
+        }
+
+        internal static string GetLocalizedString(this Theme theme)
+        {
+            return theme switch
+            {
+                Theme.System => Strings.Theme_System,
+                Theme.Light => Strings.Theme_Light,
+                Theme.Dark => Strings.Theme_Dark,
                 _ => "",
             };
         }
