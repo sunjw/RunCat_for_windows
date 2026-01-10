@@ -34,6 +34,16 @@ namespace RunCat365
             };
         }
 
+        internal static string GetLocalizedString(this Drive drive)
+        {
+            return drive switch
+            {
+                Drive.C => Strings.SystemInfo_DriveC,
+                Drive.D => Strings.SystemInfo_DriveD,
+                _ => "",
+            };
+        }
+
         internal static Drive? CreateFromString(string? value)
         {
             return value switch
@@ -69,7 +79,7 @@ namespace RunCat365
                 var info = storageInfoList[i];
                 var isLastItem = (i == storageInfoList.Count - 1);
                 var percentage = ((double)info.UsedSpaceSize / info.TotalSize) * 100.0;
-                resultLines.Add(TreeFormatter.CreateNode($"{info.Drive.GetString()}: {percentage:f1}%", isLastItem));
+                resultLines.Add(TreeFormatter.CreateNode($"{info.Drive.GetLocalizedString()}: {percentage:f1}%", isLastItem));
                 resultLines.Add(TreeFormatter.CreateNestedNode($"{Strings.SystemInfo_Used}: {info.UsedSpaceSize.ToByteFormatted()}", isLastItem, false));
                 resultLines.Add(TreeFormatter.CreateNestedNode($"{Strings.SystemInfo_Available}: {info.AvailableSpaceSize.ToByteFormatted()}", isLastItem, true));
             }

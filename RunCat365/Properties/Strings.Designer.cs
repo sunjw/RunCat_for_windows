@@ -318,6 +318,24 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to C Drive.
+        /// </summary>
+        internal static string SystemInfo_DriveC {
+            get {
+                return ResourceManager.GetString("SystemInfo_DriveC", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to D Drive.
+        /// </summary>
+        internal static string SystemInfo_DriveD {
+            get {
+                return ResourceManager.GetString("SystemInfo_DriveD", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Network.
         /// </summary>
         internal static string SystemInfo_Network {

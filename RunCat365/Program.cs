@@ -27,7 +27,7 @@ namespace RunCat365
         {
             #if DEBUG
             // Specify language manually.
-            CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+            CultureInfo.CurrentUICulture = SupportedLanguage.English.GetDefaultCultureInfo();
             #endif
 
             // Terminate RunCat365 if there's any existing instance.
