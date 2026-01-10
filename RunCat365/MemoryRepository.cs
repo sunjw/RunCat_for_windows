@@ -32,10 +32,10 @@ namespace RunCat365
         {
             var resultLines = new List<string>
             {
-                $"{Strings.SystemInfo_Memory}: {memoryInfo.MemoryLoad}%",
-                $" ├─ {Strings.SystemInfo_Total}: {memoryInfo.TotalMemory.ToByteFormatted()}",
-                $" ├─ {Strings.SystemInfo_Used}: {memoryInfo.UsedMemory.ToByteFormatted()}",
-                $" └─ {Strings.SystemInfo_Available}: {memoryInfo.AvailableMemory.ToByteFormatted()}"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_Memory}: {memoryInfo.MemoryLoad}%"),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Total}: {memoryInfo.TotalMemory.ToByteFormatted()}", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Used}: {memoryInfo.UsedMemory.ToByteFormatted()}", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Available}: {memoryInfo.AvailableMemory.ToByteFormatted()}", true)
             };
             return resultLines;
         }

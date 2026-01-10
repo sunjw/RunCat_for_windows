@@ -29,9 +29,9 @@ namespace RunCat365
         internal static List<string> GenerateIndicator(this NetworkInfo networkInfo)
         {
             return [
-                $"{Strings.SystemInfo_Network}:",
-                $" ├─ {Strings.SystemInfo_Sent}: {FormatSpeed(networkInfo.SentSpeed)}",
-                $" └─ {Strings.SystemInfo_Received}: {FormatSpeed(networkInfo.ReceivedSpeed)}"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_Network}:"),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Sent}: {FormatSpeed(networkInfo.SentSpeed)}", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Received}: {FormatSpeed(networkInfo.ReceivedSpeed)}", true)
             ];
         }
 

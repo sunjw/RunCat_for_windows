@@ -37,10 +37,10 @@ namespace RunCat365
         {
             var resultLines = new List<string>
             {
-                $"{Strings.SystemInfo_CPU}: {cpuInfo.Total:f1}%",
-                $" ├─ {Strings.SystemInfo_User}: {cpuInfo.User:f1}%",
-                $" ├─ {Strings.SystemInfo_Kernel}: {cpuInfo.Kernel:f1}%",
-                $" └─ {Strings.SystemInfo_Available}: {cpuInfo.Idle:f1}%"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_CPU}: {cpuInfo.Total:f1}%"),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_User}: {cpuInfo.User:f1}%", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Kernel}: {cpuInfo.Kernel:f1}%", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Available}: {cpuInfo.Idle:f1}%", true)
             };
             return resultLines;
         }
