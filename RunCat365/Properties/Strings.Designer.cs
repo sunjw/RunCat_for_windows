@@ -57,38 +57,29 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to 40fps.
+        ///   Looks up a localized string similar to GAME OVER.
         /// </summary>
-        internal static string FPS_10 {
+        internal static string Game_GameOver {
             get {
-                return ResourceManager.GetString("FPS_10", resourceCulture);
+                return ResourceManager.GetString("Game_GameOver", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to 20fps.
+        ///   Looks up a localized string similar to Press space to play..
         /// </summary>
-        internal static string FPS_20 {
+        internal static string Game_PressSpaceToPlay {
             get {
-                return ResourceManager.GetString("FPS_20", resourceCulture);
+                return ResourceManager.GetString("Game_PressSpaceToPlay", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to 30fps.
+        ///   Looks up a localized string similar to Score.
         /// </summary>
-        internal static string FPS_30 {
+        internal static string Game_Score {
             get {
-                return ResourceManager.GetString("FPS_30", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to 40fps.
-        /// </summary>
-        internal static string FPS_40 {
-            get {
-                return ResourceManager.GetString("FPS_40", resourceCulture);
+                return ResourceManager.GetString("Game_Score", resourceCulture);
             }
         }
 
