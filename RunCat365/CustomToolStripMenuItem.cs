@@ -16,21 +16,27 @@ namespace RunCat365
 {
     internal class CustomToolStripMenuItem : ToolStripMenuItem
     {
+        private static readonly Font MenuFont = new(
+            SupportedLanguageExtension.GetCurrentLanguage().GetFontName(),
+            9F,
+            FontStyle.Regular
+        );
+
         internal CustomToolStripMenuItem() : base()
         {
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
+            Font = MenuFont;
         }
 
         internal CustomToolStripMenuItem(string? text) : base(text)
         {
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
+            Font = MenuFont;
         }
 
         private CustomToolStripMenuItem(string? text, Image? image, object? tag, bool isChecked, EventHandler? onClick) : base(text, image, onClick)
         {
             Tag = tag;
             Checked = isChecked;
-            Font = new Font("Consolas", 9F, FontStyle.Regular);
+            Font = MenuFont;
         }
 
         private readonly TextFormatFlags multiLineTextFlags =
