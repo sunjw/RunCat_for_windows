@@ -53,6 +53,7 @@ namespace RunCat365
         private const int FETCH_COUNTER_SIZE = 5;
         private const int ANIMATE_TIMER_DEFAULT_INTERVAL = 200;
         private readonly CPURepository cpuRepository;
+        private readonly GPURepository gpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
         private readonly NetworkRepository networkRepository;
@@ -75,6 +76,7 @@ namespace RunCat365
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
             cpuRepository = new CPURepository();
+            gpuRepository = new GPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
             launchAtStartupManager = new LaunchAtStartupManager();
@@ -186,16 +188,18 @@ namespace RunCat365
             CPUInfo cpuInfo,
             MemoryInfo memoryInfo,
             List<StorageInfo> storageValue,
-            NetworkInfo networkInfo
+            NetworkInfo networkInfo,
+            GPUInfo gpuInfo
         )
         {
-            contextMenuManager.SetNotifyIconText(cpuInfo.GetDescription());
+            contextMenuManager.SetNotifyIconText($"{cpuInfo.GetDescription()}\n{gpuInfo.GetDescription()}");
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             systemInfoValues.AddRange(networkInfo.GenerateIndicator());
+            systemInfoValues.AddRange(gpuInfo.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
         }
 
@@ -209,6 +213,7 @@ namespace RunCat365
         private void FetchTick(object? state, EventArgs e)
         {
             cpuRepository.Update();
+            gpuRepository.Update();
             fetchCounter += 1;
             if (fetchCounter < FETCH_COUNTER_SIZE) return;
             fetchCounter = 0;
@@ -217,7 +222,8 @@ namespace RunCat365
             var memoryInfo = memoryRepository.Get();
             var storageInfo = storageRepository.Get();
             var networkInfo = networkRepository.Get();
-            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo, networkInfo);
+            var gpuInfo = gpuRepository.Get();
+            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo, networkInfo, gpuInfo);
 
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
