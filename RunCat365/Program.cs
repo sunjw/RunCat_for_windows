@@ -243,7 +243,7 @@ namespace RunCat365
             FetchSystemInfo(cpuInfo, gpuInfo, memoryInfo, storageInfo, networkInfo);
 
             animateTimer.Stop();
-            animateTimer.Interval = CalculateInterval(cpuInfo.Total, gpuInfo.Utilization, memoryInfo.MemoryLoad);
+            animateTimer.Interval = CalculateInterval(cpuInfo.Total, gpuInfo.Total, memoryInfo.MemoryLoad);
             animateTimer.Start();
         }
 
