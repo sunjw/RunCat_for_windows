@@ -361,5 +361,23 @@ namespace RunCat365.Properties {
                 return ResourceManager.GetString("SystemInfo_Received", resourceCulture);
             }
         }
+
+        internal static string SystemInfo_GPU {
+            get {
+                return ResourceManager.GetString("SystemInfo_GPU", resourceCulture);
+            }
+        }
+
+        internal static string SystemInfo_Average {
+            get {
+                return ResourceManager.GetString("SystemInfo_Average", resourceCulture);
+            }
+        }
+
+        internal static string SystemInfo_Maximum {
+            get {
+                return ResourceManager.GetString("SystemInfo_Maximum", resourceCulture);
+            }
+        }
     }
 }
