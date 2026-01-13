@@ -5,16 +5,33 @@ using System.Linq;
 
 namespace RunCat365
 {
+    struct GPUInfo
+    {
+        internal float Total { get; set; }
+    }
+
+    internal static class GPUInfoExtension
+    {
+        internal static List<string> GenerateIndicator(this GPUInfo gpuInfo)
+        {
+            var resultLines = new List<string>
+            {
+                TreeFormatter.CreateRoot($"GPU: {gpuInfo.Total:f1}%")
+            };
+            return resultLines;
+        }
+    }
+
     internal class GPURepository
     {
         private PerformanceCounter gpuCounter;
         private bool isGpuAvailable = true;
-        private readonly List<float> gpuInfoList = new List<float>();
+        private readonly List<GPUInfo> gpuInfoList = [];
         private const int GPU_INFO_LIST_LIMIT_SIZE = 5;
 
-        public bool IsAvailable => isGpuAvailable;
+        internal bool IsAvailable => isGpuAvailable;
 
-        public GPURepository()
+        internal GPURepository()
         {
             try
             {
@@ -37,13 +54,17 @@ namespace RunCat365
             }
         }
 
-        public void Update()
+        internal void Update()
         {
             if (!isGpuAvailable || gpuCounter == null) return;
             try
             {
                 var value = Math.Min(100, gpuCounter.NextValue());
-                gpuInfoList.Add(value);
+                var gpuInfo = new GPUInfo
+                {
+                    Total = value
+                };
+                gpuInfoList.Add(gpuInfo);
                 if (GPU_INFO_LIST_LIMIT_SIZE < gpuInfoList.Count)
                 {
                     gpuInfoList.RemoveAt(0);
@@ -55,37 +76,21 @@ namespace RunCat365
             }
         }
 
-        public GPUInfo Get()
+        internal GPUInfo Get()
         {
             if (!isGpuAvailable || gpuInfoList.Count == 0)
             {
-                return new GPUInfo(0);
+                return new GPUInfo();
             }
-            return new GPUInfo(gpuInfoList.Average());
+            return new GPUInfo
+            {
+                Total = gpuInfoList.Average(x => x.Total)
+            };
         }
 
-        public void Close()
+        internal void Close()
         {
             gpuCounter?.Close();
-        }
-    }
-
-    public record struct GPUInfo(float Utilization);
-
-    internal static class GPUInfoExtension
-    {
-        internal static List<string> GenerateIndicator(this GPUInfo gpuInfo)
-        {
-            var resultLines = new List<string>
-            {
-                $"GPU: {gpuInfo.Utilization:f1}%"
-            };
-            return resultLines;
-        }
-
-        internal static string GetDescription(this GPUInfo gpuInfo)
-        {
-            return $"GPU: {gpuInfo.Utilization:f1}%";
         }
     }
 }

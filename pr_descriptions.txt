@@ -1,0 +1,62 @@
+================================================================================
+PR 1: GPU Info Display
+================================================================================
+
+## Context of Contribution
+
+- [ ] Bug Fix
+- [ ] Refactoring
+- [x] New Feature
+- [ ] Others
+
+## Summary of the Proposal
+
+Add GPU utilization monitoring and display in the system tray tooltip and System Info menu. Uses Windows Performance Counters (GPU Engine category) for safe, driver-free GPU monitoring.
+
+## Reason for the new feature
+
+- Users want to see GPU usage alongside CPU/Memory/Storage/Network stats
+- GPU monitoring is a commonly requested feature for system monitors
+- Uses safe Windows APIs (Performance Counters) - no third-party drivers
+- Graceful fallback: shows 0% if GPU counters unavailable
+- Minimal maintenance: one new file (GPURepository.cs) with pattern matching existing repos
+
+## Checklist
+
+- [x] This PR does not contain commits of multiple contexts.
+- [x] Code follows proper indentation and naming conventions.
+- [x] Implemented using only APIs that can be submitted to the Microsoft Store.
+- [x] Works correctly in both dark theme and light theme.
+- [x] Works correctly on any device.
+
+================================================================================
+PR 2: Speed Source Selection
+================================================================================
+
+## Context of Contribution
+
+- [ ] Bug Fix
+- [ ] Refactoring
+- [x] New Feature
+- [ ] Others
+
+## Summary of the Proposal
+
+Add user setting to choose what metric (CPU, GPU, or Memory) determines the cat's running speed. Adds a "Speed based on" submenu in Settings with radio-style selection. GPU option is hidden if GPU monitoring is unavailable.
+
+## Reason for the new feature
+
+- Requested by maintainer: allow users to configure which metric affects speed
+- Some users prefer GPU load to drive animation (gamers, GPU-intensive work)
+- Some users prefer Memory usage (developers with many apps open)
+- Default remains CPU for backward compatibility
+- GPU option automatically hidden if Performance Counters unavailable
+- Minimal UI: simple radio submenu in existing Settings menu
+
+## Checklist
+
+- [x] This PR does not contain commits of multiple contexts.
+- [x] Code follows proper indentation and naming conventions.
+- [x] Implemented using only APIs that can be submitted to the Microsoft Store.
+- [x] Works correctly in both dark theme and light theme.
+- [x] Works correctly on any device.
