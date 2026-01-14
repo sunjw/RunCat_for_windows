@@ -219,4 +219,13 @@
   <data name="SystemInfo_Received" xml:space="preserve">
     <value>Received</value>
   </data>
+  <data name="SystemInfo_GPU" xml:space="preserve">
+    <value>GPU</value>
+  </data>
+  <data name="SystemInfo_Average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="SystemInfo_Maximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
 </root>

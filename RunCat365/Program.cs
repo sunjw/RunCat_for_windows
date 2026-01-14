@@ -53,6 +53,7 @@ namespace RunCat365
         private const int FETCH_COUNTER_SIZE = 5;
         private const int ANIMATE_TIMER_DEFAULT_INTERVAL = 200;
         private readonly CPURepository cpuRepository;
+        private readonly GPURepository gpuRepository;
         private readonly MemoryRepository memoryRepository;
         private readonly StorageRepository storageRepository;
         private readonly NetworkRepository networkRepository;
@@ -75,6 +76,7 @@ namespace RunCat365
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
             cpuRepository = new CPURepository();
+            gpuRepository = new GPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
             launchAtStartupManager = new LaunchAtStartupManager();
@@ -184,6 +186,7 @@ namespace RunCat365
 
         private void FetchSystemInfo(
             CPUInfo cpuInfo,
+            GPUInfo gpuInfo,
             MemoryInfo memoryInfo,
             List<StorageInfo> storageValue,
             NetworkInfo networkInfo
@@ -193,6 +196,7 @@ namespace RunCat365
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
+            systemInfoValues.AddRange(gpuInfo.GenerateIndicator());
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             systemInfoValues.AddRange(networkInfo.GenerateIndicator());
@@ -209,15 +213,17 @@ namespace RunCat365
         private void FetchTick(object? state, EventArgs e)
         {
             cpuRepository.Update();
+            gpuRepository.Update();
             fetchCounter += 1;
             if (fetchCounter < FETCH_COUNTER_SIZE) return;
             fetchCounter = 0;
 
             var cpuInfo = cpuRepository.Get();
+            var gpuInfo = gpuRepository.Get();
             var memoryInfo = memoryRepository.Get();
             var storageInfo = storageRepository.Get();
             var networkInfo = networkRepository.Get();
-            FetchSystemInfo(cpuInfo, memoryInfo, storageInfo, networkInfo);
+            FetchSystemInfo(cpuInfo, gpuInfo, memoryInfo, storageInfo, networkInfo);
 
             animateTimer.Stop();
             animateTimer.Interval = CalculateInterval(cpuInfo.Total);
