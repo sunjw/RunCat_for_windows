@@ -98,7 +98,7 @@ namespace RunCat365
         {
             storageInfoList.Clear();
             var allDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo driveInfo in allDrives)
+            foreach (var driveInfo in allDrives)
             {
                 if (driveInfo.IsReady && DriveExtension.CreateFromString(driveInfo.Name) is Drive drive)
                 {

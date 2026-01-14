@@ -40,11 +40,10 @@ namespace RunCat365
     internal class GPURepository
     {
         private readonly List<PerformanceCounter> gpuCounters = [];
-        private bool isGpuAvailable = true;
         private readonly List<GPUInfo> gpuInfoList = [];
         private const int GPU_INFO_LIST_LIMIT_SIZE = 5;
 
-        internal bool IsAvailable => isGpuAvailable;
+        internal bool IsAvailable { get; private set; } = true;
 
         internal GPURepository()
         {
@@ -58,34 +57,38 @@ namespace RunCat365
                     foreach (var instance in instances)
                     {
                         var counter = new PerformanceCounter("GPU Engine", "Utilization Percentage", instance);
-                        _ = counter.NextValue();
                         gpuCounters.Add(counter);
+
+                        // Discards first return value
+                        _ = counter.NextValue();
                     }
                 }
                 else
                 {
-                    isGpuAvailable = false;
+                    IsAvailable = false;
                 }
             }
             catch
             {
-                isGpuAvailable = false;
+                IsAvailable = false;
             }
         }
 
         internal void Update()
         {
-            if (!isGpuAvailable || gpuCounters.Count == 0) return;
+            if (!IsAvailable || gpuCounters.Count == 0) return;
             try
             {
                 var values = gpuCounters.Select(counter => counter.NextValue()).ToList();
-                var avgValue = values.Count > 0 ? values.Average() : 0f;
-                var maxValue = values.Count > 0 ? values.Max() : 0f;
+                var average = values.Count > 0 ? values.Average() : 0f;
+                var maximum = values.Count > 0 ? values.Max() : 0f;
+
                 var gpuInfo = new GPUInfo
                 {
-                    Average = Math.Min(100, avgValue),
-                    Maximum = Math.Min(100, maxValue)
+                    Average = Math.Min(100, average),
+                    Maximum = Math.Min(100, maximum)
                 };
+
                 gpuInfoList.Add(gpuInfo);
                 if (GPU_INFO_LIST_LIMIT_SIZE < gpuInfoList.Count)
                 {
@@ -94,16 +97,14 @@ namespace RunCat365
             }
             catch
             {
-                isGpuAvailable = false;
+                IsAvailable = false;
             }
         }
 
         internal GPUInfo Get()
         {
-            if (!isGpuAvailable || gpuInfoList.Count == 0)
-            {
-                return new GPUInfo();
-            }
+            if (!IsAvailable || gpuInfoList.Count == 0) return new GPUInfo();
+
             return new GPUInfo
             {
                 Average = gpuInfoList.Average(x => x.Average),
@@ -115,7 +116,7 @@ namespace RunCat365
         {
             foreach (var counter in gpuCounters)
             {
-                counter?.Close();
+                counter.Close();
             }
         }
     }
