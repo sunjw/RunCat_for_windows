@@ -101,9 +101,9 @@ namespace RunCat365
             }
         }
 
-        internal GPUInfo Get()
+        internal GPUInfo? Get()
         {
-            if (!IsAvailable || gpuInfoList.Count == 0) return new GPUInfo();
+            if (!IsAvailable || gpuInfoList.Count == 0) return null;
 
             return new GPUInfo
             {

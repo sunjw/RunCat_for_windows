@@ -186,7 +186,7 @@ namespace RunCat365
 
         private void FetchSystemInfo(
             CPUInfo cpuInfo,
-            GPUInfo gpuInfo,
+            GPUInfo? gpuInfo,
             MemoryInfo memoryInfo,
             List<StorageInfo> storageValue,
             NetworkInfo networkInfo
@@ -196,7 +196,10 @@ namespace RunCat365
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
-            systemInfoValues.AddRange(gpuInfo.GenerateIndicator());
+            if (gpuInfo.HasValue)
+            {
+                systemInfoValues.AddRange(gpuInfo.Value.GenerateIndicator());
+            }
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             systemInfoValues.AddRange(networkInfo.GenerateIndicator());
