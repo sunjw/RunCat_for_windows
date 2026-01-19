@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
 using System.Runtime.InteropServices;
 
 namespace RunCat365
@@ -30,10 +31,10 @@ namespace RunCat365
         {
             var resultLines = new List<string>
             {
-                $"Memory: {memoryInfo.MemoryLoad}%",
-                $" ├─ Total: {memoryInfo.TotalMemory.ToByteFormatted()}",
-                $" ├─ Used: {memoryInfo.UsedMemory.ToByteFormatted()}",
-                $" └─ Available: {memoryInfo.AvailableMemory.ToByteFormatted()}"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_Memory}: {memoryInfo.MemoryLoad}%"),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Total}: {memoryInfo.TotalMemory.ToByteFormatted()}", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Used}: {memoryInfo.UsedMemory.ToByteFormatted()}", false),
+                TreeFormatter.CreateNode($"{Strings.SystemInfo_Available}: {memoryInfo.AvailableMemory.ToByteFormatted()}", true)
             };
             return resultLines;
         }

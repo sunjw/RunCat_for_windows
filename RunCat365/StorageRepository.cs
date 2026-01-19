@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
+
 namespace RunCat365
 {
     enum Drive
@@ -28,6 +30,16 @@ namespace RunCat365
             {
                 Drive.C => "C Drive",
                 Drive.D => "D Drive",
+                _ => "",
+            };
+        }
+
+        internal static string GetLocalizedString(this Drive drive)
+        {
+            return drive switch
+            {
+                Drive.C => Strings.SystemInfo_DriveC,
+                Drive.D => Strings.SystemInfo_DriveD,
                 _ => "",
             };
         }
@@ -57,7 +69,7 @@ namespace RunCat365
         {
             var resultLines = new List<string>
             {
-                "Storage:"
+                TreeFormatter.CreateRoot($"{Strings.SystemInfo_Storage}:")
             };
 
             if (storageInfoList.Count == 0) return resultLines;
@@ -66,12 +78,10 @@ namespace RunCat365
             {
                 var info = storageInfoList[i];
                 var isLastItem = (i == storageInfoList.Count - 1);
-                var parentPrefix = isLastItem ? " └─ " : " ├─ ";
-                var childIndent = isLastItem ?  "    " : " │  ";
                 var percentage = ((double)info.UsedSpaceSize / info.TotalSize) * 100.0;
-                resultLines.Add($"{parentPrefix}{info.Drive.GetString()}: {percentage:f1}%");
-                resultLines.Add($"{childIndent} ├─ Used: {info.UsedSpaceSize.ToByteFormatted()}");
-                resultLines.Add($"{childIndent} └─ Available: {info.AvailableSpaceSize.ToByteFormatted()}");
+                resultLines.Add(TreeFormatter.CreateNode($"{info.Drive.GetLocalizedString()}: {percentage:f1}%", isLastItem));
+                resultLines.Add(TreeFormatter.CreateNestedNode($"{Strings.SystemInfo_Used}: {info.UsedSpaceSize.ToByteFormatted()}", isLastItem, false));
+                resultLines.Add(TreeFormatter.CreateNestedNode($"{Strings.SystemInfo_Available}: {info.AvailableSpaceSize.ToByteFormatted()}", isLastItem, true));
             }
 
             return resultLines;
@@ -88,7 +98,7 @@ namespace RunCat365
         {
             storageInfoList.Clear();
             var allDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo driveInfo in allDrives)
+            foreach (var driveInfo in allDrives)
             {
                 if (driveInfo.IsReady && DriveExtension.CreateFromString(driveInfo.Name) is Drive drive)
                 {
