@@ -45,6 +45,7 @@ namespace RunCat365
                 Runner.Cat => Strings.Runner_Cat,
                 Runner.Parrot => Strings.Runner_Parrot,
                 Runner.Horse => Strings.Runner_Horse,
+                Runner.WinLogo => Strings.Runner_WinLogo,
                 _ => "",
             };
         }

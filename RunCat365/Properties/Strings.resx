@@ -228,4 +228,7 @@
   <data name="SystemInfo_Maximum" xml:space="preserve">
     <value>Maximum</value>
   </data>
+  <data name="Runner_WinLogo" xml:space="preserve">
+    <value>WinLogo</value>
+  </data>
 </root>

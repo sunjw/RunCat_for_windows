@@ -210,6 +210,15 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to WinLogo.
+        /// </summary>
+        internal static string Runner_WinLogo {
+            get {
+                return ResourceManager.GetString("Runner_WinLogo", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Dark.
         /// </summary>
         internal static string Theme_Dark {
