@@ -104,10 +104,7 @@ namespace RunCat365
             if (firstRoad == Road.Sprout)
             {
                 score += 1;
-                if (score > highScore)
-                {
-                    highScore = score;
-                }
+                highScore = Math.Max(score, highScore);
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
             if (counter == 0)
