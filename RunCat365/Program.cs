@@ -84,6 +84,8 @@ namespace RunCat365
             launchAtStartupManager = new LaunchAtStartupManager();
             networkRepository = new NetworkRepository();
 
+            ResolveSpeedSource();
+
             contextMenuManager = new ContextMenuManager(
                 () => runner,
                 r => ChangeRunner(r),
@@ -126,6 +128,14 @@ namespace RunCat365
             var value = rKey.GetValue("SystemUsesLightTheme");
             if (value is null) return Theme.Light;
             return (int)value == 0 ? Theme.Dark : Theme.Light;
+        }
+
+        private void ResolveSpeedSource()
+        {
+            if (!gpuRepository.IsAvailable && speedSource == SpeedSource.GPU)
+            {
+                ChangeSpeedSource(SpeedSource.CPU);
+            }
         }
 
         private void ShowBalloonTip()
@@ -187,7 +197,7 @@ namespace RunCat365
         private void ChangeSpeedSource(SpeedSource source)
         {
             speedSource = source;
-            UserSettings.Default.SpeedSource = source.GetString();
+            UserSettings.Default.SpeedSource = source.ToString();
             UserSettings.Default.Save();
         }
 
