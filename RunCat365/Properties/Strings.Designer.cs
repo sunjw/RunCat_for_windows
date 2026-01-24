@@ -155,6 +155,12 @@ namespace RunCat365.Properties {
             }
         }
 
+        internal static string Menu_SpeedSource {
+            get {
+                return ResourceManager.GetString("Menu_SpeedSource", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>

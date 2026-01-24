@@ -123,6 +123,9 @@
   <data name="Menu_Theme" xml:space="preserve">
     <value>テーマ</value>
   </data>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>速度の基準</value>
+  </data>
   <data name="Menu_FPSMaxLimit" xml:space="preserve">
     <value>FPSの上限</value>
   </data>
