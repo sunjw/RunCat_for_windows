@@ -187,10 +187,10 @@ namespace RunCat365
             UserSettings.Default.Save();
         }
 
-        private void ChangeSpeedSource(SpeedSource source)
+        private void ChangeSpeedSource(SpeedSource s)
         {
-            speedSource = source;
-            UserSettings.Default.SpeedSource = source.ToString();
+            speedSource = s;
+            UserSettings.Default.SpeedSource = speedSource.ToString();
             UserSettings.Default.Save();
         }
 
