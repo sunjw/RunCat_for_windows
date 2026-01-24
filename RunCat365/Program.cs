@@ -73,7 +73,7 @@ namespace RunCat365
             _ = Enum.TryParse(UserSettings.Default.Runner, out runner);
             _ = Enum.TryParse(UserSettings.Default.Theme, out manualTheme);
             _ = Enum.TryParse(UserSettings.Default.FPSMaxLimit, out fpsMaxLimit);
-            _ = SpeedSourceExtension.TryParse(UserSettings.Default.SpeedSource, out speedSource);
+            _ = Enum.TryParse(UserSettings.Default.SpeedSource, out speedSource);
 
             SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(UserPreferenceChanged);
 
