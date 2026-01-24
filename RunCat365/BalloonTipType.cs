@@ -14,7 +14,7 @@
 
 namespace RunCat365
 {
-    enum BalloonTipType
+    internal enum BalloonTipType
     {
         AppLaunched,
         CPUInfoUnavailable,
