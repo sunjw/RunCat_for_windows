@@ -32,13 +32,13 @@ namespace RunCat365
             Func<Theme> getSystemTheme,
             Func<Theme> getManualTheme,
             Action<Theme> setManualTheme,
+            bool isAvailableGPURepository,
+            Func<SpeedSource> getSpeedSource,
+            Action<SpeedSource> setSpeedSource,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
             Func<bool> getLaunchAtStartup,
             Func<bool, bool> toggleLaunchAtStartup,
-            Func<SpeedSource> getSpeedSource,
-            Action<SpeedSource> setSpeedSource,
-            bool isGpuAvailable,
             Action openRepository,
             Action onExit
         )
@@ -80,6 +80,23 @@ namespace RunCat365
                 _ => null
             );
 
+            var speedSourceMenu = new CustomToolStripMenuItem("Speed based on");
+            speedSourceMenu.SetupSubMenusFromEnum<SpeedSource>(
+                s => s.GetLocalizedString(),
+                (parent, sender, e) =>
+                {
+                    HandleMenuItemSelection<SpeedSource>(
+                        parent,
+                        sender,
+                        (string? s, out SpeedSource ss) => Enum.TryParse(s, out ss),
+                        s => setSpeedSource(s)
+                    );
+                },
+                s => getSpeedSource() == s,
+                _ => null,
+                s => s == SpeedSource.GPU ? isAvailableGPURepository : true
+            );
+
             var fpsMaxLimitMenu = new CustomToolStripMenuItem(Strings.Menu_FPSMaxLimit);
             fpsMaxLimitMenu.SetupSubMenusFromEnum<FPSMaxLimit>(
                 f => f.GetString(),
@@ -102,37 +119,12 @@ namespace RunCat365
             };
             launchAtStartupMenu.Click += (sender, e) => HandleStartupMenuClick(sender, toggleLaunchAtStartup);
 
-            var speedSourceMenu = new CustomToolStripMenuItem("Speed based on");
-            var cpuSpeedItem = new CustomToolStripMenuItem("CPU")
-            {
-                Checked = getSpeedSource() == SpeedSource.CPU
-            };
-            cpuSpeedItem.Click += (sender, e) => HandleSpeedSourceClick(speedSourceMenu, sender, SpeedSource.CPU, setSpeedSource);
-            speedSourceMenu.DropDownItems.Add(cpuSpeedItem);
-
-            if (isGpuAvailable)
-            {
-                var gpuSpeedItem = new CustomToolStripMenuItem("GPU")
-                {
-                    Checked = getSpeedSource() == SpeedSource.GPU
-                };
-                gpuSpeedItem.Click += (sender, e) => HandleSpeedSourceClick(speedSourceMenu, sender, SpeedSource.GPU, setSpeedSource);
-                speedSourceMenu.DropDownItems.Add(gpuSpeedItem);
-            }
-
-            var memorySpeedItem = new CustomToolStripMenuItem("Memory")
-            {
-                Checked = getSpeedSource() == SpeedSource.Memory
-            };
-            memorySpeedItem.Click += (sender, e) => HandleSpeedSourceClick(speedSourceMenu, sender, SpeedSource.Memory, setSpeedSource);
-            speedSourceMenu.DropDownItems.Add(memorySpeedItem);
-
             var settingsMenu = new CustomToolStripMenuItem(Strings.Menu_Settings);
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
+                speedSourceMenu,
                 fpsMaxLimitMenu,
-                launchAtStartupMenu,
-                speedSourceMenu
+                launchAtStartupMenu
             );
 
             var endlessGameMenu = new CustomToolStripMenuItem(Strings.Menu_EndlessGame);
@@ -202,22 +194,6 @@ namespace RunCat365
             {
                 assignValueAction(parsedValue);
             }
-        }
-
-        private static void HandleSpeedSourceClick(
-            ToolStripMenuItem parentMenu,
-            object? sender,
-            SpeedSource source,
-            Action<SpeedSource> setSpeedSource
-        )
-        {
-            if (sender is null) return;
-            foreach (ToolStripMenuItem childItem in parentMenu.DropDownItems)
-            {
-                childItem.Checked = false;
-            }
-            ((ToolStripMenuItem)sender).Checked = true;
-            setSpeedSource(source);
         }
 
         private static Bitmap? GetRunnerThumbnailBitmap(Theme systemTheme, Runner runner)

@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
 using System.Diagnostics.CodeAnalysis;
 
 namespace RunCat365
@@ -25,6 +26,17 @@ namespace RunCat365
 
     internal static class SpeedSourceExtension
     {
+        internal static string GetLocalizedString(this SpeedSource speedSource)
+        {
+            return speedSource switch
+            {
+                SpeedSource.CPU => Strings.SystemInfo_CPU,
+                SpeedSource.GPU => Strings.SystemInfo_GPU,
+                SpeedSource.Memory => Strings.SystemInfo_Memory,
+                _ => "",
+            };
+        }
+
         internal static bool TryParse([NotNullWhen(true)] string? value, out SpeedSource result)
         {
             SpeedSource? nullableResult = value switch

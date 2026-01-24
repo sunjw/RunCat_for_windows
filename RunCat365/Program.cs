@@ -81,8 +81,8 @@ namespace RunCat365
             gpuRepository = new GPURepository();
             memoryRepository = new MemoryRepository();
             storageRepository = new StorageRepository();
-            launchAtStartupManager = new LaunchAtStartupManager();
             networkRepository = new NetworkRepository();
+            launchAtStartupManager = new LaunchAtStartupManager();
 
             ResolveSpeedSource();
 
@@ -92,13 +92,13 @@ namespace RunCat365
                 () => GetSystemTheme(),
                 () => manualTheme,
                 t => ChangeManualTheme(t),
+                gpuRepository.IsAvailable,
+                () => speedSource,
+                s => ChangeSpeedSource(s),
                 () => fpsMaxLimit,
                 f => ChangeFPSMaxLimit(f),
                 () => launchAtStartupManager.GetStartup(),
                 s => launchAtStartupManager.SetStartup(s),
-                () => speedSource,
-                s => ChangeSpeedSource(s),
-                gpuRepository.IsAvailable,
                 () => OpenRepository(),
                 () => Application.Exit()
             );
@@ -187,17 +187,17 @@ namespace RunCat365
             UserSettings.Default.Save();
         }
 
-        private void ChangeFPSMaxLimit(FPSMaxLimit f)
-        {
-            fpsMaxLimit = f;
-            UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
-            UserSettings.Default.Save();
-        }
-
         private void ChangeSpeedSource(SpeedSource source)
         {
             speedSource = source;
             UserSettings.Default.SpeedSource = source.ToString();
+            UserSettings.Default.Save();
+        }
+
+        private void ChangeFPSMaxLimit(FPSMaxLimit f)
+        {
+            fpsMaxLimit = f;
+            UserSettings.Default.FPSMaxLimit = fpsMaxLimit.ToString();
             UserSettings.Default.Save();
         }
 

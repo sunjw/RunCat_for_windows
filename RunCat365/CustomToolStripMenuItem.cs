@@ -84,12 +84,15 @@ namespace RunCat365
             Func<T, string> getTitle,
             Action<CustomToolStripMenuItem, object?, EventArgs> onClick,
             Func<T, bool> isChecked,
-            Func<Runner, Bitmap?> getRunnerThumbnailBitmap
+            Func<Runner, Bitmap?> getRunnerThumbnailBitmap,
+            Func<T, bool>? isVisible = null
         ) where T : Enum
         {
+            isVisible ??= _ => true;
             var items = new List<CustomToolStripMenuItem>();
             foreach (T value in Enum.GetValues(typeof(T)))
             {
+                if (!isVisible(value)) continue;
                 var entityName = getTitle(value);
                 var iconImage = value is Runner runner ? getRunnerThumbnailBitmap(runner) : null;
                 var item = new CustomToolStripMenuItem(
