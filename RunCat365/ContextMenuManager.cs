@@ -32,9 +32,9 @@ namespace RunCat365
             Func<Theme> getSystemTheme,
             Func<Theme> getManualTheme,
             Action<Theme> setManualTheme,
-            bool isAvailableGPURepository,
             Func<SpeedSource> getSpeedSource,
             Action<SpeedSource> setSpeedSource,
+            Func<SpeedSource, bool> isSpeedSourceAvailable,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
             Func<bool> getLaunchAtStartup,
@@ -94,7 +94,7 @@ namespace RunCat365
                 },
                 s => getSpeedSource() == s,
                 _ => null,
-                s => s == SpeedSource.GPU ? isAvailableGPURepository : true
+                isSpeedSourceAvailable
             );
 
             var fpsMaxLimitMenu = new CustomToolStripMenuItem(Strings.Menu_FPSMaxLimit);

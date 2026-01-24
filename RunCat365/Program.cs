@@ -92,9 +92,9 @@ namespace RunCat365
                 () => GetSystemTheme(),
                 () => manualTheme,
                 t => ChangeManualTheme(t),
-                gpuRepository.IsAvailable,
                 () => speedSource,
                 s => ChangeSpeedSource(s),
+                s => IsSpeedSourceAvailable(s),
                 () => fpsMaxLimit,
                 f => ChangeFPSMaxLimit(f),
                 () => launchAtStartupManager.GetStartup(),
@@ -130,9 +130,20 @@ namespace RunCat365
             return (int)value == 0 ? Theme.Dark : Theme.Light;
         }
 
+        private bool IsSpeedSourceAvailable(SpeedSource speedSource)
+        {
+            return speedSource switch
+            {
+                SpeedSource.CPU => true,
+                SpeedSource.GPU => gpuRepository.IsAvailable,
+                SpeedSource.Memory => true,
+                _ => false,
+            };
+        }
+
         private void ResolveSpeedSource()
         {
-            if (!gpuRepository.IsAvailable && speedSource == SpeedSource.GPU)
+            if (!IsSpeedSourceAvailable(speedSource))
             {
                 ChangeSpeedSource(SpeedSource.CPU);
             }
