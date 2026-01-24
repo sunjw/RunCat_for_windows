@@ -45,43 +45,71 @@ namespace RunCat365
         }
     }
 
+    internal class CPUPerformanceCounters
+    {
+        internal PerformanceCounter Total { get; }
+        internal PerformanceCounter User { get; }
+        internal PerformanceCounter Kernel { get; }
+        internal PerformanceCounter Idle { get; }
+
+        private CPUPerformanceCounters()
+        {
+            Total = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            User = new PerformanceCounter("Processor", "% User Time", "_Total");
+            Kernel = new PerformanceCounter("Processor", "% Privileged Time", "_Total");
+            Idle = new PerformanceCounter("Processor", "% Idle Time", "_Total");
+
+            // Discards first return value
+            _ = Total.NextValue();
+            _ = User.NextValue();
+            _ = Kernel.NextValue();
+            _ = Idle.NextValue();
+        }
+
+        internal static CPUPerformanceCounters? TryCreate()
+        {
+            try
+            {
+                return new CPUPerformanceCounters();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        internal void Close()
+        {
+            Total.Close();
+            User.Close();
+            Kernel.Close();
+            Idle.Close();
+        }
+    }
+
     internal class CPURepository
     {
-        private readonly PerformanceCounter totalCounter;
-        private readonly PerformanceCounter userCounter;
-        private readonly PerformanceCounter kernelCounter;
-        private readonly PerformanceCounter idleCounter;
+        private readonly CPUPerformanceCounters? counters;
         private readonly List<CPUInfo> cpuInfoList = [];
         private const int CPU_INFO_LIST_LIMIT_SIZE = 5;
 
+        internal bool IsAvailable => counters is not null;
+
         internal CPURepository()
         {
-            totalCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            userCounter = new PerformanceCounter("Processor", "% User Time", "_Total");
-            kernelCounter = new PerformanceCounter("Processor", "% Privileged Time", "_Total");
-            idleCounter = new PerformanceCounter("Processor", "% Idle Time", "_Total");
-
-            // Discards first return value
-            _ = totalCounter.NextValue();
-            _ = userCounter.NextValue();
-            _ = kernelCounter.NextValue();
-            _ = idleCounter.NextValue();
+            counters = CPUPerformanceCounters.TryCreate();
         }
 
         internal void Update()
         {
-            // Range of value: 0-100 (%)
-            var total = Math.Min(100, totalCounter.NextValue());
-            var user = Math.Min(100, userCounter.NextValue());
-            var kernel = Math.Min(100, kernelCounter.NextValue());
-            var idle = Math.Min(100, idleCounter.NextValue());
+            if (counters is null) return;
 
             var cpuInfo = new CPUInfo
             {
-                Total = total,
-                User = user,
-                Kernel = kernel,
-                Idle = idle,
+                Total = Math.Min(100, counters.Total.NextValue()),
+                User = Math.Min(100, counters.User.NextValue()),
+                Kernel = Math.Min(100, counters.Kernel.NextValue()),
+                Idle = Math.Min(100, counters.Idle.NextValue()),
             };
 
             cpuInfoList.Add(cpuInfo);
@@ -106,10 +134,7 @@ namespace RunCat365
 
         internal void Close()
         {
-            totalCounter.Close();
-            userCounter.Close();
-            kernelCounter.Close();
-            idleCounter.Close();
+            counters?.Close();
         }
     }
 }

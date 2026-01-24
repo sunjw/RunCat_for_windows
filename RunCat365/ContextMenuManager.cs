@@ -165,8 +165,6 @@ namespace RunCat365
 
             SetIcons(getSystemTheme(), getManualTheme(), getRunner());
 
-            notifyIcon.Text = "-";
-            notifyIcon.Icon = icons[0];
             notifyIcon.Visible = true;
             notifyIcon.ContextMenuStrip = contextMenuStrip;
         }
@@ -261,9 +259,10 @@ namespace RunCat365
             }
         }
 
-        internal void ShowBalloonTip()
+        internal void ShowBalloonTip(BalloonTipType balloonTipType)
         {
-            notifyIcon.ShowBalloonTip(5000, "RunCat 365", Strings.Message_AppLaunched, ToolTipIcon.Info);
+            var info = balloonTipType.GetInfo();
+            notifyIcon.ShowBalloonTip(5000, info.Title, info.Text, info.Icon);
         }
 
         internal void AdvanceFrame()

@@ -117,7 +117,7 @@ namespace RunCat365
             fetchTimer.Tick += new EventHandler(FetchTick);
             fetchTimer.Start();
 
-            ShowBalloonTip();
+            ShowBalloonTipIfNeeded();
         }
 
         private static Theme GetSystemTheme()
@@ -149,11 +149,15 @@ namespace RunCat365
             }
         }
 
-        private void ShowBalloonTip()
+        private void ShowBalloonTipIfNeeded()
         {
-            if (UserSettings.Default.FirstLaunch)
+            if (!cpuRepository.IsAvailable)
             {
-                contextMenuManager.ShowBalloonTip();
+                contextMenuManager.ShowBalloonTip(BalloonTipType.CPUInfoUnavailable);
+            }
+            else if (UserSettings.Default.FirstLaunch)
+            {
+                contextMenuManager.ShowBalloonTip(BalloonTipType.AppLaunched);
                 UserSettings.Default.FirstLaunch = false;
                 UserSettings.Default.Save();
             }

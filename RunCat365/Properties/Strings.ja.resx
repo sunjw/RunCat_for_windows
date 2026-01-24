@@ -228,4 +228,7 @@
   <data name="SystemInfo_Received" xml:space="preserve">
     <value>受信</value>
   </data>
+  <data name="Message_CPUUsageUnavailable" xml:space="preserve">
+    <value>CPU使用率の取得ができません。走る速度を更新できません。</value>
+  </data>
 </root>
