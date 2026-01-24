@@ -231,4 +231,7 @@
   <data name="Message_CPUUsageUnavailable" xml:space="preserve">
     <value>CPU使用率の取得ができません。走る速度を更新できません。</value>
   </data>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>速度の基準</value>
+  </data>
 </root>

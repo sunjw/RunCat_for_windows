@@ -80,7 +80,7 @@ namespace RunCat365
                 _ => null
             );
 
-            var speedSourceMenu = new CustomToolStripMenuItem("Speed based on");
+            var speedSourceMenu = new CustomToolStripMenuItem(Strings.Menu_SpeedSource);
             speedSourceMenu.SetupSubMenusFromEnum<SpeedSource>(
                 s => s.GetLocalizedString(),
                 (parent, sender, e) =>

@@ -231,4 +231,7 @@
   <data name="Message_CPUUsageUnavailable" xml:space="preserve">
     <value>Failed to get CPU usage. Unable to update running speed.</value>
   </data>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>Speed based on</value>
+  </data>
 </root>
