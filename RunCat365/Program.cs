@@ -219,7 +219,7 @@ namespace RunCat365
 
         private string GetInfoDescription(CPUInfo cpuInfo, GPUInfo? gpuInfo, MemoryInfo memoryInfo)
         {
-            return = speedSource switch
+            return speedSource switch
             {
                 SpeedSource.CPU => cpuInfo.GetDescription(),
                 SpeedSource.GPU => gpuInfo?.GetDescription() ?? "",
@@ -258,7 +258,7 @@ namespace RunCat365
                 systemInfoValues.AddRange(gpuInfo.Value.GenerateIndicator());
             }
             systemInfoValues.AddRange(memoryInfo.GenerateIndicator());
-            systemInfoValues.AddRange(storageValue.GenerateIndicator());
+            systemInfoValues.AddRange(storageInfo.GenerateIndicator());
             systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
 

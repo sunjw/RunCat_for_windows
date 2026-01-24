@@ -200,6 +200,7 @@
   </data>
   <data name="SystemInfo_Maximum" xml:space="preserve">
     <value>最大</value>
+  </data>
   <data name="SystemInfo_Memory" xml:space="preserve">
     <value>メモリ</value>
   </data>
