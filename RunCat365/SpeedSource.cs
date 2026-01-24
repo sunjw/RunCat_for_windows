@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace RunCat365
 {
     internal enum SpeedSource
@@ -23,9 +25,26 @@ namespace RunCat365
 
     internal static class SpeedSourceExtension
     {
-        internal static string GetString(this SpeedSource source)
+        internal static bool TryParse([NotNullWhen(true)] string? value, out SpeedSource result)
         {
-            return source.ToString();
+            SpeedSource? nullableResult = value switch
+            {
+                "CPU" => SpeedSource.CPU,
+                "GPU" => SpeedSource.GPU,
+                "Memory" => SpeedSource.Memory,
+                _ => null,
+            };
+
+            if (nullableResult is SpeedSource nonNullableResult)
+            {
+                result = nonNullableResult;
+                return true;
+            }
+            else
+            {
+                result = SpeedSource.CPU;
+                return false;
+            }
         }
     }
 }
