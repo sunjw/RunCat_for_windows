@@ -12,11 +12,33 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using RunCat365.Properties;
+
 namespace RunCat365
 {
-    enum BalloonTipType
+    internal readonly struct BalloonTipInfo(string title, string text, ToolTipIcon icon)
+    {
+        internal string Title { get; } = title;
+        internal string Text { get; } = text;
+        internal ToolTipIcon Icon { get; } = icon;
+    }
+
+    internal enum BalloonTipType
     {
         AppLaunched,
         CPUInfoUnavailable,
+    }
+
+    internal static class BalloonTipTypeExtension
+    {
+        internal static BalloonTipInfo GetInfo(this BalloonTipType balloonTipType)
+        {
+            return balloonTipType switch
+            {
+                BalloonTipType.AppLaunched => new("RunCat 365", Strings.Message_AppLaunched, ToolTipIcon.Info),
+                BalloonTipType.CPUInfoUnavailable => new(Strings.Message_Warning, Strings.Message_CPUUsageUnavailable, ToolTipIcon.Warning),
+                _ => new("RunCat 365", string.Empty, ToolTipIcon.None),
+            };
+        }
     }
 }

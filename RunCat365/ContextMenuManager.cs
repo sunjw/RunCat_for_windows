@@ -261,13 +261,8 @@ namespace RunCat365
 
         internal void ShowBalloonTip(BalloonTipType balloonTipType)
         {
-            var (title, text, icon) = balloonTipType switch
-            {
-                BalloonTipType.AppLaunched => ("RunCat 365", Strings.Message_AppLaunched, ToolTipIcon.Info),
-                BalloonTipType.CPUInfoUnavailable => (Strings.Message_Warning, Strings.Message_CPUUsageUnavailable, ToolTipIcon.Warning),
-                _ => ("RunCat 365", string.Empty, ToolTipIcon.None),
-            };
-            notifyIcon.ShowBalloonTip(5000, title, text, icon);
+            var info = balloonTipType.GetInfo();
+            notifyIcon.ShowBalloonTip(5000, info.Title, info.Text, info.Icon);
         }
 
         internal void AdvanceFrame()
