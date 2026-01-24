@@ -16,11 +16,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace RunCat365
 {
-    internal enum SpeedSource
+    enum SpeedSource
     {
         CPU,
         GPU,
-        Memory
+        Memory,
     }
 
     internal static class SpeedSourceExtension
