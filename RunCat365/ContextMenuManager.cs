@@ -165,8 +165,6 @@ namespace RunCat365
 
             SetIcons(getSystemTheme(), getManualTheme(), getRunner());
 
-            notifyIcon.Text = "-";
-            notifyIcon.Icon = icons[0];
             notifyIcon.Visible = true;
             notifyIcon.ContextMenuStrip = contextMenuStrip;
         }
