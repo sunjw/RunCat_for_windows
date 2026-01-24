@@ -174,6 +174,15 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Failed to get CPU usage. Unable to update running speed..
+        /// </summary>
+        internal static string Message_CPUUsageUnavailable {
+            get {
+                return ResourceManager.GetString("Message_CPUUsageUnavailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         internal static string Message_Warning {
