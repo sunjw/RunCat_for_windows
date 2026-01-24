@@ -217,15 +217,39 @@ namespace RunCat365
             contextMenuManager.AdvanceFrame();
         }
 
-        private void FetchSystemInfo(
-            CPUInfo cpuInfo,
-            GPUInfo? gpuInfo,
-            MemoryInfo memoryInfo,
-            List<StorageInfo> storageValue,
-            NetworkInfo networkInfo
-        )
+        private string GetInfoDescription(CPUInfo cpuInfo, GPUInfo? gpuInfo, MemoryInfo memoryInfo)
         {
-            contextMenuManager.SetNotifyIconText(speedSource.GetInfoDescription(cpuInfo, gpuInfo, memoryInfo));
+            return = speedSource switch
+            {
+                SpeedSource.CPU => cpuInfo.GetDescription(),
+                SpeedSource.GPU => gpuInfo?.GetDescription() ?? "",
+                SpeedSource.Memory => memoryInfo.GetDescription(),
+                _ => "",
+            };
+        }
+
+        private int CalculateInterval(CPUInfo cpuInfo, GPUInfo? gpuInfo, MemoryInfo memoryInfo)
+        {
+            var load = speedSource switch
+            {
+                SpeedSource.CPU => cpuInfo.Total,
+                SpeedSource.GPU => gpuInfo?.Maximum ?? 0f,
+                SpeedSource.Memory => memoryInfo.MemoryLoad,
+                _ => 0f,
+            };
+            var speed = (float)Math.Max(1.0f, (load / 5.0f) * fpsMaxLimit.GetRate());
+            return (int)(500.0f / speed);
+        }
+
+        private int FetchSystemInfo()
+        {
+            var cpuInfo = cpuRepository.Get();
+            var gpuInfo = gpuRepository.Get();
+            var memoryInfo = memoryRepository.Get();
+            var storageInfo = storageRepository.Get();
+            var networkInfo = networkRepository.Get();
+
+            contextMenuManager.SetNotifyIconText(GetInfoDescription(cpuInfo, gpuInfo, memoryInfo));
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
@@ -237,13 +261,8 @@ namespace RunCat365
             systemInfoValues.AddRange(storageValue.GenerateIndicator());
             systemInfoValues.AddRange(networkInfo.GenerateIndicator());
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
-        }
 
-        private int CalculateInterval(CPUInfo cpuInfo, GPUInfo? gpuInfo, MemoryInfo memoryInfo)
-        {
-            var load = speedSource.GetLoad(cpuInfo, gpuInfo, memoryInfo);
-            var speed = (float)Math.Max(1.0f, (load / 5.0f) * fpsMaxLimit.GetRate());
-            return (int)(500.0f / speed);
+            return CalculateInterval(cpuInfo, gpuInfo, memoryInfo);
         }
 
         private void FetchTick(object? state, EventArgs e)
@@ -253,16 +272,9 @@ namespace RunCat365
             fetchCounter += 1;
             if (fetchCounter < FETCH_COUNTER_SIZE) return;
             fetchCounter = 0;
-
-            var cpuInfo = cpuRepository.Get();
-            var gpuInfo = gpuRepository.Get();
-            var memoryInfo = memoryRepository.Get();
-            var storageInfo = storageRepository.Get();
-            var networkInfo = networkRepository.Get();
-            FetchSystemInfo(cpuInfo, gpuInfo, memoryInfo, storageInfo, networkInfo);
-
+            var interval = FetchSystemInfo();
             animateTimer.Stop();
-            animateTimer.Interval = CalculateInterval(cpuInfo, gpuInfo, memoryInfo);
+            animateTimer.Interval = interval;
             animateTimer.Start();
         }
 

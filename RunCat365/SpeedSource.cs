@@ -58,37 +58,5 @@ namespace RunCat365
                 return false;
             }
         }
-
-        internal static string GetInfoDescription(
-            this SpeedSource speedSource,
-            CPUInfo cpuInfo,
-            GPUInfo? gpuInfo,
-            MemoryInfo memoryInfo
-        )
-        {
-            return speedSource switch
-            {
-                SpeedSource.CPU => cpuInfo.GetDescription(),
-                SpeedSource.GPU => gpuInfo?.GetDescription() ?? "",
-                SpeedSource.Memory => memoryInfo.GetDescription(),
-                _ => "",
-            };
-        }
-
-        internal static float GetLoad(
-            this SpeedSource speedSource,
-            CPUInfo cpuInfo,
-            GPUInfo? gpuInfo,
-            MemoryInfo memoryInfo
-        )
-        {
-            return speedSource switch
-            {
-                SpeedSource.CPU => cpuInfo.Total,
-                SpeedSource.GPU => gpuInfo?.Maximum ?? 0f,
-                SpeedSource.Memory => memoryInfo.MemoryLoad,
-                _ => 0f,
-            };
-        }
     }
 }
