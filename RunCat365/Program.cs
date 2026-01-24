@@ -214,13 +214,7 @@ namespace RunCat365
             NetworkInfo networkInfo
         )
         {
-            var tooltipText = speedSource switch
-            {
-                SpeedSource.GPU => gpuInfo.GetDescription(),
-                SpeedSource.Memory => memoryInfo.GetDescription(),
-                _ => cpuInfo.GetDescription()
-            };
-            contextMenuManager.SetNotifyIconText(tooltipText);
+            contextMenuManager.SetNotifyIconText(speedSource.GetInfoDescription(cpuInfo, gpuInfo, memoryInfo));
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
@@ -234,14 +228,9 @@ namespace RunCat365
             contextMenuManager.SetSystemInfoMenuText(string.Join("\n", [.. systemInfoValues]));
         }
 
-        private int CalculateInterval(float cpuValue, float gpuValue, float memoryValue)
+        private int CalculateInterval(CPUInfo cpuInfo, GPUInfo? gpuInfo, MemoryInfo memoryInfo)
         {
-            var load = speedSource switch
-            {
-                SpeedSource.GPU => gpuValue,
-                SpeedSource.Memory => memoryValue,
-                _ => cpuValue
-            };
+            var load = speedSource.GetLoad(cpuInfo, gpuInfo, memoryInfo);
             var speed = (float)Math.Max(1.0f, (load / 5.0f) * fpsMaxLimit.GetRate());
             return (int)(500.0f / speed);
         }
@@ -262,7 +251,7 @@ namespace RunCat365
             FetchSystemInfo(cpuInfo, gpuInfo, memoryInfo, storageInfo, networkInfo);
 
             animateTimer.Stop();
-            animateTimer.Interval = CalculateInterval(cpuInfo.Total, gpuInfo.Total, memoryInfo.MemoryLoad);
+            animateTimer.Interval = CalculateInterval(cpuInfo, gpuInfo, memoryInfo);
             animateTimer.Start();
         }
 
