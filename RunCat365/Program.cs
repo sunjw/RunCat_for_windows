@@ -204,7 +204,13 @@ namespace RunCat365
             NetworkInfo networkInfo
         )
         {
-            contextMenuManager.SetNotifyIconText(cpuInfo.GetDescription());
+            var tooltipText = speedSource switch
+            {
+                SpeedSource.GPU => gpuInfo.GetDescription(),
+                SpeedSource.Memory => memoryInfo.GetDescription(),
+                _ => cpuInfo.GetDescription()
+            };
+            contextMenuManager.SetNotifyIconText(tooltipText);
 
             var systemInfoValues = new List<string>();
             systemInfoValues.AddRange(cpuInfo.GenerateIndicator());
