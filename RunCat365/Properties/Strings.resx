@@ -123,9 +123,6 @@
   <data name="Menu_Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
-  <data name="Menu_SpeedSource" xml:space="preserve">
-    <value>Speed based on</value>
-  </data>
   <data name="Menu_FPSMaxLimit" xml:space="preserve">
     <value>FPS Max Limit</value>
   </data>
@@ -233,5 +230,8 @@
   </data>
   <data name="Message_CPUUsageUnavailable" xml:space="preserve">
     <value>Failed to get CPU usage. Unable to update running speed.</value>
+  </data>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>Speed based on</value>
   </data>
 </root>
