@@ -46,5 +46,14 @@ namespace RunCat365
                 _ => "",
             };
         }
+
+        internal static Color GetIconColor(this Theme theme)
+        {
+            return theme switch {
+                Theme.Dark => Color.White,
+                Theme.Light => Color.White,
+                _ => Color.Gray,
+            };
+        }
     }
 }
