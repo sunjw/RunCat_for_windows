@@ -51,7 +51,7 @@ namespace RunCat365
         {
             return theme switch {
                 Theme.Dark => Color.White,
-                Theme.Light => Color.White,
+                Theme.Light => Color.Black,
                 _ => Color.Gray,
             };
         }
