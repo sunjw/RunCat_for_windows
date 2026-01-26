@@ -192,6 +192,15 @@
   <data name="SystemInfo_Available" xml:space="preserve">
     <value>Available</value>
   </data>
+  <data name="SystemInfo_GPU" xml:space="preserve">
+    <value>GPU</value>
+  </data>
+  <data name="SystemInfo_Average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="SystemInfo_Maximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
   <data name="SystemInfo_Memory" xml:space="preserve">
     <value>Memory</value>
   </data>
@@ -219,14 +228,11 @@
   <data name="SystemInfo_Received" xml:space="preserve">
     <value>Received</value>
   </data>
-  <data name="SystemInfo_GPU" xml:space="preserve">
-    <value>GPU</value>
+  <data name="Message_CPUUsageUnavailable" xml:space="preserve">
+    <value>Failed to get CPU usage. Unable to update running speed.</value>
   </data>
-  <data name="SystemInfo_Average" xml:space="preserve">
-    <value>Average</value>
-  </data>
-  <data name="SystemInfo_Maximum" xml:space="preserve">
-    <value>Maximum</value>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>Speed based on</value>
   </data>
   <data name="Runner_WinLogo" xml:space="preserve">
     <value>WinLogo</value>

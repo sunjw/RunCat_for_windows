@@ -32,6 +32,9 @@ namespace RunCat365
             Func<Theme> getSystemTheme,
             Func<Theme> getManualTheme,
             Action<Theme> setManualTheme,
+            Func<SpeedSource> getSpeedSource,
+            Action<SpeedSource> setSpeedSource,
+            Func<SpeedSource, bool> isSpeedSourceAvailable,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
             Func<bool> getLaunchAtStartup,
@@ -78,6 +81,23 @@ namespace RunCat365
                 _ => null
             );
 
+            var speedSourceMenu = new CustomToolStripMenuItem(Strings.Menu_SpeedSource);
+            speedSourceMenu.SetupSubMenusFromEnum<SpeedSource>(
+                s => s.GetLocalizedString(),
+                (parent, sender, e) =>
+                {
+                    HandleMenuItemSelection<SpeedSource>(
+                        parent,
+                        sender,
+                        (string? s, out SpeedSource ss) => Enum.TryParse(s, out ss),
+                        s => setSpeedSource(s)
+                    );
+                },
+                s => getSpeedSource() == s,
+                _ => null,
+                isSpeedSourceAvailable
+            );
+
             var fpsMaxLimitMenu = new CustomToolStripMenuItem(Strings.Menu_FPSMaxLimit);
             fpsMaxLimitMenu.SetupSubMenusFromEnum<FPSMaxLimit>(
                 f => f.GetString(),
@@ -103,6 +123,7 @@ namespace RunCat365
             var settingsMenu = new CustomToolStripMenuItem(Strings.Menu_Settings);
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
+                speedSourceMenu,
                 fpsMaxLimitMenu,
                 launchAtStartupMenu
             );
@@ -145,8 +166,6 @@ namespace RunCat365
 
             SetIcons(getSystemTheme(), getManualTheme(), getRunner());
 
-            notifyIcon.Text = "-";
-            notifyIcon.Icon = icons[0];
             notifyIcon.Visible = true;
             notifyIcon.ContextMenuStrip = contextMenuStrip;
         }
@@ -249,9 +268,10 @@ namespace RunCat365
             }
         }
 
-        internal void ShowBalloonTip()
+        internal void ShowBalloonTip(BalloonTipType balloonTipType)
         {
-            notifyIcon.ShowBalloonTip(5000, "RunCat 365", Strings.Message_AppLaunched, ToolTipIcon.Info);
+            var info = balloonTipType.GetInfo();
+            notifyIcon.ShowBalloonTip(5000, info.Title, info.Text, info.Icon);
         }
 
         internal void AdvanceFrame()
