@@ -15,7 +15,6 @@
 using RunCat365.Properties;
 using System.Collections;
 using System.Globalization;
-using System.Resources;
 using System.Text.RegularExpressions;
 using FormsTimer = System.Windows.Forms.Timer;
 
