@@ -47,7 +47,7 @@ namespace RunCat365
             };
         }
 
-        internal static Color GetIconColor(this Theme theme)
+        internal static Color GetContrastColor(this Theme theme)
         {
             return theme switch {
                 Theme.Dark => Color.White,
