@@ -13,19 +13,27 @@
 //    limitations under the License.
 
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace RunCat365 {
     internal static class IconExtension
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool DestroyIcon(IntPtr handle);
+
         internal static Icon Recolor(this Icon icon, Color color)
         {
             var original = icon.ToBitmap();
             var recolored = original.Recolor(color);
 
+            var hIcon = recolored.GetHicon();
+            using var tempIcon = Icon.FromHandle(hIcon);
             using var ms = new MemoryStream();
-            recolored.Save(ms, ImageFormat.Png);
+            tempIcon.Save(ms);
             ms.Position = 0;
-            return Icon.FromHandle(recolored.GetHicon());
+            var result = new Icon(ms);
+            DestroyIcon(hIcon);
+            return result;
         }
     }
 
