@@ -64,14 +64,14 @@ namespace RunCat365
                     {
                         if (entry.Value is Bitmap icon)
                         {
-                            catIcons.Add(key, systemTheme == Theme.Light ? icon : icon.Recolor(color));
+                            catIcons.Add(key, systemTheme == Theme.Light ? new Bitmap(icon) : icon.Recolor(color));
                         }
                     }
                     else if (key.StartsWith("road"))
                     {
                         if (entry.Value is Bitmap icon)
                         {
-                            roadIcons.Add(key, systemTheme == Theme.Light ? icon : icon.Recolor(color));
+                            roadIcons.Add(key, systemTheme == Theme.Light ? new Bitmap(icon) : icon.Recolor(color));
                         }
                     }
                 }
@@ -97,6 +97,11 @@ namespace RunCat365
             base.OnFormClosing(e);
             timer.Stop();
             timer.Dispose();
+
+            foreach (var bitmap in catIcons.Values) bitmap.Dispose();
+            foreach (var bitmap in roadIcons.Values) bitmap.Dispose();
+            catIcons.Clear();
+            roadIcons.Clear();
         }
 
         private void Initialize()
