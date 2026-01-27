@@ -204,7 +204,8 @@ namespace RunCat365
 
         internal void SetIcons(Theme systemTheme, Theme manualTheme, Runner runner)
         {
-            var color = (manualTheme == Theme.System ? systemTheme : manualTheme).GetContrastColor();
+            var theme = manualTheme == Theme.System ? systemTheme : manualTheme;
+            var color = theme.GetContrastColor();
             var runnerName = runner.GetString();
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
@@ -214,7 +215,7 @@ namespace RunCat365
                 var iconName = $"{runnerName}_{i}".ToLower();
                 var icon = rm.GetObject(iconName);
                 if (icon is null) continue;
-                if (manualTheme != Theme.Light) icon = IconColor.ChangeIconColor((Icon)icon, color);
+                if (theme != Theme.Light) icon = IconColor.ChangeIconColor((Icon)icon, color);
                 list.Add((Icon)icon);
             }
 
