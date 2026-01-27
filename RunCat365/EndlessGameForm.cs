@@ -64,14 +64,14 @@ namespace RunCat365
                     {
                         if (entry.Value is Bitmap icon)
                         {
-                            catIcons.Add(key, systemTheme == Theme.Light ? icon : IconColor.ChangeIconColor(icon, color));
+                            catIcons.Add(key, systemTheme == Theme.Light ? icon : icon.Recolor(color));
                         }
                     }
                     else if (key.StartsWith("road"))
                     {
                         if (entry.Value is Bitmap icon)
                         {
-                            roadIcons.Add(key, systemTheme == Theme.Light ? icon : IconColor.ChangeIconColor(icon, color));
+                            roadIcons.Add(key, systemTheme == Theme.Light ? icon : icon.Recolor(color));
                         }
                     }
                 }

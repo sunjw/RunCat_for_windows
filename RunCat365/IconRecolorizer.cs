@@ -15,20 +15,23 @@
 using System.Drawing.Imaging;
 
 namespace RunCat365 {
-    internal static class IconColor
+    internal static class IconExtension
     {
-        internal static Icon ChangeIconColor(Icon icon, Color color)
+        internal static Icon Recolor(this Icon icon, Color color)
         {
             var original = icon.ToBitmap();
-            var recolored = ChangeIconColor(original, color);
+            var recolored = original.Recolor(color);
 
             using var ms = new MemoryStream();
             recolored.Save(ms, ImageFormat.Png);
             ms.Position = 0;
             return Icon.FromHandle(recolored.GetHicon());
         }
+    }
 
-        internal static Bitmap ChangeIconColor(Bitmap icon, Color color)
+    internal static class BitmapExtension
+    {
+        internal static Bitmap Recolor(this Bitmap icon, Color color)
         {
             var newIcon = new Bitmap(icon.Width, icon.Height, PixelFormat.Format32bppArgb);
             using (var g = Graphics.FromImage(newIcon)) g.DrawImage(icon, 0, 0);
