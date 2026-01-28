@@ -199,7 +199,8 @@ namespace RunCat365
             var color = systemTheme.GetContrastColor();
             var iconName = $"{runner.GetString()}_0".ToLower();
             var obj = Resources.ResourceManager.GetObject(iconName);
-            return obj is Icon icon ? (systemTheme == Theme.Light ? icon : icon.Recolor(color)).ToBitmap() : null;
+            if (obj is not Bitmap bitmap) return null;
+            return systemTheme == Theme.Light ? bitmap : bitmap.Recolor(color);
         }
 
         internal void SetIcons(Theme systemTheme, Theme manualTheme, Runner runner)
@@ -213,10 +214,9 @@ namespace RunCat365
             for (int i = 0; i < capacity; i++)
             {
                 var iconName = $"{runnerName}_{i}".ToLower();
-                var icon = rm.GetObject(iconName);
-                if (icon is null) continue;
-                if (theme != Theme.Light) icon = ((Icon)icon).Recolor(color);
-                list.Add((Icon)icon);
+                if (rm.GetObject(iconName) is not Bitmap bitmap) continue;
+                var recolored = theme == Theme.Light ? bitmap : bitmap.Recolor(color);
+                list.Add(recolored.ToIcon());
             }
 
             lock (iconLock)
