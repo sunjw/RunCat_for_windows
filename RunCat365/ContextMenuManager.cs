@@ -215,8 +215,15 @@ namespace RunCat365
             {
                 var iconName = $"{runnerName}_{i}".ToLower();
                 if (rm.GetObject(iconName) is not Bitmap bitmap) continue;
-                var recolored = theme == Theme.Light ? bitmap : bitmap.Recolor(color);
-                list.Add(recolored.ToIcon());
+                if (theme == Theme.Light)
+                {
+                    list.Add(bitmap.ToIcon());
+                }
+                else
+                {
+                    using var recolored = bitmap.Recolor(color);
+                    list.Add(recolored.ToIcon());
+                }
             }
 
             lock (iconLock)

@@ -28,37 +28,49 @@ namespace RunCat365
                 PixelFormat.Format32bppArgb
             );
 
-            var dstData = newBitmap.LockBits(
-                new Rectangle(0, 0, newBitmap.Width, newBitmap.Height),
-                ImageLockMode.WriteOnly,
-                PixelFormat.Format32bppArgb
-            );
-
-            unsafe
+            try
             {
-                byte* srcPtr = (byte*)srcData.Scan0;
-                byte* dstPtr = (byte*)dstData.Scan0;
+                var dstData = newBitmap.LockBits(
+                    new Rectangle(0, 0, newBitmap.Width, newBitmap.Height),
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb
+                );
 
-                for (int y = 0; y < bitmap.Height; y++)
+                try
                 {
-                    byte* srcRow = srcPtr + (y * srcData.Stride);
-                    byte* dstRow = dstPtr + (y * dstData.Stride);
-
-                    for (int x = 0; x < bitmap.Width; x++)
+                    unsafe
                     {
-                        byte* srcPixel = srcRow + (x * 4);
-                        byte* dstPixel = dstRow + (x * 4);
+                        byte* srcPtr = (byte*)srcData.Scan0;
+                        byte* dstPtr = (byte*)dstData.Scan0;
 
-                        dstPixel[0] = color.B;
-                        dstPixel[1] = color.G;
-                        dstPixel[2] = color.R;
-                        dstPixel[3] = srcPixel[3];
+                        for (int y = 0; y < bitmap.Height; y++)
+                        {
+                            byte* srcRow = srcPtr + (y * srcData.Stride);
+                            byte* dstRow = dstPtr + (y * dstData.Stride);
+
+                            for (int x = 0; x < bitmap.Width; x++)
+                            {
+                                byte* srcPixel = srcRow + (x * 4);
+                                byte* dstPixel = dstRow + (x * 4);
+
+                                dstPixel[0] = color.B;
+                                dstPixel[1] = color.G;
+                                dstPixel[2] = color.R;
+                                dstPixel[3] = srcPixel[3];
+                            }
+                        }
                     }
                 }
+                finally
+                {
+                    newBitmap.UnlockBits(dstData);
+                }
+            }
+            finally
+            {
+                bitmap.UnlockBits(srcData);
             }
 
-            bitmap.UnlockBits(srcData);
-            newBitmap.UnlockBits(dstData);
             return newBitmap;
         }
 
