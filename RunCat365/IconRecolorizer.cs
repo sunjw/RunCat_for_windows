@@ -13,70 +13,93 @@
 //    limitations under the License.
 
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
-namespace RunCat365 {
-    internal static class IconExtension
-    {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern bool DestroyIcon(IntPtr handle);
-
-        internal static Icon Recolor(this Icon icon, Color color)
-        {
-            var original = icon.ToBitmap();
-            var recolored = original.Recolor(color);
-
-            var hIcon = recolored.GetHicon();
-            using var tempIcon = Icon.FromHandle(hIcon);
-            using var ms = new MemoryStream();
-            tempIcon.Save(ms);
-            ms.Position = 0;
-            var result = new Icon(ms);
-            DestroyIcon(hIcon);
-            return result;
-        }
-    }
-
+namespace RunCat365
+{
     internal static class BitmapExtension
     {
-        internal static Bitmap Recolor(this Bitmap icon, Color color)
+        internal static Bitmap Recolor(this Bitmap bitmap, Color color)
         {
-            var newIcon = new Bitmap(icon.Width, icon.Height, PixelFormat.Format32bppArgb);
-            using (var g = Graphics.FromImage(newIcon)) g.DrawImage(icon, 0, 0);
+            var newBitmap = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
 
-            var data = newIcon.LockBits
-            (
-                new Rectangle(0, 0, newIcon.Width, newIcon.Height),
-                ImageLockMode.ReadWrite,
+            var srcData = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb
             );
 
-            unsafe
+            try
             {
-                byte* ptr = (byte*)data.Scan0;
+                var dstData = newBitmap.LockBits(
+                    new Rectangle(0, 0, newBitmap.Width, newBitmap.Height),
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb
+                );
 
-                for (int y = 0; y < newIcon.Height; y++)
+                try
                 {
-                    byte* row = ptr + (y * data.Stride);
-
-                    for (int x = 0; x < newIcon.Width; x++)
+                    unsafe
                     {
-                        byte* pixel = row + (x * 4);
+                        byte* srcPtr = (byte*)srcData.Scan0;
+                        byte* dstPtr = (byte*)dstData.Scan0;
 
-                        var a = pixel[3];
-
-                        if (a > 0)
+                        for (int y = 0; y < bitmap.Height; y++)
                         {
-                            pixel[0] = color.B;
-                            pixel[1] = color.G;
-                            pixel[2] = color.R;
+                            byte* srcRow = srcPtr + (y * srcData.Stride);
+                            byte* dstRow = dstPtr + (y * dstData.Stride);
+
+                            for (int x = 0; x < bitmap.Width; x++)
+                            {
+                                byte* srcPixel = srcRow + (x * 4);
+                                byte* dstPixel = dstRow + (x * 4);
+
+                                dstPixel[0] = color.B;
+                                dstPixel[1] = color.G;
+                                dstPixel[2] = color.R;
+                                dstPixel[3] = srcPixel[3];
+                            }
                         }
                     }
                 }
+                finally
+                {
+                    newBitmap.UnlockBits(dstData);
+                }
+            }
+            finally
+            {
+                bitmap.UnlockBits(srcData);
             }
 
-            newIcon.UnlockBits(data);
-            return newIcon;
+            return newBitmap;
+        }
+
+        internal static Icon ToIcon(this Bitmap bitmap)
+        {
+            using var pngStream = new MemoryStream();
+            bitmap.Save(pngStream, ImageFormat.Png);
+            var pngData = pngStream.ToArray();
+
+            using var icoStream = new MemoryStream();
+            using var bw = new BinaryWriter(icoStream);
+
+            bw.Write((short)0);
+            bw.Write((short)1);
+            bw.Write((short)1);
+
+            bw.Write((byte)(bitmap.Width >= 256 ? 0 : bitmap.Width));
+            bw.Write((byte)(bitmap.Height >= 256 ? 0 : bitmap.Height));
+            bw.Write((byte)0);
+            bw.Write((byte)0);
+            bw.Write((short)1);
+            bw.Write((short)32);
+            bw.Write(pngData.Length);
+            bw.Write(22);
+
+            bw.Write(pngData);
+
+            icoStream.Position = 0;
+            return new Icon(icoStream);
         }
     }
 }
