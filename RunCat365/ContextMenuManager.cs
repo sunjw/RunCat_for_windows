@@ -202,7 +202,7 @@ namespace RunCat365
             if (runner.HasTheme()) iconName = $"{systemTheme.GetString()}_{iconName}".ToLower();
             var obj = Resources.ResourceManager.GetObject(iconName);
             if (obj is not Bitmap bitmap) return null;
-            return (!runner.HasTheme() || systemTheme == Theme.Light) ? bitmap : bitmap.Recolor(color)
+            return (!runner.HasTheme() || systemTheme == Theme.Light) ? bitmap : bitmap.Recolor(color);
         }
 
         internal void SetIcons(Theme systemTheme, Theme manualTheme, Runner runner)
