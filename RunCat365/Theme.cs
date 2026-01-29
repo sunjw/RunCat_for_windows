@@ -49,7 +49,8 @@ namespace RunCat365
 
         internal static Color GetContrastColor(this Theme theme)
         {
-            return theme switch {
+            return theme switch
+            {
                 Theme.Dark => Color.White,
                 Theme.Light => Color.Black,
                 _ => Color.Gray,

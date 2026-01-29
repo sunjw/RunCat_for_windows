@@ -16,59 +16,57 @@ using System.Drawing.Imaging;
 
 namespace RunCat365
 {
+    internal readonly ref struct BitmapLock
+    {
+        private readonly Bitmap _bitmap;
+        internal BitmapData Data { get; }
+
+        internal BitmapLock(Bitmap bitmap, ImageLockMode mode)
+        {
+            _bitmap = bitmap;
+            Data = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                mode,
+                PixelFormat.Format32bppArgb
+            );
+        }
+
+        internal void Dispose()
+        {
+            _bitmap.UnlockBits(Data);
+        }
+    }
+
     internal static class BitmapExtension
     {
         internal static Bitmap Recolor(this Bitmap bitmap, Color color)
         {
             var newBitmap = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
 
-            var srcData = bitmap.LockBits(
-                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                ImageLockMode.ReadOnly,
-                PixelFormat.Format32bppArgb
-            );
+            using var srcLock = new BitmapLock(bitmap, ImageLockMode.ReadOnly);
+            using var dstLock = new BitmapLock(newBitmap, ImageLockMode.WriteOnly);
 
-            try
+            unsafe
             {
-                var dstData = newBitmap.LockBits(
-                    new Rectangle(0, 0, newBitmap.Width, newBitmap.Height),
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppArgb
-                );
+                byte* srcPtr = (byte*)srcLock.Data.Scan0;
+                byte* dstPtr = (byte*)dstLock.Data.Scan0;
 
-                try
+                for (int y = 0; y < bitmap.Height; y++)
                 {
-                    unsafe
+                    byte* srcRow = srcPtr + (y * srcLock.Data.Stride);
+                    byte* dstRow = dstPtr + (y * dstLock.Data.Stride);
+
+                    for (int x = 0; x < bitmap.Width; x++)
                     {
-                        byte* srcPtr = (byte*)srcData.Scan0;
-                        byte* dstPtr = (byte*)dstData.Scan0;
+                        byte* srcPixel = srcRow + (x * 4);
+                        byte* dstPixel = dstRow + (x * 4);
 
-                        for (int y = 0; y < bitmap.Height; y++)
-                        {
-                            byte* srcRow = srcPtr + (y * srcData.Stride);
-                            byte* dstRow = dstPtr + (y * dstData.Stride);
-
-                            for (int x = 0; x < bitmap.Width; x++)
-                            {
-                                byte* srcPixel = srcRow + (x * 4);
-                                byte* dstPixel = dstRow + (x * 4);
-
-                                dstPixel[0] = color.B;
-                                dstPixel[1] = color.G;
-                                dstPixel[2] = color.R;
-                                dstPixel[3] = srcPixel[3];
-                            }
-                        }
+                        dstPixel[0] = color.B;
+                        dstPixel[1] = color.G;
+                        dstPixel[2] = color.R;
+                        dstPixel[3] = srcPixel[3];
                     }
                 }
-                finally
-                {
-                    newBitmap.UnlockBits(dstData);
-                }
-            }
-            finally
-            {
-                bitmap.UnlockBits(srcData);
             }
 
             return newBitmap;
