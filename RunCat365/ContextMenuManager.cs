@@ -196,24 +196,34 @@ namespace RunCat365
 
         private static Bitmap? GetRunnerThumbnailBitmap(Theme systemTheme, Runner runner)
         {
-            var iconName = $"{systemTheme.GetString()}_{runner.GetString()}_0".ToLower();
+            var color = systemTheme.GetContrastColor();
+            var iconName = $"{runner.GetString()}_0".ToLower();
             var obj = Resources.ResourceManager.GetObject(iconName);
-            return obj is Icon icon ? icon.ToBitmap() : null;
+            if (obj is not Bitmap bitmap) return null;
+            return systemTheme == Theme.Light ? bitmap : bitmap.Recolor(color);
         }
 
         internal void SetIcons(Theme systemTheme, Theme manualTheme, Runner runner)
         {
-            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString();
+            var theme = manualTheme == Theme.System ? systemTheme : manualTheme;
+            var color = theme.GetContrastColor();
             var runnerName = runner.GetString();
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
             var list = new List<Icon>(capacity);
             for (int i = 0; i < capacity; i++)
             {
-                var iconName = $"{prefix}_{runnerName}_{i}".ToLower();
-                var icon = rm.GetObject(iconName);
-                if (icon is null) continue;
-                list.Add((Icon)icon);
+                var iconName = $"{runnerName}_{i}".ToLower();
+                if (rm.GetObject(iconName) is not Bitmap bitmap) continue;
+                if (theme == Theme.Light)
+                {
+                    list.Add(bitmap.ToIcon());
+                }
+                else
+                {
+                    using var recolored = bitmap.Recolor(color);
+                    list.Add(recolored.ToIcon());
+                }
             }
 
             lock (iconLock)
