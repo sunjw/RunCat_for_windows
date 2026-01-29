@@ -199,9 +199,9 @@ namespace RunCat365
         {
             var color = systemTheme.GetContrastColor();
             var iconName = $"{runner.GetString()}_0".ToLower();
-            if (runner.HasTheme()) iconName = $"{systemTheme.GetString()}_{iconName}".ToLower();
             var obj = Resources.ResourceManager.GetObject(iconName);
-            if (obj is not Bitmap bitmap) return null;
+            if (obj is not Bitmap bitmap)
+                return null;
             return (!runner.HasTheme() || systemTheme == Theme.Light) ? bitmap : bitmap.Recolor(color);
         }
 
@@ -212,12 +212,10 @@ namespace RunCat365
             var runnerName = runner.GetString();
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
-            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString() + "_";
-            if (!runner.HasTheme()) prefix = "";
             var list = new List<Icon>(capacity);
             for (int i = 0; i < capacity; i++)
             {
-                var iconName = $"{prefix}{runnerName}_{i}".ToLower();
+                var iconName = $"{runnerName}_{i}".ToLower();
                 if (rm.GetObject(iconName) is not Bitmap bitmap) continue;
                 if (!runner.HasTheme() || theme == Theme.Light)
                 {
