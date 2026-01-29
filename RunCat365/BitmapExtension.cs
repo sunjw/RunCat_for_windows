@@ -31,7 +31,7 @@ namespace RunCat365
             );
         }
 
-        public void Dispose()
+        internal void Dispose()
         {
             _bitmap.UnlockBits(Data);
         }
