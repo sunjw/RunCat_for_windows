@@ -75,7 +75,7 @@ namespace RunCat365
                         }
                     }
                 }
-            }            
+            }
 
             Paint += RenderScene;
 
