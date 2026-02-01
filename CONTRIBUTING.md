@@ -82,13 +82,7 @@ To suggest a new feature:
 - **.NET 9.0** is required.
 - All code must be written in **English**.  
   Use the localization system for user-facing text in other languages.
-- Opening braces `{` must be placed on a new line.
-  ```cs
-  private void MyFunction()
-  {
-      // code
-  }
-  ```
+  Use the **[Allman indentation style](https://en.wikipedia.org/wiki/Indentation_style#Allman_style)**.
 - Use `var` when the type is obvious from the assignment.
 - Follow the existing formatting and conventions used in the codebase.
 - Keep each pull request focused on **a single change or context**.
@@ -152,6 +146,7 @@ To suggest a new feature:
 ## Code Style Guidelines
 
 * Follow existing project conventions.
+* Use the [Allman indentation style](https://en.wikipedia.org/wiki/Indentation_style#Allman_style).
 * Use meaningful and descriptive names.
 * Avoid unnecessary complexity.
 * Prefer readable and self-explanatory code over clever solutions.
