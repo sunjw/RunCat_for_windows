@@ -73,7 +73,6 @@ namespace RunCat365.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-<<<<<<< implement-local-ranking
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int HighScore {
             get {
@@ -81,7 +80,11 @@ namespace RunCat365.Properties {
             }
             set {
                 this["HighScore"] = value;
-=======
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("CPU")]
         public string SpeedSource {
             get {
@@ -89,7 +92,6 @@ namespace RunCat365.Properties {
             }
             set {
                 this["SpeedSource"] = value;
->>>>>>> main
             }
         }
     }
