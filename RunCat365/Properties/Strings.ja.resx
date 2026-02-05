@@ -192,6 +192,15 @@
   <data name="SystemInfo_Available" xml:space="preserve">
     <value>使用可能</value>
   </data>
+  <data name="SystemInfo_GPU" xml:space="preserve">
+    <value>GPU</value>
+  </data>
+  <data name="SystemInfo_Average" xml:space="preserve">
+    <value>平均</value>
+  </data>
+  <data name="SystemInfo_Maximum" xml:space="preserve">
+    <value>最大</value>
+  </data>
   <data name="SystemInfo_Memory" xml:space="preserve">
     <value>メモリ</value>
   </data>
@@ -219,14 +228,11 @@
   <data name="SystemInfo_Received" xml:space="preserve">
     <value>受信</value>
   </data>
-  <data name="SystemInfo_GPU" xml:space="preserve">
-    <value>GPU</value>
+  <data name="Message_CPUUsageUnavailable" xml:space="preserve">
+    <value>CPU使用率の取得ができません。走る速度を更新できません。</value>
   </data>
-  <data name="SystemInfo_Average" xml:space="preserve">
-    <value>平均</value>
-  </data>
-  <data name="SystemInfo_Maximum" xml:space="preserve">
-    <value>最大</value>
+  <data name="Menu_SpeedSource" xml:space="preserve">
+    <value>速度の基準</value>
   </data>
   <data name="Game_HighScore" xml:space="preserve">
     <value>ハイスコア</value>

@@ -32,6 +32,9 @@ namespace RunCat365
             Func<Theme> getSystemTheme,
             Func<Theme> getManualTheme,
             Action<Theme> setManualTheme,
+            Func<SpeedSource> getSpeedSource,
+            Action<SpeedSource> setSpeedSource,
+            Func<SpeedSource, bool> isSpeedSourceAvailable,
             Func<FPSMaxLimit> getFPSMaxLimit,
             Action<FPSMaxLimit> setFPSMaxLimit,
             Func<bool> getLaunchAtStartup,
@@ -77,6 +80,23 @@ namespace RunCat365
                 _ => null
             );
 
+            var speedSourceMenu = new CustomToolStripMenuItem(Strings.Menu_SpeedSource);
+            speedSourceMenu.SetupSubMenusFromEnum<SpeedSource>(
+                s => s.GetLocalizedString(),
+                (parent, sender, e) =>
+                {
+                    HandleMenuItemSelection<SpeedSource>(
+                        parent,
+                        sender,
+                        (string? s, out SpeedSource ss) => Enum.TryParse(s, out ss),
+                        s => setSpeedSource(s)
+                    );
+                },
+                s => getSpeedSource() == s,
+                _ => null,
+                isSpeedSourceAvailable
+            );
+
             var fpsMaxLimitMenu = new CustomToolStripMenuItem(Strings.Menu_FPSMaxLimit);
             fpsMaxLimitMenu.SetupSubMenusFromEnum<FPSMaxLimit>(
                 f => f.GetString(),
@@ -102,6 +122,7 @@ namespace RunCat365
             var settingsMenu = new CustomToolStripMenuItem(Strings.Menu_Settings);
             settingsMenu.DropDownItems.AddRange(
                 themeMenu,
+                speedSourceMenu,
                 fpsMaxLimitMenu,
                 launchAtStartupMenu
             );
@@ -144,8 +165,6 @@ namespace RunCat365
 
             SetIcons(getSystemTheme(), getManualTheme(), getRunner());
 
-            notifyIcon.Text = "-";
-            notifyIcon.Icon = icons[0];
             notifyIcon.Visible = true;
             notifyIcon.ContextMenuStrip = contextMenuStrip;
         }
@@ -177,24 +196,34 @@ namespace RunCat365
 
         private static Bitmap? GetRunnerThumbnailBitmap(Theme systemTheme, Runner runner)
         {
-            var iconName = $"{systemTheme.GetString()}_{runner.GetString()}_0".ToLower();
+            var color = systemTheme.GetContrastColor();
+            var iconName = $"{runner.GetString()}_0".ToLower();
             var obj = Resources.ResourceManager.GetObject(iconName);
-            return obj is Icon icon ? icon.ToBitmap() : null;
+            if (obj is not Bitmap bitmap) return null;
+            return systemTheme == Theme.Light ? bitmap : bitmap.Recolor(color);
         }
 
         internal void SetIcons(Theme systemTheme, Theme manualTheme, Runner runner)
         {
-            var prefix = (manualTheme == Theme.System ? systemTheme : manualTheme).GetString();
+            var theme = manualTheme == Theme.System ? systemTheme : manualTheme;
+            var color = theme.GetContrastColor();
             var runnerName = runner.GetString();
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
             var list = new List<Icon>(capacity);
             for (int i = 0; i < capacity; i++)
             {
-                var iconName = $"{prefix}_{runnerName}_{i}".ToLower();
-                var icon = rm.GetObject(iconName);
-                if (icon is null) continue;
-                list.Add((Icon)icon);
+                var iconName = $"{runnerName}_{i}".ToLower();
+                if (rm.GetObject(iconName) is not Bitmap bitmap) continue;
+                if (theme == Theme.Light)
+                {
+                    list.Add(bitmap.ToIcon());
+                }
+                else
+                {
+                    using var recolored = bitmap.Recolor(color);
+                    list.Add(recolored.ToIcon());
+                }
             }
 
             lock (iconLock)
@@ -240,9 +269,10 @@ namespace RunCat365
             }
         }
 
-        internal void ShowBalloonTip()
+        internal void ShowBalloonTip(BalloonTipType balloonTipType)
         {
-            notifyIcon.ShowBalloonTip(5000, "RunCat 365", Strings.Message_AppLaunched, ToolTipIcon.Info);
+            var info = balloonTipType.GetInfo();
+            notifyIcon.ShowBalloonTip(5000, info.Title, info.Text, info.Icon);
         }
 
         internal void AdvanceFrame()

@@ -27,6 +27,11 @@ namespace RunCat365
 
     internal static class MemoryInfoExtension
     {
+        internal static string GetDescription(this MemoryInfo memoryInfo)
+        {
+            return $"{Strings.SystemInfo_Memory}: {memoryInfo.MemoryLoad}%";
+        }
+
         internal static List<string> GenerateIndicator(this MemoryInfo memoryInfo)
         {
             var resultLines = new List<string>

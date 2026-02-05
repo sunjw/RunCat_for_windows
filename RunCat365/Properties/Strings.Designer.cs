@@ -175,6 +175,12 @@ namespace RunCat365.Properties {
             }
         }
 
+        internal static string Menu_SpeedSource {
+            get {
+                return ResourceManager.GetString("Menu_SpeedSource", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
@@ -190,6 +196,15 @@ namespace RunCat365.Properties {
         internal static string Message_AppLaunched {
             get {
                 return ResourceManager.GetString("Message_AppLaunched", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get CPU usage. Unable to update running speed..
+        /// </summary>
+        internal static string Message_CPUUsageUnavailable {
+            get {
+                return ResourceManager.GetString("Message_CPUUsageUnavailable", resourceCulture);
             }
         }
 

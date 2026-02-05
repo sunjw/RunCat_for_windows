@@ -25,6 +25,11 @@ namespace RunCat365
 
     internal static class GPUInfoExtension
     {
+        internal static string GetDescription(this GPUInfo gpuInfo)
+        {
+            return $"{Strings.SystemInfo_GPU}: {gpuInfo.Maximum:f1}%";
+        }
+
         internal static List<string> GenerateIndicator(this GPUInfo gpuInfo)
         {
             var resultLines = new List<string>

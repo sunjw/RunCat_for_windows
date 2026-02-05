@@ -14,8 +14,13 @@
     <Setting Name="FirstLaunch" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+<<<<<<< implement-local-ranking
     <Setting Name="HighScore" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+=======
+    <Setting Name="SpeedSource" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CPU</Value>
+>>>>>>> main
     </Setting>
   </Settings>
 </SettingsFile>
