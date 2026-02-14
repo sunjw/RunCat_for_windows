@@ -124,7 +124,7 @@
     <value>Tema</value>
   </data>
   <data name="Menu_FPSMaxLimit" xml:space="preserve">
-    <value>Limite Máximo de FPS</value>
+    <value>Límite Máximo de FPS</value>
   </data>
   <data name="Menu_LaunchAtStartup" xml:space="preserve">
     <value>Ejecutar al inicio</value>
