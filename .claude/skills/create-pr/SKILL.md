@@ -27,12 +27,12 @@ git branch --show-current
 
 Based on the diff, classify the change as exactly one of:
 
-| Type | When to use |
-|---|---|
-| **Bug Fix** | Corrects incorrect behavior without adding new functionality |
+| Type            | When to use                                                      |
+| --------------- | ---------------------------------------------------------------- |
+| **Bug Fix**     | Corrects incorrect behavior without adding new functionality     |
 | **Refactoring** | Improves code structure or readability without changing behavior |
-| **New Feature** | Adds new user-visible functionality |
-| **Others** | Documentation, CI changes, build config, etc. |
+| **New Feature** | Adds new user-visible functionality                              |
+| **Others**      | Documentation, CI changes, build config, etc.                    |
 
 If unsure, ask the user before proceeding.
 
@@ -45,7 +45,7 @@ Fill in the template below. Every section must be present — do not omit any.
 ```markdown
 ## Context of Contribution
 
-- [x] Bug Fix       ← check only the one that applies
+- [x] Bug Fix ← check only the one that applies
 - [ ] Refactoring
 - [ ] New Feature
 - [ ] Others
@@ -70,6 +70,7 @@ and why benefits outweigh maintenance cost>
 ```
 
 **Checklist rules:**
+
 - All checklist items default to `[x]` (checked).
 - If you have reason to believe an item may **not** hold (e.g., the change is UI-only so dark/light theme was not verifiable), leave it as `[ ]` and note the concern in the Summary.
 - The "multiple contexts" item is `[x]` only if all commits on this branch belong to a single topic. If they don't, warn the user before creating the PR.
@@ -83,6 +84,7 @@ and why benefits outweigh maintenance cost>
 ## Step 5: Confirm with the user
 
 Show the user:
+
 - The proposed **title**
 - The full **body** (rendered as markdown if possible)
 
