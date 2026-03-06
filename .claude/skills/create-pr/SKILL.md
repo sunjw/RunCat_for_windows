@@ -38,6 +38,8 @@ If unsure, ask the user before proceeding.
 
 ## Step 3: Draft the PR body
 
+**IMPORTANT: The entire PR body must be written in English, regardless of the language the user is communicating in.**
+
 Fill in the template below. Every section must be present — do not omit any.
 
 ```markdown
