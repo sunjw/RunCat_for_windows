@@ -60,11 +60,11 @@ This is a Windows Forms application (.NET 9.0 / C#) for Microsoft Store distribu
 **Settings:**
 - `Properties/UserSettings.settings` - User preferences (Runner, Theme, SpeedSource, FPSMaxLimit)
 - `Properties/Resources.resx` - Embedded images and icons
-- `Properties/Strings.resx` - Localized strings (English default); `Strings.ja.resx` (Japanese), `Strings.es.resx` (Spanish)
+- `Properties/Strings.resx` - Localized strings (English default); `Strings.ja.resx` (Japanese), `Strings.es.resx` (Spanish), `Strings.fr.resx` (French)
 
 **Localization notes:**
-- Add new strings to all three `.resx` files simultaneously
-- Japanese uses "Noto Sans JP" font; English/Spanish use "Consolas"
+- Add new strings to all four `.resx` files simultaneously
+- Japanese uses "Noto Sans JP" font; English/Spanish/French use "Consolas"
 
 ## Coding Rules
 

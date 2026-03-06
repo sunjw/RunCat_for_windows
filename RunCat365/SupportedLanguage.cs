@@ -21,6 +21,7 @@ namespace RunCat365
         English,
         Japanese,
         Spanish,
+        French,
     }
 
     internal static class SupportedLanguageExtension
@@ -32,6 +33,7 @@ namespace RunCat365
             {
                 "ja" => SupportedLanguage.Japanese,
                 "es" => SupportedLanguage.Spanish,
+                "fr" => SupportedLanguage.French,
                 _ => SupportedLanguage.English,
             };
         }
@@ -42,6 +44,7 @@ namespace RunCat365
             {
                 SupportedLanguage.Japanese => new CultureInfo("ja-JP"),
                 SupportedLanguage.Spanish => new CultureInfo("es-ES"),
+                SupportedLanguage.French => new CultureInfo("fr-FR"),
                 _ => new CultureInfo("en-US"),
             };
         }
@@ -52,6 +55,7 @@ namespace RunCat365
             {
                 SupportedLanguage.Japanese => "Noto Sans JP",
                 SupportedLanguage.Spanish => "Consolas",
+                SupportedLanguage.French => "Consolas",
                 _ => "Consolas",
             };
         }
@@ -62,6 +66,7 @@ namespace RunCat365
             {
                 SupportedLanguage.Japanese => true,
                 SupportedLanguage.Spanish => false,
+                SupportedLanguage.French => false,
                 _ => false,
             };
         }
