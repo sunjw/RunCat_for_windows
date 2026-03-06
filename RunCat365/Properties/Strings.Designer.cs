@@ -66,30 +66,11 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to High Score.
-        /// </summary>
-        internal static string Game_HighScore
-        {
-            get
-            {
-                return ResourceManager.GetString("Game_HighScore", resourceCulture);
-            }
-        }
-        /// <summary>
         ///   Looks up a localized string similar to Press space to play..
         /// </summary>
         internal static string Game_PressSpaceToPlay {
             get {
                 return ResourceManager.GetString("Game_PressSpaceToPlay", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Score.
-        /// </summary>
-        internal static string Game_Score {
-            get {
-                return ResourceManager.GetString("Game_Score", resourceCulture);
             }
         }
 
