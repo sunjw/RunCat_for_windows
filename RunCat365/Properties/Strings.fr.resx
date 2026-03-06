@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Menu_Runners" xml:space="preserve">
-    <value>Coureurs</value>
+  <data name="Menu_Runner" xml:space="preserve">
+    <value>Coureur</value>
   </data>
   <data name="Menu_Theme" xml:space="preserve">
     <value>Thème</value>

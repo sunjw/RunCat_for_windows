@@ -46,7 +46,7 @@ namespace RunCat365
             systemInfoMenu.Text = "-\n-\n-\n-\n-";
             systemInfoMenu.Enabled = false;
 
-            var runnersMenu = new CustomToolStripMenuItem(Strings.Menu_Runners);
+            var runnersMenu = new CustomToolStripMenuItem(Strings.Menu_Runner);
             runnersMenu.SetupSubMenusFromEnum<Runner>(
                 r => r.GetLocalizedString(),
                 (parent, sender, e) =>
