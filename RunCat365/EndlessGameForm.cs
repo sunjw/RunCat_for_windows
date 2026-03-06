@@ -254,8 +254,10 @@ namespace RunCat365
                     Alignment = StringAlignment.Far,
                     LineAlignment = StringAlignment.Center
                 };
-                g.DrawString($"{Strings.Game_HighScore}: {highScore:D3}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
-                g.DrawString($"{Strings.Game_Score}: {score:D3}", font15, brush, new Rectangle(20, 30, 560, 50), stringFormat);
+                var scoreText = status == GameStatus.GameOver
+                    ? $"HI {highScore:D3}  {score:D3}"
+                    : $"{score:D3}";
+                g.DrawString(scoreText, font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
             }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
