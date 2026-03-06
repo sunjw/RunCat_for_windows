@@ -29,6 +29,7 @@ namespace RunCat365
             // Specify language manually.
             CultureInfo.CurrentUICulture = SupportedLanguage.English.GetDefaultCultureInfo();
 #endif
+            CultureInfo.CurrentCulture = SupportedLanguageExtension.GetCurrentLanguage().GetDefaultCultureInfo();
 
             // Terminate RunCat365 if there's any existing instance.
             using var procMutex = new Mutex(true, "_RUNCAT_MUTEX", out var result);
