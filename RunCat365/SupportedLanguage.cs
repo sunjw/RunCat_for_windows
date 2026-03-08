@@ -23,7 +23,7 @@ namespace RunCat365
         Spanish,
         French,
         German,
-        Chinese,
+        SimplifiedChinese,
     }
 
     internal static class SupportedLanguageExtension
@@ -37,7 +37,7 @@ namespace RunCat365
                 "es" => SupportedLanguage.Spanish,
                 "fr" => SupportedLanguage.French,
                 "de" => SupportedLanguage.German,
-                "zh-CN" => SupportedLanguage.SimplifiedChinese,
+                "zh" => SupportedLanguage.SimplifiedChinese,
                 _ => SupportedLanguage.English,
             };
         }
