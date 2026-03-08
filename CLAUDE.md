@@ -70,16 +70,20 @@ This is a Windows Forms application (.NET 9.0 / C#) for Microsoft Store distribu
 - `Properties/UserSettings.settings` - User preferences (Runner, Theme, SpeedSource, FPSMaxLimit)
 - `Properties/Resources.resx` - Embedded images and icons
 - `Properties/Strings.resx` - Localized strings (English default);
-  - `Strings.ja.resx` (Japanese)
-  - `Strings.es.resx` (Spanish)
+  - `Strings.zh-CN.resx` (Chinese (simplified))
+  - `Strings.zh-TW.resx` (Chinese (traditional))
   - `Strings.fr.resx` (French)
   - `Strings.de.resx` (German)
-  - `Strings.zh-CN.resx` (Simplified Chinese)
+  - `Strings.ja.resx` (Japanese)
+  - `Strings.es.resx` (Spanish)
 
 **Localization notes:**
 
-- Add new strings to all six `.resx` files simultaneously
-- Japanese uses "Noto Sans JP" font; Simplified Chinese uses "Microsoft YaHei" font; English/Spanish/French/German use "Consolas"
+- Add new strings to all seven `.resx` files simultaneously
+- English/Spanish/French/German use "Consolas"
+- Japanese uses "Noto Sans JP" font
+- Chinese (simplified) uses "Microsoft YaHei" font
+- Chinese (traditional) uses "Microsoft JhengHei" font
 
 ## Coding Rules
 
