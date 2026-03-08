@@ -24,6 +24,7 @@ namespace RunCat365
         French,
         German,
         SimplifiedChinese,
+        TraditionalChinese,
     }
 
     internal static class SupportedLanguageExtension
@@ -37,9 +38,16 @@ namespace RunCat365
                 "es" => SupportedLanguage.Spanish,
                 "fr" => SupportedLanguage.French,
                 "de" => SupportedLanguage.German,
-                "zh" => SupportedLanguage.SimplifiedChinese,
+                "zh" => DetectChineseVariant(culture),
                 _ => SupportedLanguage.English,
             };
+        }
+
+        private static SupportedLanguage DetectChineseVariant(CultureInfo culture)
+        {
+            return culture.Name.Contains("Hant") || culture.Name is "zh-TW" or "zh-HK" or "zh-MO"
+                ? SupportedLanguage.TraditionalChinese
+                : SupportedLanguage.SimplifiedChinese;
         }
 
         internal static CultureInfo GetDefaultCultureInfo(this SupportedLanguage language)
@@ -51,6 +59,7 @@ namespace RunCat365
                 SupportedLanguage.French => new CultureInfo("fr-FR"),
                 SupportedLanguage.German => new CultureInfo("de-DE"),
                 SupportedLanguage.SimplifiedChinese => new CultureInfo("zh-CN"),
+                SupportedLanguage.TraditionalChinese => new CultureInfo("zh-TW"),
                 _ => new CultureInfo("en-US"),
             };
         }
@@ -64,6 +73,7 @@ namespace RunCat365
                 SupportedLanguage.French => "Consolas",
                 SupportedLanguage.German => "Consolas",
                 SupportedLanguage.SimplifiedChinese => "Microsoft YaHei",
+                SupportedLanguage.TraditionalChinese => "Microsoft JhengHei",
                 _ => "Consolas",
             };
         }
@@ -77,6 +87,7 @@ namespace RunCat365
                 SupportedLanguage.French => false,
                 SupportedLanguage.German => false,
                 SupportedLanguage.SimplifiedChinese => true,
+                SupportedLanguage.TraditionalChinese => true,
                 _ => false,
             };
         }
