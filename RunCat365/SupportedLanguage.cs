@@ -76,7 +76,7 @@ namespace RunCat365
                 SupportedLanguage.Spanish => false,
                 SupportedLanguage.French => false,
                 SupportedLanguage.German => false,
-                SupportedLanguage.SimplifiedChinese => false,
+                SupportedLanguage.SimplifiedChinese => true,
                 _ => false,
             };
         }
