@@ -25,12 +25,12 @@ namespace RunCat365
         [STAThread]
         static void Main()
         {
-            var defaultCultureInfo = SupportedLanguageExtension.GetCurrentLanguage().GetDefaultCultureInfo();
 #if DEBUG
-            CultureInfo.CurrentUICulture = SupportedLanguage.English.GetDefaultCultureInfo();
+            var defaultCultureInfo = SupportedLanguage.English.GetDefaultCultureInfo();
 #else
-            CultureInfo.CurrentUICulture = defaultCultureInfo;
+            var defaultCultureInfo = SupportedLanguageExtension.GetCurrentLanguage().GetDefaultCultureInfo();
 #endif
+            CultureInfo.CurrentUICulture = defaultCultureInfo;
             CultureInfo.CurrentCulture = defaultCultureInfo;
 
             // Terminate RunCat365 if there's any existing instance.
