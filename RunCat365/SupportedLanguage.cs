@@ -37,7 +37,7 @@ namespace RunCat365
                 "es" => SupportedLanguage.Spanish,
                 "fr" => SupportedLanguage.French,
                 "de" => SupportedLanguage.German,
-                "zh-CN" => SupportedLanguage.Chinese,
+                "zh" => SupportedLanguage.Chinese,
                 _ => SupportedLanguage.English,
             };
         }
