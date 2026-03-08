@@ -78,7 +78,7 @@ This is a Windows Forms application (.NET 9.0 / C#) for Microsoft Store distribu
 
 **Localization notes:**
 
-- Add new strings to all five `.resx` files simultaneously
+- Add new strings to all six `.resx` files simultaneously
 - Japanese uses "Noto Sans JP" font; Simplified Chinese uses "Microsoft YaHei" font; English/Spanish/French/German use "Consolas"
 
 ## Coding Rules
