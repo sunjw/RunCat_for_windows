@@ -75,11 +75,12 @@ This is a Windows Forms application (.NET 9.0 / C#) for Microsoft Store distribu
   - `Strings.fr.resx` (French)
   - `Strings.de.resx` (German)
   - `Strings.zh-CN.resx` (Simplified Chinese)
+  - `Strings.zh-TW.resx` (Traditional Chinese)
 
 **Localization notes:**
 
-- Add new strings to all six `.resx` files simultaneously
-- Japanese uses "Noto Sans JP" font; Simplified Chinese uses "Microsoft YaHei" font; English/Spanish/French/German use "Consolas"
+- Add new strings to all seven `.resx` files simultaneously
+- Japanese uses "Noto Sans JP" font; Simplified Chinese uses "Microsoft YaHei" font; Traditional Chinese uses "Microsoft JhengHei" font; English/Spanish/French/German use "Consolas"
 
 ## Coding Rules
 
