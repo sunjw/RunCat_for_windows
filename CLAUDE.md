@@ -80,7 +80,10 @@ This is a Windows Forms application (.NET 9.0 / C#) for Microsoft Store distribu
 **Localization notes:**
 
 - Add new strings to all seven `.resx` files simultaneously
-- Japanese uses "Noto Sans JP" font; Chinese (simplified) uses "Microsoft YaHei" font; Chinese (traditional) uses "Microsoft JhengHei" font; English/Spanish/French/German use "Consolas"
+- English/Spanish/French/German use "Consolas"
+- Japanese uses "Noto Sans JP" font
+- Chinese (simplified) uses "Microsoft YaHei" font
+- Chinese (traditional) uses "Microsoft JhengHei" font
 
 ## Coding Rules
 
