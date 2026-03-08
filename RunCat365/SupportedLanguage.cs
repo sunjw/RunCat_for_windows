@@ -37,7 +37,7 @@ namespace RunCat365
                 "es" => SupportedLanguage.Spanish,
                 "fr" => SupportedLanguage.French,
                 "de" => SupportedLanguage.German,
-                "zh" => SupportedLanguage.Chinese,
+                "zh-CN" => SupportedLanguage.SimplifiedChinese,
                 _ => SupportedLanguage.English,
             };
         }
@@ -50,7 +50,7 @@ namespace RunCat365
                 SupportedLanguage.Spanish => new CultureInfo("es-ES"),
                 SupportedLanguage.French => new CultureInfo("fr-FR"),
                 SupportedLanguage.German => new CultureInfo("de-DE"),
-                SupportedLanguage.Chinese => new CultureInfo("zh-CN"),
+                SupportedLanguage.SimplifiedChinese => new CultureInfo("zh-CN"),
                 _ => new CultureInfo("en-US"),
             };
         }
@@ -63,7 +63,7 @@ namespace RunCat365
                 SupportedLanguage.Spanish => "Consolas",
                 SupportedLanguage.French => "Consolas",
                 SupportedLanguage.German => "Consolas",
-                SupportedLanguage.Chinese => "Microsoft YaHei",
+                SupportedLanguage.SimplifiedChinese => "Microsoft YaHei",
                 _ => "Consolas",
             };
         }
@@ -76,7 +76,7 @@ namespace RunCat365
                 SupportedLanguage.Spanish => false,
                 SupportedLanguage.French => false,
                 SupportedLanguage.German => false,
-                SupportedLanguage.Chinese => false,
+                SupportedLanguage.SimplifiedChinese => false,
                 _ => false,
             };
         }
