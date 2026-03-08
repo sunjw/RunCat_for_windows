@@ -172,7 +172,7 @@
     <value>无尽游戏</value>
   </data>
 	<data name="Game_PressSpaceToPlay" xml:space="preserve">
-    <value>按空格键播放。</value>
+    <value>按空格键开始。</value>
   </data>
 	<data name="Game_GameOver" xml:space="preserve">
     <value>游戏结束</value>
@@ -184,7 +184,7 @@
     <value>用户</value>
   </data>
 	<data name="SystemInfo_Kernel" xml:space="preserve">
-    <value>核心</value>
+    <value>内核</value>
   </data>
 	<data name="SystemInfo_Available" xml:space="preserve">
     <value>可用</value>
@@ -229,9 +229,10 @@
     <value>获取 CPU 使用率失败。无法更新运行速度。</value>
   </data>
 	<data name="Menu_SpeedSource" xml:space="preserve">
-    <value>速度基于</value>
+    <value>速度来源</value>
   </data>
 	<data name="Game_NewRecord" xml:space="preserve">
     <value>新纪录</value>
   </data>
+
 </root>
