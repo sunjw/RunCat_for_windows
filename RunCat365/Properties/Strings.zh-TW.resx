@@ -118,123 +118,120 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Menu_Runner" xml:space="preserve">
-    <value>Runner</value>
+    <value>跑步者</value>
   </data>
   <data name="Menu_Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>主題</value>
   </data>
   <data name="Menu_FPSMaxLimit" xml:space="preserve">
-    <value>FPS Max Limit</value>
+    <value>FPS 最大限制</value>
   </data>
   <data name="Menu_LaunchAtStartup" xml:space="preserve">
-    <value>Launch at startup</value>
+    <value>跟隨 Windows 啟動</value>
   </data>
   <data name="Menu_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="Menu_EndlessGame" xml:space="preserve">
-    <value>Endless Game</value>
+    <value>無盡遊戲</value>
   </data>
   <data name="Menu_Information" xml:space="preserve">
-    <value>Information</value>
+    <value>資訊</value>
   </data>
   <data name="Menu_OpenRepository" xml:space="preserve">
-    <value>Open Repository</value>
+    <value>開啟存儲庫</value>
   </data>
   <data name="Menu_Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>結束</value>
   </data>
   <data name="Theme_System" xml:space="preserve">
-    <value>System</value>
+    <value>系統</value>
   </data>
   <data name="Theme_Light" xml:space="preserve">
-    <value>Light</value>
+    <value>淺色</value>
   </data>
   <data name="Theme_Dark" xml:space="preserve">
-    <value>Dark</value>
+    <value>深色</value>
   </data>
   <data name="Runner_Cat" xml:space="preserve">
-    <value>Cat</value>
+    <value>貓咪</value>
   </data>
   <data name="Runner_Parrot" xml:space="preserve">
-    <value>Parrot</value>
+    <value>鸚鵡</value>
   </data>
   <data name="Runner_Horse" xml:space="preserve">
-    <value>Horse</value>
+    <value>馬</value>
   </data>
   <data name="Message_AppLaunched" xml:space="preserve">
-    <value>App has launched. If the icon is not on the taskbar, it has been omitted, so please move it manually and pin it.</value>
+    <value>應用程式已啟動。如果圖示不在工作列上，表示已被省略，請手動移動並固定它。</value>
   </data>
   <data name="Message_Warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>警告</value>
   </data>
   <data name="Window_EndlessGame" xml:space="preserve">
-    <value>Endless Game</value>
+    <value>無盡遊戲</value>
   </data>
   <data name="Game_PressSpaceToPlay" xml:space="preserve">
-    <value>Press space to play.</value>
+    <value>按空白鍵開始。</value>
   </data>
   <data name="Game_GameOver" xml:space="preserve">
-    <value>GAME OVER</value>
+    <value>遊戲結束</value>
   </data>
   <data name="SystemInfo_CPU" xml:space="preserve">
     <value>CPU</value>
   </data>
   <data name="SystemInfo_User" xml:space="preserve">
-    <value>User</value>
+    <value>使用者</value>
   </data>
   <data name="SystemInfo_Kernel" xml:space="preserve">
-    <value>Kernel</value>
+    <value>核心</value>
   </data>
   <data name="SystemInfo_Available" xml:space="preserve">
-    <value>Available</value>
+    <value>可用</value>
   </data>
   <data name="SystemInfo_GPU" xml:space="preserve">
     <value>GPU</value>
   </data>
   <data name="SystemInfo_Average" xml:space="preserve">
-    <value>Average</value>
+    <value>平均</value>
   </data>
   <data name="SystemInfo_Maximum" xml:space="preserve">
-    <value>Maximum</value>
+    <value>最大</value>
   </data>
   <data name="SystemInfo_Memory" xml:space="preserve">
-    <value>Memory</value>
+    <value>記憶體</value>
   </data>
   <data name="SystemInfo_Total" xml:space="preserve">
-    <value>Total</value>
+    <value>總計</value>
   </data>
   <data name="SystemInfo_Used" xml:space="preserve">
-    <value>Used</value>
+    <value>已使用</value>
   </data>
   <data name="SystemInfo_Storage" xml:space="preserve">
-    <value>Storage</value>
+    <value>儲存</value>
   </data>
   <data name="SystemInfo_DriveC" xml:space="preserve">
-    <value>C Drive</value>
+    <value>C 槽</value>
   </data>
   <data name="SystemInfo_DriveD" xml:space="preserve">
-    <value>D Drive</value>
+    <value>D 槽</value>
   </data>
   <data name="SystemInfo_Network" xml:space="preserve">
-    <value>Network</value>
+    <value>網路</value>
   </data>
   <data name="SystemInfo_Sent" xml:space="preserve">
-    <value>Sent</value>
+    <value>傳送</value>
   </data>
   <data name="SystemInfo_Received" xml:space="preserve">
-    <value>Received</value>
+    <value>已接收</value>
   </data>
   <data name="Message_CPUUsageUnavailable" xml:space="preserve">
-    <value>Failed to get CPU usage. Unable to update running speed.</value>
+    <value>取得 CPU 使用率失敗。無法更新執行速度。</value>
   </data>
   <data name="Menu_SpeedSource" xml:space="preserve">
-    <value>Speed based on</value>
+    <value>速度來源</value>
   </data>
   <data name="Game_NewRecord" xml:space="preserve">
-    <value>New Record</value>
-  </data>
-  <data name="Runner_WinLogo" xml:space="preserve">
-    <value>WinLogo</value>
+    <value>新紀錄</value>
   </data>
 </root>

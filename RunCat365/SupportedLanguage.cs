@@ -18,18 +18,32 @@ namespace RunCat365
 {
     enum SupportedLanguage
     {
+        ChineseSimplified,
+        ChineseTraditional,
         English,
+        French,
+        German,
         Japanese,
         Spanish,
     }
 
     internal static class SupportedLanguageExtension
     {
+        private static SupportedLanguage DetectChineseVariant(CultureInfo culture)
+        {
+            return culture.Name.Contains("Hant") || culture.Name is "zh-TW" or "zh-HK" or "zh-MO"
+                ? SupportedLanguage.ChineseTraditional
+                : SupportedLanguage.ChineseSimplified;
+        }
+
         internal static SupportedLanguage GetCurrentLanguage()
         {
             var culture = CultureInfo.CurrentUICulture;
             return culture.TwoLetterISOLanguageName switch
             {
+                "zh" => DetectChineseVariant(culture),
+                "fr" => SupportedLanguage.French,
+                "de" => SupportedLanguage.German,
                 "ja" => SupportedLanguage.Japanese,
                 "es" => SupportedLanguage.Spanish,
                 _ => SupportedLanguage.English,
@@ -40,6 +54,10 @@ namespace RunCat365
         {
             return language switch
             {
+                SupportedLanguage.ChineseSimplified => new CultureInfo("zh-CN"),
+                SupportedLanguage.ChineseTraditional => new CultureInfo("zh-TW"),
+                SupportedLanguage.French => new CultureInfo("fr-FR"),
+                SupportedLanguage.German => new CultureInfo("de-DE"),
                 SupportedLanguage.Japanese => new CultureInfo("ja-JP"),
                 SupportedLanguage.Spanish => new CultureInfo("es-ES"),
                 _ => new CultureInfo("en-US"),
@@ -50,6 +68,10 @@ namespace RunCat365
         {
             return language switch
             {
+                SupportedLanguage.ChineseSimplified => "Microsoft YaHei",
+                SupportedLanguage.ChineseTraditional => "Microsoft JhengHei",
+                SupportedLanguage.French => "Consolas",
+                SupportedLanguage.German => "Consolas",
                 SupportedLanguage.Japanese => "Noto Sans JP",
                 SupportedLanguage.Spanish => "Consolas",
                 _ => "Consolas",
@@ -60,6 +82,10 @@ namespace RunCat365
         {
             return language switch
             {
+                SupportedLanguage.ChineseSimplified => true,
+                SupportedLanguage.ChineseTraditional => true,
+                SupportedLanguage.French => false,
+                SupportedLanguage.German => false,
                 SupportedLanguage.Japanese => true,
                 SupportedLanguage.Spanish => false,
                 _ => false,

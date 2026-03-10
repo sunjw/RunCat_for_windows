@@ -141,7 +141,7 @@ namespace RunCat365
             roads.RemoveAt(0);
             if (firstRoad == Road.Sprout)
             {
-                score += 1;
+                score = Math.Min(score + 1, 999);
                 highScore = Math.Max(score, highScore);
             }
             counter = counter > 0 ? counter - 1 : limit - 1;
@@ -254,8 +254,10 @@ namespace RunCat365
                     Alignment = StringAlignment.Far,
                     LineAlignment = StringAlignment.Center
                 };
-                g.DrawString($"{Strings.Game_HighScore}: {highScore}", font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
-                g.DrawString($"{Strings.Game_Score}: {score}", font15, brush, new Rectangle(20, 30, 560, 50), stringFormat);
+                var scoreText = status == GameStatus.GameOver
+                    ? $"HI {highScore:D3}  {score:D3}"
+                    : $"{score:D3}";
+                g.DrawString(scoreText, font15, brush, new Rectangle(20, 0, 560, 50), stringFormat);
             }
 
             roads.Take(20).Select((road, index) => new { road, index }).ToList().ForEach(
