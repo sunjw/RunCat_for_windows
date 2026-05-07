@@ -162,6 +162,9 @@
   <data name="Runner_Horse" xml:space="preserve">
     <value>Horse</value>
   </data>
+  <data name="Runner_WinLogo" xml:space="preserve">
+    <value>WinLogo</value>
+  </data>
   <data name="Message_AppLaunched" xml:space="preserve">
     <value>App has launched. If the icon is not on the taskbar, it has been omitted, so please move it manually and pin it.</value>
   </data>
@@ -234,7 +237,13 @@
   <data name="Game_NewRecord" xml:space="preserve">
     <value>New Record</value>
   </data>
-  <data name="Runner_WinLogo" xml:space="preserve">
-    <value>WinLogo</value>
+  <data name="SystemInfo_Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="SystemInfo_TemperatureCelsiusFormat" xml:space="preserve">
+    <value>{0:f1}°C</value>
+  </data>
+  <data name="SystemInfo_TemperatureFahrenheitFormat" xml:space="preserve">
+    <value>{0:f1}°F</value>
   </data>
 </root>
