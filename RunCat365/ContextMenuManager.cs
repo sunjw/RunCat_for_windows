@@ -296,6 +296,7 @@ namespace RunCat365
             var rm = Resources.ResourceManager;
             var capacity = runner.GetFrameNumber();
             var bitmaps = new List<Bitmap>(capacity);
+            var theme = ResolveTheme(systemTheme, manualTheme);
             for (int i = 0; i < capacity; i++)
             {
                 var iconName = $"{runnerName}_{i}".ToLower();
@@ -305,7 +306,7 @@ namespace RunCat365
                     bitmaps.Add(bitmap);
                 }
             }
-            ReplaceIconList(bitmaps, ResolveTheme(systemTheme, manualTheme));
+            ReplaceIconList(bitmaps, theme);
         }
 
         internal void SetCustomIcons(List<Bitmap> frames, Theme systemTheme, Theme manualTheme)
