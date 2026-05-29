@@ -20,3 +20,6 @@ BundleArtifacts/
 
 # Wap
 WapForStore/**/*.assets.cache
+
+# Claude Code
+.claude/

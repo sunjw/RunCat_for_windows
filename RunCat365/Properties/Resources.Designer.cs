@@ -459,6 +459,24 @@ namespace RunCat365.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap slider_rabbit {
+            get {
+                object obj = ResourceManager.GetObject("slider_rabbit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap slider_turtle {
+            get {
+                object obj = ResourceManager.GetObject("slider_turtle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   查找类似于 (图标) 的 System.Drawing.Bitmap 类型的本地化资源。

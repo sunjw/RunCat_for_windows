@@ -130,11 +130,11 @@ namespace RunCat365.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Open Repository.
+        ///   Looks up a localized string similar to Open Project Page.
         /// </summary>
-        internal static string Menu_OpenRepository {
+        internal static string Menu_OpenProjectPage {
             get {
-                return ResourceManager.GetString("Menu_OpenRepository", resourceCulture);
+                return ResourceManager.GetString("Menu_OpenProjectPage", resourceCulture);
             }
         }
 
@@ -453,27 +453,9 @@ namespace RunCat365.Properties {
             }
         }
 
-        internal static string CustomRunner_ClearFrames {
-            get {
-                return ResourceManager.GetString("CustomRunner_ClearFrames", resourceCulture);
-            }
-        }
-
         internal static string CustomRunner_RemoveFrame {
             get {
                 return ResourceManager.GetString("CustomRunner_RemoveFrame", resourceCulture);
-            }
-        }
-
-        internal static string CustomRunner_MoveFrameUp {
-            get {
-                return ResourceManager.GetString("CustomRunner_MoveFrameUp", resourceCulture);
-            }
-        }
-
-        internal static string CustomRunner_MoveFrameDown {
-            get {
-                return ResourceManager.GetString("CustomRunner_MoveFrameDown", resourceCulture);
             }
         }
 
@@ -495,18 +477,6 @@ namespace RunCat365.Properties {
             }
         }
 
-        internal static string CustomRunner_ErrorEmptyName {
-            get {
-                return ResourceManager.GetString("CustomRunner_ErrorEmptyName", resourceCulture);
-            }
-        }
-
-        internal static string CustomRunner_ErrorMinFrames {
-            get {
-                return ResourceManager.GetString("CustomRunner_ErrorMinFrames", resourceCulture);
-            }
-        }
-
         internal static string CustomRunner_ConfirmOverwrite {
             get {
                 return ResourceManager.GetString("CustomRunner_ConfirmOverwrite", resourceCulture);
@@ -519,9 +489,15 @@ namespace RunCat365.Properties {
             }
         }
 
-        internal static string CustomRunner_OverwriteWarning {
+        internal static string CustomRunner_RequirementsLabel {
             get {
-                return ResourceManager.GetString("CustomRunner_OverwriteWarning", resourceCulture);
+                return ResourceManager.GetString("CustomRunner_RequirementsLabel", resourceCulture);
+            }
+        }
+
+        internal static string CustomRunner_FramesLabel {
+            get {
+                return ResourceManager.GetString("CustomRunner_FramesLabel", resourceCulture);
             }
         }
 
