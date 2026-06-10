@@ -22,4 +22,5 @@ BundleArtifacts/
 WapForStore/**/*.assets.cache
 
 # Claude Code
-.claude/
+.claude/*
+!.claude/skills/
